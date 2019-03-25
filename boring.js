@@ -303,9 +303,11 @@ function expansion_map(x, y, dx, dy, gex, replasments) {
       };
     };
   };
+
+  return;
 };
 
-function draw_cave(x, y, direction, treasure) {
+async function draw_cave(x, y, direction, treasure) {
 
   var line_dx = 0,
     line_dy = 0;
@@ -336,7 +338,7 @@ function draw_cave(x, y, direction, treasure) {
   var dx = [-1, -1, -1, 0, 0, 0, 1, 1, 1], // смещения, соответствующие соседям ячейки
     dy = [0, 1, -1, 0, 1, -1, 0, 1, -1]; // справа, снизу, слева и сверху
 
-  expansion_map(x, y, dx, dy, floor, [emptySpace, wall]); //пещера
+  await expansion_map(x, y, dx, dy, floor, [emptySpace, wall]); //пещера
   expansion_map(x, y, line_dx, line_dy, wall, [emptySpace]); //стены вокруг
 
   switch (treasure) {
@@ -345,10 +347,12 @@ function draw_cave(x, y, direction, treasure) {
       creatures.push(new_enemy);
       break;
     case 'grass':
+      console.log('new y:', y, 'new x:', x, 'map:', map[x][y]);
       map[y][x] = [];
       map[y][x].push(grass);
       break;
   };
+
 };
 
 function getRandomInt(min, max) {

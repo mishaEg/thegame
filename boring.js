@@ -271,7 +271,9 @@ function expansion_map(x, y, dx, dy, gex, replasments) {
       if (newY < 0) { //добавление новой линии к карте сверху
         map.splice(0, 0, line);
         hero.positionY += 1;
-        enemy.positionY += 1;
+        for (var i in creatures) {
+          creatures[i].positionY += 1;
+        };
         y += 1;
         //console.log('add line to up');
       } else if (newY > map.length - 1) { //добавление новой линии к карте снизу
@@ -284,7 +286,9 @@ function expansion_map(x, y, dx, dy, gex, replasments) {
           map[l].splice(0, 0, [emptySpace]);
         };
         map[newY][0][0] = gex;
-        enemy.positionX += 1;
+        for (var i in creatures) {
+          creatures[i].positionX += 1;
+        };
         hero.positionX += 1;
         x += 1;
       } else { //добавление новой клетки к карте справа
@@ -307,7 +311,7 @@ function expansion_map(x, y, dx, dy, gex, replasments) {
   return;
 };
 
-async function draw_cave(x, y, direction, treasure) {
+function draw_cave(x, y, direction, treasure) {
 
   var line_dx = 0,
     line_dy = 0;
@@ -338,8 +342,11 @@ async function draw_cave(x, y, direction, treasure) {
   var dx = [-1, -1, -1, 0, 0, 0, 1, 1, 1], // смещения, соответствующие соседям ячейки
     dy = [0, 1, -1, 0, 1, -1, 0, 1, -1]; // справа, снизу, слева и сверху
 
-  await expansion_map(x, y, dx, dy, floor, [emptySpace, wall]); //пещера
+  expansion_map(x, y, dx, dy, floor, [emptySpace, wall]); //пещера
   expansion_map(x, y, line_dx, line_dy, wall, [emptySpace]); //стены вокруг
+
+  y = Math.abs(y);
+  x = Math.abs(x);
 
   switch (treasure) {
     case 'enemy':
@@ -347,7 +354,6 @@ async function draw_cave(x, y, direction, treasure) {
       creatures.push(new_enemy);
       break;
     case 'grass':
-      console.log('new y:', y, 'new x:', x, 'map:', map[x][y]);
       map[y][x] = [];
       map[y][x].push(grass);
       break;

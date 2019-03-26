@@ -56,8 +56,12 @@ class Hero {
     this.damage = 2;
     this.defence = 0;
     this.money = 0;
-    this.weapon = {name: 'none'};
-    this.shield = {name: 'none'};
+    this.weapon = {
+      name: 'none'
+    };
+    this.shield = {
+      name: 'none'
+    };
     this.poisoned = false;
     this.readyToMine = false;
   };
@@ -96,9 +100,8 @@ class Hero {
         case 'weapon':
           if (this.weapon.name != 'none') {
             map[y][x].pop();
-            //map[y][x].push(floor);
-           map[y][x][map[y][x].length - 1] = this.weapon;
-            console.log('now on map:', map[y][x][map[y][x].length - 1], 'length:', map[y][x].length);
+            map[y][x][map[y][x].length - 1] = this.weapon;
+            //console.log('now on map:', map[y][x][map[y][x].length - 1], 'length:', map[y][x].length);
           }
           this.damage = item.damage;
           this.weapon = item;

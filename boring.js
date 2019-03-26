@@ -17,11 +17,23 @@ var emptySpace = {
   grass = {
     icon: 'w'
   },
+  gem = {
+    type: 'money',
+    cost: 10,
+    name: 'gem',
+    icon: '💎'
+  },
   sword = {
     type: 'weapon',
     name: 'wooden sword',
     icon: '/',
     damage: 18
+  },
+  iron_sword = {
+    type: 'weapon',
+    name: 'iron sword',
+    icon: '⇗',
+    damage: 50
   },
   shield = {
     type: 'shield',
@@ -43,8 +55,9 @@ class Hero {
     this.health = 100;
     this.damage = 2;
     this.defence = 0;
-    this.weapon = 'none';
-    this.shield = 'none';
+    this.money = 0;
+    this.weapon = {name: 'none'};
+    this.shield = {name: 'none'};
     this.poisoned = false;
     this.readyToMine = false;
   };
@@ -81,13 +94,23 @@ class Hero {
     if (item.type != undefined) {
       switch (item.type) {
         case 'weapon':
-          this.damage += item.damage;
-          this.weapon = item.name;
+          if (this.weapon.name != 'none') {
+            map[y][x].pop();
+            //map[y][x].push(floor);
+           map[y][x][map[y][x].length - 1] = this.weapon;
+            console.log('now on map:', map[y][x][map[y][x].length - 1], 'length:', map[y][x].length);
+          }
+          this.damage = item.damage;
+          this.weapon = item;
           msg = 'you picked up the ' + item.name;
           break;
         case 'shield':
-          this.defence += item.defence;
-          this.shield = item.name;
+          this.defence = item.defence;
+          this.shield = item;
+          msg = 'you picked up the ' + item.name;
+          break;
+        case 'money':
+          this.money += item.cost;
           msg = 'you picked up the ' + item.name;
           break;
         case 'corpress':
@@ -101,15 +124,11 @@ class Hero {
       };
       if (map[y][x].length == 1) {
         map[y][x][0] = floor;
-      } else {
-        //console.log('in "map" array more than 1 element on this tile');
-        map[y][x].splice(-1, 1);
       };
     } else msg = 'there is nothing to pick up';
   };
 
   dig(y, x) {
-    var gex = map[y][x][map[y][x].length - 1].icon;
     msg += ' digging...';
     var dx = [1, 0, -1, 0], // смещения, соответствующие соседям ячейки
       dy = [0, 1, 0, -1]; // справа, снизу, слева и сверху 
@@ -357,6 +376,10 @@ function draw_cave(x, y, direction, treasure) {
       map[y][x] = [];
       map[y][x].push(grass);
       break;
+    case 'iron sword':
+      map[y][x] = [];
+      map[y][x].push(iron_sword);
+      break;
   };
 
 };
@@ -484,7 +507,7 @@ function draw() {
     readline.clearLine(process.stdout, 0);
   };
   readline.cursorTo(process.stdout, 0, 0);
-  console.log('||health:', hero.health, '||weapon:', hero.weapon, '||shield:', hero.shield);
+  console.log('||health:', hero.health, '||weapon:', hero.weapon.name, '||shield:', hero.shield.name, '||money:', hero.money);
   console.log(msg);
   readline.cursorTo(process.stdout, 0, 3);
   for (var i in map) {
@@ -581,8 +604,16 @@ function action(key) {
 
   if (hero.icon != 'd' && !hero.readyToMine) {
     switch (gex) {
+      case gem.icon:
+        msg = 'you found a gem!';
       case sword.icon:
-        msg = 'you found wooden sword!';
+        if (msg == '') {
+          msg = 'you found wooden sword!';
+        }
+      case iron_sword.icon:
+        if (msg == '') {
+          msg = 'you found iron sword!';
+        }
       case shield.icon:
         if (msg == '') {
           msg = 'you found wooden shield!';
@@ -622,14 +653,26 @@ function action(key) {
     if (gex != hero.icon) {
       if (gex == wall.icon) {
         hero.dig(y, x);
-        var rnd_cave = getRandomInt(0, 9);
-        if (rnd_cave > 4 && rnd_cave < 6) {
-          msg += 'you found cave with enemy!';
-          draw_cave(x, y, key, 'enemy');
-        } else if (rnd_cave > 6) {
-          msg += 'you found cave with grass!';
-          draw_cave(x, y, key, 'grass');
-        };
+        var rnd_cave = getRandomInt(0, 12);
+        switch (true) {
+          case (rnd_cave > 4 && rnd_cave < 6):
+            msg += 'you found cave with enemy!';
+            draw_cave(x, y, key, 'enemy');
+            break;
+          case (rnd_cave > 6 && rnd_cave < 9):
+            msg += 'you found cave with enemy!';
+            draw_cave(x, y, key, 'enemy');
+            break;
+          case (rnd_cave == 9):
+            msg += 'you found cave with iron sword!';
+            draw_cave(x, y, key, 'iron sword');
+            break;
+          case (rnd_cave > 9):
+            msg += 'you found a gem!';
+            map[y][x] = [];
+            map[y][x].push(gem);
+            break;
+        }
       } else msg += 'there is nothig to dig (you can mine only walls)';
       hero.readyToMine = false;
     };

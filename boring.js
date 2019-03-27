@@ -315,7 +315,7 @@ function expansion_map(x, y, dx, dy, gex, replasments) {
         for (var l in map) {
           map[l].splice(0, 0, [emptySpace]);
         };
-        map[newY][0][0] = gex;
+        map[newY][0].push(gex);
         for (var i in creatures) {
           creatures[i].positionX += 1;
         };
@@ -326,7 +326,7 @@ function expansion_map(x, y, dx, dy, gex, replasments) {
         for (var l in map) {
           map[l][newX] = [emptySpace];
         };
-        map[newY][newX] = [gex];
+        map[newY][newX].push(gex);
       };
     } else {
       for (var k in replasments) {
@@ -337,7 +337,6 @@ function expansion_map(x, y, dx, dy, gex, replasments) {
       };
     };
   };
-
   return;
 };
 
@@ -349,10 +348,10 @@ function draw_cave(x, y, direction, treasure) {
   switch (direction) {
     case 'left':
       x -= 1;
-      line_dx = [0, 0, 0, 0, 0, 1, 2, 3, 1, 2, 3];
-      line_dy = [-1, 0, 1, 2, -2, -2, -2, -2, 2, 2, 2];
+      line_dx = [0, 0, 0, 0, 1, 2, 3, 1, 2, 3];
+      line_dy = [-1, 1, 2, -2, -2, -2, -2, 2, 2, 2];
       break;
-    case 'right':
+    case 'right': 
       x += 2;
       line_dx = [2, 2, 2, 2, 2, 1, 0, 0, 1, -1, -1];
       line_dy = [-1, 0, 1, -2, 2, 2, 2, -2, -2, -2, 2];

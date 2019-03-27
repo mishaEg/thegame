@@ -1,5 +1,4 @@
 const keypress = require('keypress'),
-  tty = require('tty'),
   readline = require('readline');
 
 //console.log('press any key to start');

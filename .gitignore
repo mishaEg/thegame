@@ -1,5 +1,6 @@
 # Не сохраняем node_modules/ в репозитории, он бывает очень огромным, его всегда можно подтянуть через `npm i`
 node_modules/
+!old_project/node_modules
 
 # Собственные настройки visual studio code
 .vscode/

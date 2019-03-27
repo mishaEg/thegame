@@ -3,7 +3,7 @@ const keypress = require('keypress'),
 
 process.stdout.write('\u001b[2J\u001b[0;0H'); //clear all
 
-var emptySpace = {
+/* var emptySpace = {
     icon: ' '
   },
   wall = {
@@ -49,106 +49,7 @@ var emptySpace = {
   drawingMap = [],
   creatures = [],
   onHelp = false,
-  msg = '';
-
-class Hero {
-  constructor(positionX, positionY) {
-    this.positionX = positionX;
-    this.positionY = positionY;
-    this.icon = '@';
-    this.health = 100;
-    this.damage = 2;
-    this.defence = 0;
-    this.money = 0;
-    this.weapon = {
-      name: 'none'
-    };
-    this.shield = {
-      name: 'none'
-    };
-    this.poisoned = false;
-    this.readyToMine = false;
-  };
-
-  damaged(damage) {
-    var countedDamage = damage - this.defence;
-    if (countedDamage <= 0) {
-      countedDamage = 1;
-    }
-    if (this.health > 0) {
-      this.health -= countedDamage;
-      if (this.health <= 0) {
-        msg += ' => ha-ha, you died :в';
-        this.icon = 'd';
-      };
-    };
-  };
-
-  punch(target) {
-    if (target.depthOfSleep == 2) {
-      msg = 'you punch the enemy, but he is sleeps. If you wanna wake him up, punch once more.';
-      target.depthOfSleep -= 1;
-    } else if (target.depthOfSleep == 1) {
-      msg = 'you punch the enemy and wakes him up!';
-      target.wakedUp();
-      target.depthOfSleep -= 1;
-    };
-    target.damaged(this.damage);
-  };
-
-  pickUp(y, x) {
-    var item = map[y][x][map[y][x].length - 1];
-
-    if (item.type != undefined) {
-      switch (item.type) {
-        case 'weapon':
-          if (this.weapon.name != 'none') {
-            map[y][x][map[y][x].length - 1] = this.weapon;
-          } else {
-            map[y][x].pop();
-          };
-          this.damage = item.damage;
-          this.weapon = item;
-          msg = 'you picked up the ' + item.name;
-          break;
-        case 'shield':
-          if (this.shield.name != 'none') {
-            map[y][x][map[y][x].length - 1] = this.shield;
-          } else {
-            map[y][x].pop();
-          };
-          this.defence = item.defence;
-          this.shield = item;
-          msg = 'you picked up the ' + item.name;
-          break;
-        case 'money':
-          map[y][x].pop();
-          this.money += item.cost;
-          msg = 'you picked up the ' + item.name;
-          break;
-        case 'corpse':
-          this.health += 100;
-          msg = 'you eat the corpse. Enemy blood fills up your siol. Somthing gose wrong...';
-          this.poisoned = true;
-          break;
-        default:
-          msg = 'you pick up something usless';
-          break;
-      };
-    } else msg = 'there is nothing to pick up';
-  };
-
-  dig(y, x) {
-    msg += ' digging...';
-    var dx = [1, 0, -1, 0], // смещения, соответствующие соседям ячейки
-      dy = [0, 1, 0, -1]; // справа, снизу, слева и сверху 
-
-    map[y][x][0] = floor;
-
-    expansion_map(x, y, dx, dy, wall, [emptySpace]);
-
-  };
-};
+  msg = ''; */
 
 class Enemy {
   constructor(positionX, positionY) {
@@ -398,50 +299,6 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-/*function clearMap(y, x) {
-
-    var dx = [1, 0, -1, 0], // смещения, соответствующие соседям ячейки
-        dy = [0, 1, 0, -1]; // справа, снизу, слева и сверху
-
-    map[y][x][0] = floor;
-
-    for (var i in dy) {
-        var newY = y + dy[i],
-            newX = x + dx[i];
-        console.log('||newY:', newY, 'newX:', newX + '||');
-        if (map[newY] == undefined) {
-            var line = [];
-            for (var l in map[hero.positionY]) {
-                line[l] = [emptySpace];
-            }
-            line[newX] = [wall];
-            if (newY == -1) {
-                map.splice(0, 0, line);
-                hero.positionY += 1;
-                enemy.positionY += 1;
-            } else if (newY > map.length - 1) {
-                map.splice(newY, 0, line);
-            }
-        } else if (map[newY][newX] == undefined) {
-            if (newX == -1) {
-                for (var l in map) {
-                    map[l].splice(0, 0, [emptySpace]);
-                }
-                map[newY].splice(0, 1, [wall]);
-                enemy.positionX += 1;
-                hero.positionX += 1;
-            } else if (newX > map[newY].length - 1) {
-                for (var k = map[newY].length; k < newX; k++) {
-                    map[newY].splice(k, 0, [emptySpace]);
-                }
-                map[newY].splice(newX, 0, [wall]);
-            }
-        } else if (map[newY][newX][0] == emptySpace) {
-            map[newY][newX][0] = wall;
-        }
-    }
-}*/
-
 function generateMap() {
 
   const fs = require('fs'),
@@ -614,6 +471,9 @@ function action(key) {
     if (gex.icon != hero.icon) {
       if (gex.icon == wall.icon) {
         hero.dig(y, x);
+        var dx = [1, 0, -1, 0], // смещения, соответствующие соседям ячейки
+            dy = [0, 1, 0, -1]; // справа, снизу, слева и сверху 
+        expansion_map(x, y, dx, dy, wall, [emptySpace]);
         var rnd_cave = getRandomInt(0, 12);
         switch (true) {
           case (rnd_cave > 4 && rnd_cave < 6):

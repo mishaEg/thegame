@@ -1,0 +1,49 @@
+{
+    "emptySpace": {
+        "icon": " "
+    },
+    "wall": {
+        "icon": "="
+    },
+    "floor": {
+        "icon": "*"
+    },
+    "grass": {
+        "icon": "w"
+    },
+    "gem": {
+        "type": "money",
+        "cost": 10,
+        "name": "gem",
+        "icon": "g"
+    },
+    "sword": {
+        "type": "weapon",
+        "name": "wooden sword",
+        "icon": "/",
+        "damage": 18
+    },
+    "iron_sword": {
+        "type": "weapon",
+        "name": "iron sword",
+        "icon": "⇗",
+        "damage": 50
+    },
+    "shield": {
+        "type": "shield",
+        "name": "wooden shield",
+        "icon": "o",
+        "defence": 2
+    },
+    "iron_shield": {
+        "type": "shield",
+        "name": "iron shield",
+        "icon": "0",
+        "defence": 20
+    },
+    "map": [],
+    "drawingMap": [],
+    "creatures": [],
+    "onHelp": false,
+    "msg": ""
+}

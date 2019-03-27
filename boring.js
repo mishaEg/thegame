@@ -290,7 +290,7 @@ function expansion_map(x, y, dx, dy, gex, replasments) {
   for (var i in dy) {
     var newY = y + dy[i],
       newX = x + dx[i];
-    //console.log('||newY:', newY, 'newX:', newX + '||');
+    //console.log('x:', x, 'dx:', dx[i], '||newY:', newY, 'newX:', newX + '||', 'gex:', gex);
     if (map[newY] == undefined) {
       var line = [];
       for (var l in map[hero.positionY]) {
@@ -304,39 +304,35 @@ function expansion_map(x, y, dx, dy, gex, replasments) {
           creatures[i].positionY += 1;
         };
         y += 1;
-        //console.log('add line to up');
       } else if (newY > map.length - 1) { //добавление новой линии к карте снизу
         map.splice(newY, 0, line);
       };
     } else if (map[newY][newX] == undefined) {
       if (newX < 0) { //добавление новой клетки к карте слева
-        //console.log('add line from left');
         for (var l in map) {
           map[l].splice(0, 0, [emptySpace]);
         };
-        map[newY][0].push(gex);
+        map[newY][0][0] = gex;
+        console.log('y:', newY, 'and x is 0');
         for (var i in creatures) {
           creatures[i].positionX += 1;
         };
         hero.positionX += 1;
         x += 1;
       } else { //добавление новой клетки к карте справа
-        //console.log('add line from right');
         for (var l in map) {
           map[l][newX] = [emptySpace];
         };
-        map[newY][newX].push(gex);
+        map[newY][newX][0] = gex;
       };
     } else {
       for (var k in replasments) {
         if (map[newY][newX][0] == replasments[k]) {
-          //console.log('replasments');
           map[newY][newX][0] = gex;
         };
       };
     };
   };
-  return;
 };
 
 function draw_cave(x, y, direction, treasure) {
@@ -347,8 +343,12 @@ function draw_cave(x, y, direction, treasure) {
   switch (direction) {
     case 'left':
       x -= 1;
-      line_dx = [0, 0, 0, 0, 1, 2, 3, 1, 2, 3];
-      line_dy = [-1, 1, 2, -2, -2, -2, -2, 2, 2, 2];
+      if (x < 0) {
+        line_dx = [0, 0, 0, 0, 0, 1, 2, 3, 1, 2, 3];
+      } else {
+        line_dx = [-2, -2, -2, -2, -2, -1, 0, 1, -1, 0, 1];
+      }
+      line_dy = [0, -1, 1, 2, -2, -2, -2, -2, 2, 2, 2];
       break;
     case 'right': 
       x += 2;
@@ -613,30 +613,34 @@ function action(key) {
     //msg = 'you raised the pickaxe and cant move while not lower it';
     if (gex.icon != hero.icon) {
       if (gex.icon == wall.icon) {
-        hero.dig(y, x);
-        var rnd_cave = getRandomInt(0, 12);
+        var rnd_cave = getRandomInt(0, 12),
+            treasure = 'none';
         switch (true) {
           case (rnd_cave > 4 && rnd_cave < 6):
             msg += 'you found cave with enemy!';
-            draw_cave(x, y, key, 'enemy');
+            treasure = 'enemy';
             break;
           case (rnd_cave > 6 && rnd_cave < 8):
-            msg += 'you found cave with enemy!';
-            draw_cave(x, y, key, 'enemy');
+            msg += 'you found cave with grass!';
+            treasure = 'grass';
             break;
           case (rnd_cave == 8):
             msg += 'you found cave with iron shield!';
-            draw_cave(x, y, key, 'iron shield');
+            treasure = 'iron shield';
             break;
           case (rnd_cave == 9):
             msg += 'you found cave with iron sword!';
-            draw_cave(x, y, key, 'iron sword');
+            treasure = 'iron sword';
             break;
           case (rnd_cave > 9):
             msg += 'you found a gem!';
             map[y][x].push(gem);
             break;
         }
+        hero.dig(y, x);
+        if (treasure != 'none') {
+          draw_cave(x, y, key, treasure);
+        };
       } else msg += 'there is nothig to dig (you can mine only walls)';
       hero.readyToMine = false;
     };

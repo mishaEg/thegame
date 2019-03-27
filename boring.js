@@ -37,8 +37,14 @@ var emptySpace = {
   shield = {
     type: 'shield',
     name: 'wooden shield',
-    icon: '0',
+    icon: 'o',
     defence: 2
+  },
+  iron_shield = {
+    type: 'shield',
+    name: 'iron shield',
+    icon: '0',
+    defence: 20
   },
   map = [],
   drawingMap = [],
@@ -98,34 +104,37 @@ class Hero {
       switch (item.type) {
         case 'weapon':
           if (this.weapon.name != 'none') {
-            map[y][x].pop();
             map[y][x][map[y][x].length - 1] = this.weapon;
-            //console.log('now on map:', map[y][x][map[y][x].length - 1], 'length:', map[y][x].length);
-          }
+          } else {
+            map[y][x].pop();
+          };
           this.damage = item.damage;
           this.weapon = item;
           msg = 'you picked up the ' + item.name;
           break;
         case 'shield':
+          if (this.shield.name != 'none') {
+            map[y][x][map[y][x].length - 1] = this.shield;
+          } else {
+            map[y][x].pop();
+          };
           this.defence = item.defence;
           this.shield = item;
           msg = 'you picked up the ' + item.name;
           break;
         case 'money':
+          map[y][x].pop();
           this.money += item.cost;
           msg = 'you picked up the ' + item.name;
           break;
-        case 'corpress':
+        case 'corpse':
           this.health += 100;
-          msg = 'you eat the corpress. Enemy blood fills up your siol. Somthing gose wrong...';
+          msg = 'you eat the corpse. Enemy blood fills up your siol. Somthing gose wrong...';
           this.poisoned = true;
           break;
         default:
           msg = 'you pick up something usless';
           break;
-      };
-      if (map[y][x].length == 1) {
-        map[y][x][0] = floor;
       };
     } else msg = 'there is nothing to pick up';
   };
@@ -183,7 +192,7 @@ class Enemy {
       msg += ' => you killed the enemy!o:';
       map[this.positionY][this.positionX].push(this);
       this.icon = 'd';
-      this.type = 'corpress';
+      this.type = 'corpse';
     };
   };
 
@@ -375,12 +384,13 @@ function draw_cave(x, y, direction, treasure) {
       creatures.push(new_enemy);
       break;
     case 'grass':
-      map[y][x] = [];
       map[y][x].push(grass);
       break;
     case 'iron sword':
-      map[y][x] = [];
       map[y][x].push(iron_sword);
+      break;
+    case 'iron shield':
+      map[y][x].push(iron_shield);
       break;
   };
 
@@ -464,7 +474,6 @@ function generateMap() {
     if (map[y][x][len].icon != floor.icon) { //чтобы объект не реснулся в другом
       k--;
     } else {
-      map[y][x] = [];
       map[y][x].push(grass);
     };
   };
@@ -476,7 +485,6 @@ function generateMap() {
     if (map[y][x][len].icon != floor.icon) { //чтобы объект не реснулся в другом
       k--;
     } else {
-      map[y][x] = [];
       map[y][x].push(sword);
     };
   };
@@ -488,7 +496,6 @@ function generateMap() {
     if (map[y][x][len].icon != floor.icon) { //чтобы объект не реснулся в другом
       k--;
     } else {
-      map[y][x] = [];
       map[y][x].push(shield);
     };
   };
@@ -524,7 +531,7 @@ function draw() {
   };
   drawingMap[hero.positionY][hero.positionX] = hero.icon;
   for (var i in creatures) {
-    if (creatures[i].type != 'corpress') {
+    if (creatures[i].type != 'corpse') {
       drawingMap[creatures[i].positionY][creatures[i].positionX] = creatures[i].icon;
     };
   };
@@ -558,7 +565,7 @@ function action(key) {
   switch (key) {
     case 'd':
       if (hero.weapon != 'none') {
-        msg += 'you raised the pickaxe (' + hero.weapon + ') => choose derection to dig';
+        msg += 'you raised the pickaxe (' + hero.weapon.name + ') => choose derection to dig';
         x = hero.positionX;
         y = hero.positionY;
         hero.readyToMine = true;
@@ -601,29 +608,42 @@ function action(key) {
     };
   };
 
-  var gex = drawingMap[y][x];
-  //console.log('gex:', gex);
+  var gex = map[y][x][map[y][x].length - 1];
+  //console.log('map:', map[y][x]);
 
-  if (hero.icon != 'd' && !hero.readyToMine) {
-    switch (gex) {
-      case gem.icon:
-        msg = 'you found a gem!';
-      case sword.icon:
-        if (msg == '') {
-          msg = 'you found wooden sword!';
+  if (hero.readyToMine && msg == '') {
+    //msg = 'you raised the pickaxe and cant move while not lower it';
+    if (gex.icon != hero.icon) {
+      if (gex.icon == wall.icon) {
+        hero.dig(y, x);
+        var rnd_cave = getRandomInt(0, 12);
+        switch (true) {
+          case (rnd_cave > 4 && rnd_cave < 6):
+            msg += 'you found cave with enemy!';
+            draw_cave(x, y, key, 'enemy');
+            break;
+          case (rnd_cave > 6 && rnd_cave < 8):
+            msg += 'you found cave with enemy!';
+            draw_cave(x, y, key, 'enemy');
+            break;
+          case (rnd_cave == 8):
+            msg += 'you found cave with iron shield!';
+            draw_cave(x, y, key, 'iron shield');
+            break;
+          case (rnd_cave == 9):
+            msg += 'you found cave with iron sword!';
+            draw_cave(x, y, key, 'iron sword');
+            break;
+          case (rnd_cave > 9):
+            msg += 'you found a gem!';
+            map[y][x].push(gem);
+            break;
         }
-      case iron_sword.icon:
-        if (msg == '') {
-          msg = 'you found iron sword!';
-        }
-      case shield.icon:
-        if (msg == '') {
-          msg = 'you found wooden shield!';
-        }
-        msg += ' || if you wanna pick it up, press "p"';
-        hero.positionX = x;
-        hero.positionY = y;
-        break;
+      } else msg += 'there is nothig to dig (you can mine only walls)';
+      hero.readyToMine = false;
+    };
+  } else if (hero.icon != 'd') {
+    switch (gex.icon) {
       case grass.icon:
         if (msg.length > 0) {
           msg += ', also, ';
@@ -645,38 +665,15 @@ function action(key) {
             };
           };
         };
-        if (msg == '' && gex != hero.icon) {
+        if (gex.icon != wall.icon) {
+          msg = 'you found a ' + gex.name + '!';
+          msg += ' || if you wanna pick it up, press "p"';
+          hero.positionX = x;
+          hero.positionY = y;
+        } else if (msg == '' && gex.icon != hero.icon) {
           msg = 'there is no the way :c';
         };
         break;
-    };
-  } else if (hero.readyToMine) {
-    //msg = 'you raised the pickaxe and cant move while not lower it';
-    if (gex != hero.icon) {
-      if (gex == wall.icon) {
-        hero.dig(y, x);
-        var rnd_cave = getRandomInt(0, 12);
-        switch (true) {
-          case (rnd_cave > 4 && rnd_cave < 6):
-            msg += 'you found cave with enemy!';
-            draw_cave(x, y, key, 'enemy');
-            break;
-          case (rnd_cave > 6 && rnd_cave < 9):
-            msg += 'you found cave with enemy!';
-            draw_cave(x, y, key, 'enemy');
-            break;
-          case (rnd_cave == 9):
-            msg += 'you found cave with iron sword!';
-            draw_cave(x, y, key, 'iron sword');
-            break;
-          case (rnd_cave > 9):
-            msg += 'you found a gem!';
-            map[y][x] = [];
-            map[y][x].push(gem);
-            break;
-        }
-      } else msg += 'there is nothig to dig (you can mine only walls)';
-      hero.readyToMine = false;
     };
   } else msg = 'you dead and cant move anymore, lol';
 

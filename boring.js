@@ -313,7 +313,6 @@ function expansion_map(x, y, dx, dy, gex, replasments) {
           map[l].splice(0, 0, [emptySpace]);
         };
         map[newY][0][0] = gex;
-        console.log('y:', newY, 'and x is 0');
         for (var i in creatures) {
           creatures[i].positionX += 1;
         };

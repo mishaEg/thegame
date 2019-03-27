@@ -712,11 +712,4 @@ process.stdin.on('keypress', function (ch, key) {
   };
 });
 
-//misunderstandings
-if (typeof process.stdin.setRawMode == 'function') {
-  process.stdin.setRawMode(true);
-} else {
-  tty.setRawMode(true);
-};
-
-process.stdin.resume(); //probably, for looping
+process.stdin.setRawMode(true);

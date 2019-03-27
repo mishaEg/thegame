@@ -1,7 +1,6 @@
 const keypress = require('keypress'),
   readline = require('readline');
 
-//console.log('press any key to start');
 process.stdout.write('\u001b[2J\u001b[0;0H'); //clear all
 
 var emptySpace = {

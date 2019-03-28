@@ -1,0 +1,28 @@
+.map_object {
+  width: 16px;
+  height: 16px;
+}
+
+.hero {
+  background: url(./characters.png) 0 0px;
+}
+
+.grass {
+  background-image: url(./world.png);
+  background-position: -144px 144px;
+}
+
+.floor {
+  background-image: url(./world.png);
+  background-position: -16px 142px;
+}
+
+.sword {
+  background-image: url(./16x16/sword_01d.png);
+  background-position: 0px 0px;
+}
+
+.shield {
+  background-image: url(./16x16/shield_01a.png);
+  background-position: 0px 0px;
+}

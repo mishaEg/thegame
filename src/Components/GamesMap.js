@@ -20,7 +20,7 @@ export class GamesMap extends Component {
     }
 
     render() {
-        if (this.props.currentKey === 'h') {
+        if (this.props.onHelp) {
             return (
                 <div>
                     <h1>||HELP||</h1>

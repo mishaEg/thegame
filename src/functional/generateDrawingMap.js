@@ -8,11 +8,12 @@ import React from 'react';
 export default function generateDrawingMap(inputMap) {
     const generatedMap = inputMap.map(currentRow => {
         return currentRow.map(currentColumn => {
+          console.log('column:', currentColumn);
             return currentColumn[currentColumn.length - 1].icon
         })
     })
     return generatedMap.map(currentRow => {
         return <tr>{currentRow.map(currentColumn => {
-            return <td>{currentColumn}</td>})}</tr>
+            return <td><img className={["map_object", currentColumn].join(' ')} /></td>})}</tr>
     })
 }

@@ -4,7 +4,7 @@ export class Hero {
     constructor(positionX, positionY) {
         this.positionX = positionX;
         this.positionY = positionY;
-        this.icon = '@';
+        this.icon = 'hero';
         this.health = 100;
         this.damage = 2;
         this.defence = 0;

@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
 import generateMap from '../functional/generateMap';
-import mapFromJson from '../data/map.json';
+import generateDrawingMap from '../functional/generateDrawingMap';
 
 export class GamesMap extends Component {
     constructor() {
         super();
         this.state = {
-            onHelp: false
+            mapIsGenerate: false,
+            mapWithObjects: []
         }
     }
 
+    generatorNewMap = () => {
+        const generatedMap = generateMap();
+        this.setState({
+            mapIsGenerate: true,
+            mapWithObjects: generatedMap
+        })
+    }
+
     render() {
-        if (this.state.onHelp) {
+        if (this.props.currentKey === 'h') {
             return (
                 <div>
                     <h1>||HELP||</h1>
@@ -21,11 +30,11 @@ export class GamesMap extends Component {
                 </div>
             )
         }
-        const generatedMap = generateMap(mapFromJson);
-        const renderMap = generatedMap.map(currentRow => {
-            return <tr>{currentRow.map(currentColumn => {
-                return <td>{currentColumn}</td>})}</tr>
-        })
+        if (!this.state.mapIsGenerate) {
+            this.generatorNewMap()
+        }
+        
+        const renderMap = generateDrawingMap(this.state.mapWithObjects);
         return (
             <table>
                 <tbody>

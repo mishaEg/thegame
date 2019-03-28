@@ -13,6 +13,6 @@ export default function generateDrawingMap(inputMap) {
     })
     return generatedMap.map(currentRow => {
         return <tr>{currentRow.map(currentColumn => {
-            return <td>{currentColumn}</td>})}</tr>
+            return <td><div className={`map_object ${currentColumn}`} /></td>})}</tr>
     })
 }

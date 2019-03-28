@@ -3,13 +3,13 @@
         "icon": " "
     },
     "wall": {
-        "icon": "="
+        "icon": "wall"
     },
     "floor": {
-        "icon": "*"
+        "icon": "floor"
     },
     "grass": {
-        "icon": "w"
+        "icon": "grass"
     },
     "gem": {
         "type": "money",
@@ -20,7 +20,7 @@
     "sword": {
         "type": "weapon",
         "name": "wooden sword",
-        "icon": "/",
+        "icon": "sword",
         "damage": 18
     },
     "iron_sword": {
@@ -32,7 +32,7 @@
     "shield": {
         "type": "shield",
         "name": "wooden shield",
-        "icon": "o",
+        "icon": "shield",
         "defence": 2
     },
     "iron_shield": {
@@ -41,9 +41,6 @@
         "icon": "0",
         "defence": 20
     },
-    "map": [],
-    "drawingMap": [],
     "creatures": [],
-    "onHelp": false,
     "msg": ""
 }

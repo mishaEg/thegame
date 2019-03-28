@@ -11,7 +11,7 @@ export default function generateGrass(inputMap, countGenerateGrass) {
         let x = getRandomInt(2, inputMap[0].length - 1),
             y = getRandomInt(2, inputMap.length - 1),
             len = inputMap[y][x].length - 1;
-        
+
         if (inputMap[y][x][len].icon !== elements.floor.icon) {
             counterGrass--;
         } else {

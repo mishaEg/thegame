@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import generateMap from '../functional/generateMap';
 import generateDrawingMap from '../functional/generateDrawingMap';
+import moveObjectHeroInMap from '../functional/moveObjectHeroInMap';
 
 export class GamesMap extends Component {
     constructor() {
@@ -19,8 +20,13 @@ export class GamesMap extends Component {
         })
     }
 
+    handleMoveHero = () => {
+        moveObjectHeroInMap(this.state.mapWithObjects, this.props.keyPressed);
+        this.props.handleMoveEnded()
+    }
+
     render() {
-        if (this.props.currentKey === 'h') {
+        if (this.props.onHelp) {
             return (
                 <div>
                     <h1>||HELP||</h1>
@@ -33,7 +39,9 @@ export class GamesMap extends Component {
         if (!this.state.mapIsGenerate) {
             this.generatorNewMap()
         }
-        
+        if (this.props.needMove) {
+            this.handleMoveHero()
+        }
         const renderMap = generateDrawingMap(this.state.mapWithObjects);
         return (
             <table>

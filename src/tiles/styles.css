@@ -26,3 +26,8 @@
   background-image: url(./16x16/shield_01a.png);
   background-position: 0px 0px;
 }
+
+.wall {
+    background-image: url(./world.png);
+    background-position: 48px 0px;
+  }

@@ -3,7 +3,7 @@
         "icon": " "
     },
     "wall": {
-        "icon": "="
+        "icon": "wall"
     },
     "floor": {
         "icon": "floor"
@@ -41,8 +41,6 @@
         "icon": "0",
         "defence": 20
     },
-    "map": [],
-    "drawingMap": [],
     "creatures": [],
     "msg": ""
 }

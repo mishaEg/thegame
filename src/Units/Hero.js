@@ -1,9 +1,7 @@
 import elements from '../data/elements';
 
 export class Hero {
-    constructor(positionX, positionY) {
-        this.positionX = positionX;
-        this.positionY = positionY;
+    constructor() {
         this.icon = 'hero';
         this.health = 100;
         this.damage = 2;

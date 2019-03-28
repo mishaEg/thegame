@@ -1,11 +1,10 @@
-import {Hero} from '../Units/Hero';
+import { Hero } from '../Units/Hero';
 
 /**
- * @description Функция для случайной генерации щитов на карте там, где уже расположен пол
- * @param {Array} inputMap - Входящий двухмерный массив
- * @param {Number} countGenerateShields - Количество щитов, необходимых сгенерировать на карте
+ * @description Функция создания героя на карте по заданным координатам
+ * @param {Array} inputMap - Входящая карта объектов
  */
 export default function createHero(inputMap, y, x) {
-    const hero = new Hero(x, y);
+    const hero = new Hero();
     inputMap[y][x].push(hero);
 }

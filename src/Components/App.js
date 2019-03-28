@@ -13,19 +13,31 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      onHelp: false
+      onHelp: false,
+      keyPressed: null,
+      needMove: false
     }
   }
 
   handleKeyPressed = (key) => {
-    console.log('key:', key, 'help:', this.state.onHelp);
     switch (key) {
       case 'h':
         this.setState({
           onHelp: !this.state.onHelp
         });
-      break;
+        break;
+      default: 
+        this.setState({
+          keyPressed: key,
+          needMove: true
+        });
     }
+  }
+
+  handleMoveEnded = () => {
+      this.setState({
+          needMove: false
+      })
   }
 
   render() {
@@ -33,18 +45,15 @@ export default class App extends Component {
     return (
       <div>
       <KeyboardEventHandler
-        handleKeys = {
-          acceptKeys
-        }
-        onKeyEvent = {
-          (key, e) => this.handleKeyPressed(key)
-        }
+        handleKeys = {acceptKeys}
+        onKeyEvent = {(key, e) => this.handleKeyPressed(key)}
       />
       <NotificationHeader />
       <GamesMap
-        onHelp = {
-          this.state.onHelp
-        }
+        onHelp = {this.state.onHelp}
+        keyPressed = {this.state.keyPressed}
+        needMove = {this.state.needMove}
+        handleMoveEnded={this.handleMoveEnded}
       />
       </div>
     )

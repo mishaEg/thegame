@@ -1,37 +1,50 @@
 import React, { Component } from 'react';
-import generateMap from '../functional/generateMap';
 import generateDrawingMap from '../functional/generateDrawingMap';
-import createHero from '../functional/createHero';
 import HeroMove from '../functional/HeroMove';
+import KeyboardEventHandler from 'react-keyboard-event-handler';
+import generateMap from '../functional/generateMap';
+import createHero from '../functional/createHero';
 
 export class GamesMap extends Component {
     constructor() {
         super();
-        const generatedMap = generateMap();
-        const generatedHero = createHero();
         this.state = {
-            map: generatedMap,
-            hero: generatedHero
+            onHelp: false
         }
     }
 
-    generatorNewMap = () => {
+    componentDidMount() {
         const generatedMap = generateMap();
+        const generatedHero = createHero();
         this.setState({
-            map: generatedMap
+          hero: generatedHero,
+          map: generatedMap
         });
-    }
+      }
 
 
-    handleHeroMove = () => {
-        HeroMove(this.state.map, this.state.hero, this.state.keyPressed);
+    handleKeyPressed = (key) => {
+        switch (key) {
+            case 'h':
+                this.setState({
+                    onHelp: !this.state.onHelp
+                });
+                break;
+            default:
+                const movedHero = HeroMove(this.state.map, this.state.hero, key);
+                this.setState({
+                    hero: movedHero[0],
+                    map: movedHero[1]
+                });
+                break;
+        }
     }
 
     render() {
 
         let drawingMap = [];
 
-        if (this.props.onHelp) {
+        if (this.state.onHelp) {
             return (
                 <div>
                     <h1>||HELP||</h1>
@@ -42,19 +55,24 @@ export class GamesMap extends Component {
             )
         };
 
-        if (this.state.map.length === 0) {
-            this.generatorNewMap();
-            // return (<div></div>)
-        }
-        drawingMap = generateDrawingMap(this.state.map, this.state.hero);
-        // drawingMap = generateDrawingMap(this.state.map);
+        if (this.state.map) {
+            drawingMap = generateDrawingMap(this.state.map, this.state.hero);
+        };
 
+        const acceptKeys = ['down', 'left', 'right', 'up', 'h'];
         return (
-            <table>
-                <tbody>
-                    {drawingMap}
-                </tbody>
-            </table>
+            <div>
+                <KeyboardEventHandler
+                    handleKeys={acceptKeys}
+                    onKeyEvent={(key, e) => this.handleKeyPressed(key)}
+                />
+                {this.state.map ?
+                <table>
+                    <tbody>
+                        {drawingMap}
+                    </tbody>
+                </table> : null }
+            </div>
         )
     }
 }

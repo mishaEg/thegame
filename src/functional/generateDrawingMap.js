@@ -6,7 +6,7 @@ import React from 'react';
  * @return {Array} - Возвращает новый массив для отрисовки
  */
 export default function generateDrawingMap(inputMap, hero) {
-    console.log('hero:', hero);
+    console.log('map:', inputMap, 'hero:', hero);
     const generatedMap = inputMap.map(currentRow => {
         return currentRow.map(currentColumn => {
             return currentColumn[currentColumn.length - 1].icon

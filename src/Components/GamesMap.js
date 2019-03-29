@@ -7,17 +7,17 @@ import HeroMove from '../functional/HeroMove';
 export class GamesMap extends Component {
     constructor() {
         super();
+        const generatedMap = generateMap();
+        const generatedHero = createHero();
         this.state = {
-            map: [],
-            hero: null
+            map: generatedMap,
+            hero: generatedHero
         }
     }
 
     generatorNewMap = () => {
         const generatedMap = generateMap();
-        const generatedHero = createHero();
         this.setState({
-            hero: generatedHero,
             map: generatedMap
         });
     }

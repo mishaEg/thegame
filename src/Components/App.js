@@ -15,7 +15,6 @@ export default class App extends Component {
     this.state = {
       onHelp: false,
       keyPressed: null,
-      needMove: false
     }
   }
 
@@ -26,35 +25,29 @@ export default class App extends Component {
           onHelp: !this.state.onHelp
         });
         break;
-      default: 
+      default:
         this.setState({
           keyPressed: key,
-          needMove: true
         });
+        this.handleHeroMove();
+        break;
     }
-  }
-
-  handleMoveEnded = () => {
-      this.setState({
-          needMove: false
-      })
   }
 
   render() {
     const acceptKeys = ['down', 'left', 'right', 'up', 'h']
     return (
       <div>
-      <KeyboardEventHandler
-        handleKeys = {acceptKeys}
-        onKeyEvent = {(key, e) => this.handleKeyPressed(key)}
-      />
-      <NotificationHeader />
-      <GamesMap
-        onHelp = {this.state.onHelp}
-        keyPressed = {this.state.keyPressed}
-        needMove = {this.state.needMove}
-        handleMoveEnded={this.handleMoveEnded}
-      />
+        <KeyboardEventHandler
+          handleKeys={acceptKeys}
+          onKeyEvent={(key, e) => this.handleKeyPressed(key)}
+        />
+        <NotificationHeader />
+        <GamesMap
+          onHelp={this.state.onHelp}
+          keyPressed={this.state.keyPressed}
+          handleKeyPressed={this.handleKeyPressed}
+        />
       </div>
     )
   }

@@ -1,31 +1,36 @@
 import React, { Component } from 'react';
 import generateMap from '../functional/generateMap';
 import generateDrawingMap from '../functional/generateDrawingMap';
-import moveObjectHeroInMap from '../functional/moveObjectHeroInMap';
+import createHero from '../functional/createHero';
+import HeroMove from '../functional/HeroMove';
 
 export class GamesMap extends Component {
     constructor() {
         super();
         this.state = {
-            mapIsGenerate: false,
-            mapWithObjects: []
+            map: [],
+            hero: null
         }
     }
 
     generatorNewMap = () => {
         const generatedMap = generateMap();
+        const generatedHero = createHero();
         this.setState({
-            mapIsGenerate: true,
-            mapWithObjects: generatedMap
-        })
+            hero: generatedHero,
+            map: generatedMap
+        });
     }
 
-    handleMoveHero = () => {
-        moveObjectHeroInMap(this.state.mapWithObjects, this.props.keyPressed);
-        this.props.handleMoveEnded()
+
+    handleHeroMove = () => {
+        HeroMove(this.state.map, this.state.hero, this.state.keyPressed);
     }
 
     render() {
+
+        let drawingMap = [];
+
         if (this.props.onHelp) {
             return (
                 <div>
@@ -35,18 +40,19 @@ export class GamesMap extends Component {
                     <h3>3. for close help menu press "h" key again</h3>
                 </div>
             )
+        };
+
+        if (this.state.map.length === 0) {
+            this.generatorNewMap();
+            // return (<div></div>)
         }
-        if (!this.state.mapIsGenerate) {
-            this.generatorNewMap()
-        }
-        if (this.props.needMove) {
-            this.handleMoveHero()
-        }
-        const renderMap = generateDrawingMap(this.state.mapWithObjects);
+        drawingMap = generateDrawingMap(this.state.map, this.state.hero);
+        // drawingMap = generateDrawingMap(this.state.map);
+
         return (
             <table>
                 <tbody>
-                    {renderMap}
+                    {drawingMap}
                 </tbody>
             </table>
         )

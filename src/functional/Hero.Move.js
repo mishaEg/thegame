@@ -35,7 +35,11 @@ export default function HeroMove(inputMapObject, hero, key) {
             break;
     }
 
-    return [hero, inputMapObject, msg];
+    return {
+        currentHero: hero,
+        currentMap: inputMapObject,
+        message: msg
+    };
 }
 
 function getGex(map, y, x) {

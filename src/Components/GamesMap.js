@@ -42,11 +42,11 @@ export class GamesMap extends Component {
                 });
                 break;
             default:
-                newHero = HeroMove(this.state.map, this.state.hero, key);
+                let changes = HeroMove(this.state.map, this.state.hero, key);
                 this.setState({
-                    hero: newHero[0],
-                    map: newHero[1],
-                    message: newHero[2]
+                    hero: changes.currentHero,
+                    map: changes.currentMap,
+                    message: changes.currentMessage
                 });
                 break;
         }

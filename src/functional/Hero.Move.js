@@ -17,7 +17,7 @@ export default function HeroMove(inputMapObject, hero, key) {
 
     gex = getGex(inputMapObject, hero.positionY + dy, hero.positionX + dx);
 
-    switch (gex) {
+    switch (gex.icon) {
         case 'wall':
             msg = 'there is no the way';
             inputMapObject[hero.positionY][hero.positionX].pop();
@@ -25,7 +25,10 @@ export default function HeroMove(inputMapObject, hero, key) {
         case 'grass':
             msg = ' and feels fresh green leaves by your foots :з';
         default:
-            msg = 'you stay at ' + gex + msg;
+            msg = 'you stay at ' + gex.icon + msg + '.';
+            if (gex.type) {
+                msg += ' If you wanna pick it up, press "p"';
+            };
             inputMapObject[hero.positionY][hero.positionX].pop();
             hero.positionY += dy;
             hero.positionX += dx;
@@ -36,5 +39,5 @@ export default function HeroMove(inputMapObject, hero, key) {
 }
 
 function getGex(map, y, x) {
-    return map[y][x][map[y][x].length - 1].icon;
+    return map[y][x][map[y][x].length - 1];
 }

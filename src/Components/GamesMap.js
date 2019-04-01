@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import generateDrawingMap from '../functional/generateDrawingMap';
-import HeroMove from '../functional/HeroMove';
+import HeroMove from '../functional/Hero.Move';
+import HeroPickUp from '../functional/Hero.PickUp';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import generateMap from '../functional/generateMap';
 import createHero from '../functional/createHero';
@@ -25,18 +26,27 @@ export class GamesMap extends Component {
     }
 
     handleKeyPressed = (key) => {
+        let newHero = '';
         switch (key) {
             case 'h':
                 this.setState({
                     onHelp: !this.state.onHelp
                 });
                 break;
-            default:
-                const movedHero = HeroMove(this.state.map, this.state.hero, key);
+            case 'p':
+                newHero = HeroPickUp(this.state.map, this.state.hero);
                 this.setState({
-                    hero: movedHero[0],
-                    map: movedHero[1],
-                    message: movedHero[2]
+                    hero: newHero[0],
+                    map: newHero[1],
+                    //message: newHero[2]
+                });
+                break;
+            default:
+                newHero = HeroMove(this.state.map, this.state.hero, key);
+                this.setState({
+                    hero: newHero[0],
+                    map: newHero[1],
+                    message: newHero[2]
                 });
                 break;
         }
@@ -61,10 +71,11 @@ export class GamesMap extends Component {
             drawingMap = generateDrawingMap(this.state.map, this.state.hero);
         };
 
-        const acceptKeys = ['down', 'left', 'right', 'up', 'h'];
+        const acceptKeys = ['down', 'left', 'right', 'up', 'h', 'p'];
         return (
             <div>
-                <NotificationHeader 
+                <NotificationHeader
+                    hero={this.state.hero}
                     message={this.state.message}
                 />
                 <KeyboardEventHandler

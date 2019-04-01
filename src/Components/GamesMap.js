@@ -4,7 +4,6 @@ import HeroMove from '../functional/Hero.Move';
 import HeroPickUp from '../functional/Hero.PickUp';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import generateMap from '../functional/generateMap';
-import createHero from '../functional/createHero';
 import { NotificationHeader } from './NotificationHeader';
 
 export class GamesMap extends Component {
@@ -12,21 +11,31 @@ export class GamesMap extends Component {
         super();
         this.state = {
             onHelp: false,
-            message: ''
+            message: '',
+            hero: {
+                positionX: 2,
+                positionY: 2,
+                icon: 'hero',
+                health: 100,
+                damage: 2,
+                defence: 0,
+                money: 0,
+                weapon: 'none',
+                shield: 'none',
+                poisoned: false,
+                readyToMine: false
+            }
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         const generatedMap = generateMap();
-        const generatedHero = createHero();
         this.setState({
-            hero: generatedHero,
-            map: generatedMap,
+            map: generatedMap
         });
     }
 
     handleKeyPressed = (key) => {
-        let newHero = '';
         switch (key) {
             case 'h':
                 this.setState({
@@ -34,7 +43,7 @@ export class GamesMap extends Component {
                 });
                 break;
             case 'p':
-                newHero = HeroPickUp(this.state.map, this.state.hero);
+                let newHero = HeroPickUp(this.state.map, this.state.hero);
                 this.setState({
                     hero: newHero[0],
                     map: newHero[1],
@@ -53,7 +62,6 @@ export class GamesMap extends Component {
     }
 
     render() {
-
         let drawingMap = [];
 
         if (this.state.onHelp) {

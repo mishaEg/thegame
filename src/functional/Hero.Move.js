@@ -5,7 +5,8 @@ export default function HeroMove(inputMapObject, hero, key) {
     let dx = 0,
         dy = 0,
         gex = '',
-        msg = '';
+        msg = '',
+        tempHero = Object.assign(hero); // Копирование объекта, чтобы по ссылке не менять состояние неправильным способом
 
     switch (key) {
         case "left": dx = -1; break;
@@ -20,7 +21,6 @@ export default function HeroMove(inputMapObject, hero, key) {
     switch (gex.icon) {
         case 'wall':
             msg = 'there is no the way';
-            inputMapObject[hero.positionY][hero.positionX].pop();
             break;
         case 'grass':
             msg = ' and feels fresh green leaves by your foots :з';
@@ -29,14 +29,13 @@ export default function HeroMove(inputMapObject, hero, key) {
             if (gex.type) {
                 msg += ' If you wanna pick it up, press "p"';
             };
-            inputMapObject[hero.positionY][hero.positionX].pop();
-            hero.positionY += dy;
-            hero.positionX += dx;
+            tempHero.positionY += dy;
+            tempHero.positionX += dx;
             break;
     }
 
     return {
-        currentHero: hero,
+        currentHero: tempHero,
         currentMap: inputMapObject,
         message: msg
     };

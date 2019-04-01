@@ -4,3 +4,4 @@ node_modules/
 
 # Собственные настройки visual studio code
 .vscode/
+.vs/

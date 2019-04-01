@@ -4,12 +4,14 @@ import HeroMove from '../functional/HeroMove';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import generateMap from '../functional/generateMap';
 import createHero from '../functional/createHero';
+import { NotificationHeader } from './NotificationHeader';
 
 export class GamesMap extends Component {
     constructor() {
         super();
         this.state = {
-            onHelp: false
+            onHelp: false,
+            message: ''
         }
     }
 
@@ -17,11 +19,10 @@ export class GamesMap extends Component {
         const generatedMap = generateMap();
         const generatedHero = createHero();
         this.setState({
-          hero: generatedHero,
-          map: generatedMap
+            hero: generatedHero,
+            map: generatedMap,
         });
-      }
-
+    }
 
     handleKeyPressed = (key) => {
         switch (key) {
@@ -31,10 +32,11 @@ export class GamesMap extends Component {
                 });
                 break;
             default:
-                const movedHero = HeroMove(this.state.map, this.state.hero, key);
+                const movedHero = HeroMove(this.state.map, this.state.hero, key, this.state.message);
                 this.setState({
                     hero: movedHero[0],
-                    map: movedHero[1]
+                    map: movedHero[1],
+                    message: movedHero[2]
                 });
                 break;
         }
@@ -62,16 +64,19 @@ export class GamesMap extends Component {
         const acceptKeys = ['down', 'left', 'right', 'up', 'h'];
         return (
             <div>
+                <NotificationHeader 
+                    message={this.state.message}
+                />
                 <KeyboardEventHandler
                     handleKeys={acceptKeys}
                     onKeyEvent={(key, e) => this.handleKeyPressed(key)}
                 />
                 {this.state.map ?
-                <table>
-                    <tbody>
-                        {drawingMap}
-                    </tbody>
-                </table> : null }
+                    <table>
+                        <tbody>
+                            {drawingMap}
+                        </tbody>
+                    </table> : null}
             </div>
         )
     }

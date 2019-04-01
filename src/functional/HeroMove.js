@@ -1,9 +1,10 @@
 /**
  * @description
  */
-export default function HeroMove(inputMapObject, hero, key) {
+export default function HeroMove(inputMapObject, hero, key, msg) {
     let dx = 0,
-        dy = 0;
+        dy = 0,
+        gex = '';
 
     switch (key) {
         case "left": dx = -1; break;
@@ -13,18 +14,20 @@ export default function HeroMove(inputMapObject, hero, key) {
         default: throw new Error("Невозможно обработать данное нажатие")
     };
 
-    if (isWall(inputMapObject, hero.positionY + dy, hero.positionX + dx)) {
-        return console.log("Невозможно пройти в данном направлении, там стена 0_0");
+    gex = getGex(inputMapObject, hero.positionY + dy, hero.positionX + dx);
+
+    if (gex === 'wall') {
+        msg = 'there is no the way';
+        inputMapObject[hero.positionY][hero.positionX].pop();
     } else {
+        msg = 'you stay at ' + gex;
         inputMapObject[hero.positionY][hero.positionX].pop();
         hero.positionY += dy;
         hero.positionX += dx;
     }
-    return [hero, inputMapObject];
+    return [hero, inputMapObject, msg];
 }
 
-function isWall(map, y, x) {
-    if (map[y][x][map[y][x].length - 1].icon === "wall") {
-        return true
-    } else return false
+function getGex(map, y, x) {
+   return map[y][x][map[y][x].length - 1].icon;
 }

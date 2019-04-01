@@ -31,3 +31,8 @@
     background-image: url(./world.png);
     background-position: 48px 0px;
   }
+
+  .message_bar {
+    font-size: 16px;
+    height: 16px;
+  }

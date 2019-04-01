@@ -32,7 +32,7 @@ export class GamesMap extends Component {
                 });
                 break;
             default:
-                const movedHero = HeroMove(this.state.map, this.state.hero, key, this.state.message);
+                const movedHero = HeroMove(this.state.map, this.state.hero, key);
                 this.setState({
                     hero: movedHero[0],
                     map: movedHero[1],

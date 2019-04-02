@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import generateDrawingMap from '../functional/generateDrawingMap';
 import HeroMove from '../functional/Hero.Move';
 import HeroPickUp from '../functional/Hero.PickUp';
+import HeroDig from '../functional/Hero.Dig';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import generateMap from '../functional/generateMap';
 import { NotificationHeader } from './NotificationHeader';
@@ -39,8 +40,26 @@ export class GamesMap extends Component {
                     map: updated.map,
                 });
                 break;
+            case 'd':
+                if (this.state.hero.weapon.name !== 'none') {
+                    const miner = this.state.hero;
+                    miner.readyToMine = true;
+                    this.setState({
+                        hero: miner,
+                        message: 'you rised the pike (' + this.state.hero.weapon.name + '). Now, choose direction to dig'
+                    });
+                } else {
+                    this.setState({
+                        message: 'you need any weapon to dig'
+                    });
+                };
+                break;
             default:
-                updated = HeroMove(this.state.map, this.state.hero, key);
+                if (this.state.hero.readyToMine) {
+                    updated = HeroDig(this.state.map, this.state.hero, key);
+                } else {
+                    updated = HeroMove(this.state.map, this.state.hero, key);
+                };
                 this.setState({
                     hero: updated.hero,
                     map: updated.map,
@@ -52,7 +71,7 @@ export class GamesMap extends Component {
 
     render() {
         let drawingMap = [];
-        const acceptKeys = ['down', 'left', 'right', 'up', 'h', 'p'];
+        const acceptKeys = ['down', 'left', 'right', 'up', 'h', 'p', 'd'];
 
         if (this.state.map) {
             drawingMap = generateDrawingMap(this.state.map, this.state.hero);

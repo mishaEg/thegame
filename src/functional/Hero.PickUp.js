@@ -9,23 +9,26 @@ export default function HeroPickUp(inputMapObject, hero) {
     switch (gex.type) {
         case 'money':
             hero.money += 10;
-            inputMapObject[hero.positionY][hero.positionX].splice(length - 2, 1);
+            inputMapObject[hero.positionY][hero.positionX].splice(length - 1, 1);
             break;
         case 'shield':
             hero.shield = gex;
-            inputMapObject[hero.positionY][hero.positionX].splice(length - 2, 1);
+            inputMapObject[hero.positionY][hero.positionX].splice(length - 1, 1);
             break;
         case 'weapon':
             hero.weapon = gex;
-            inputMapObject[hero.positionY][hero.positionX].splice(length - 2, 1);
+            inputMapObject[hero.positionY][hero.positionX].splice(length - 1, 1);
             break;
     }
 
-    inputMapObject[hero.positionY][hero.positionX].pop();
-
-    return [hero, inputMapObject];
+    return {
+        hero: hero,
+        map: inputMapObject
+     };
 }
 
 function getGex(map, y, x) {
-    return map[y][x][map[y][x].length - 2];
+    const len = map[y][x].length;
+
+    return map[y][x][len - 1];
 }

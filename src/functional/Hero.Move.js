@@ -35,8 +35,8 @@ export default function HeroMove(inputMapObject, hero, key) {
     }
 
     return {
-        currentHero: tempHero,
-        currentMap: inputMapObject,
+        hero: tempHero,
+        map: inputMapObject,
         message: msg
     };
 }

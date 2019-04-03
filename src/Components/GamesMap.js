@@ -71,7 +71,11 @@ export class GamesMap extends Component {
 
     render() {
         let drawingMap = [];
-        const acceptKeys = ['down', 'left', 'right', 'up', 'h', 'p', 'd'];
+        let acceptKeys = ['down', 'left', 'right', 'up', 'h', 'p', 'd'];
+
+        if (this.state.onHelp) {
+          acceptKeys = ['h'];
+        };
 
         if (this.state.map) {
             drawingMap = generateDrawingMap(this.state.map, this.state.hero);

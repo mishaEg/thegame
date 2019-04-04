@@ -3,8 +3,11 @@ import generateDrawingMap from '../functional/generateDrawingMap';
 import HeroMove from '../functional/Hero.Move';
 import HeroPickUp from '../functional/Hero.PickUp';
 import HeroDig from '../functional/Hero.Dig';
+import drawCave from '../functional/drawCave';
+import elements from '../data/elements';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import generateMap from '../functional/generateMap';
+import getRandomInt from '../functional/getRandomInt';
 import { NotificationHeader } from './NotificationHeader';
 import { Hero } from '../Units/Hero';
 
@@ -57,6 +60,38 @@ export class GamesMap extends Component {
             default:
                 if (this.state.hero.readyToMine) {
                     updated = HeroDig(this.state.map, this.state.hero, key);
+                    var rnd_cave = getRandomInt(0, 12),
+                        treasure = 'none',
+                        y = updated.hero.positionY,
+                        x = updated.hero.positionX,
+                        newUpdated = '';
+                    switch (true) {
+                        case (rnd_cave > 4 && rnd_cave < 6):
+                            updated.message += 'you found cave with enemy!';
+                            treasure = 'enemy';
+                            break;
+                        case (rnd_cave > 6 && rnd_cave < 8):
+                            updated.message += 'you found cave with grass!';
+                            treasure = 'grass';
+                            break;
+                        case (rnd_cave == 8):
+                            updated.message += 'you found cave with iron shield!';
+                            treasure = 'iron shield';
+                            break;
+                        case (rnd_cave == 9):
+                            updated.message += 'you found cave with iron sword!';
+                            treasure = 'iron sword';
+                            break;
+                        case (rnd_cave > 9):
+                            updated.message += 'you found a gem!';
+                            updated.map[y][x].push(elements.gem);
+                            break;
+                    };
+                    if (treasure != 'none') {
+                        newUpdated = drawCave(x, y, key, treasure, updated.map, updated.hero);
+                        updated.map = newUpdated.map;
+                        updated.hero = newUpdated.hero;
+                    };
                 } else {
                     updated = HeroMove(this.state.map, this.state.hero, key);
                 };
@@ -74,7 +109,7 @@ export class GamesMap extends Component {
         let acceptKeys = ['down', 'left', 'right', 'up', 'h', 'p', 'd'];
 
         if (this.state.onHelp) {
-          acceptKeys = ['h'];
+            acceptKeys = ['h'];
         };
 
         if (this.state.map) {

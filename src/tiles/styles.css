@@ -36,3 +36,18 @@
     font-size: 16px;
     height: 36px;
   }
+
+  .iron_sword {
+    background-image: url(./16x16/sword_02a.png);
+    background-position: 0px 0px;
+  }
+  
+  .iron_shield {
+    background-image: url(./16x16/shield_02a.png);
+    background-position: 0px 0px;
+  }
+
+  .gem {
+    background-image: url(./16x16/gem_01e.png);
+    background-position: 0px 0px;
+  }

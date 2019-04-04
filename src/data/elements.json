@@ -15,7 +15,7 @@
         "type": "money",
         "cost": 10,
         "name": "gem",
-        "icon": "g"
+        "icon": "gem"
     },
     "sword": {
         "type": "weapon",
@@ -26,7 +26,7 @@
     "iron_sword": {
         "type": "weapon",
         "name": "iron sword",
-        "icon": "⇗",
+        "icon": "iron_sword",
         "damage": 50
     },
     "shield": {
@@ -38,7 +38,7 @@
     "iron_shield": {
         "type": "shield",
         "name": "iron shield",
-        "icon": "0",
+        "icon": "iron_shield",
         "defence": 20
     },
     "creatures": []

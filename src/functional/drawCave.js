@@ -21,11 +21,7 @@ export default function drawCave(x, y, direction, treasure, inputMap, inputHero)
   switch (direction) {
     case 'left':
       x -= 1;
-      if (x < 0) {
-        line_dx = [0, 0, 0, 0, 0, 1, 2, 3, 1, 2, 3];
-      } else {
-        line_dx = [-2, -2, -2, -2, -2, -1, 0, 1, -1, 0, 1];
-      }
+      line_dx = [-2, -2, -2, -2, -2, -1, 0, 1, -1, 0, 1];
       line_dy = [0, -1, 1, 2, -2, -2, -2, -2, 2, 2, 2];
       break;
     case 'right':
@@ -36,7 +32,7 @@ export default function drawCave(x, y, direction, treasure, inputMap, inputHero)
     case 'up':
       y -= 1;
       line_dx = [-2, -2, -2, 2, 2, 2, 0, 1, 2, -1, -2];
-      line_dy = [3, 2, 1, 3, 2, 1, 0, 0, 0, 0, 0];
+      line_dy = [1, 0, -1, 1, 0, -1, -2, -2, -2, -2, -2];
       break;
     case 'down':
       y += 2;

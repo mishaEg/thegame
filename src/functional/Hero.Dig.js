@@ -21,9 +21,10 @@ export default function HeroDig(inputMapObject, inputHero, key) {
         default: throw new Error("Невозможно обработать данное нажатие")
     };
 
-    const x = hero.positionX + dx,
-        y = hero.positionY + dy,
-        gex = getGex(map, y, x);
+    let x = hero.positionX + dx,
+        y = hero.positionY + dy;
+
+    const gex = getGex(map, y, x);
 
     if (gex.icon === 'wall') {
         const exDx = [1, 0, -1, 0], // смещения, соответствующие соседям ячейки
@@ -33,6 +34,10 @@ export default function HeroDig(inputMapObject, inputHero, key) {
         updated = expansionMap(x, y, exDx, exDy, map, hero, elements.wall, [elements.emptySpace]);
         hero = updated.hero;
         map = updated.map;
+        if (key === "left") {
+            x = hero.positionX;
+            y = hero.positionY;
+        };
     } else {
         msg = 'there is nothing to dig';
     };
@@ -42,7 +47,9 @@ export default function HeroDig(inputMapObject, inputHero, key) {
     return {
         hero: hero,
         map: map,
-        message: msg
+        message: msg,
+        x: x,
+        y: y
     };
 }
 

@@ -22,6 +22,9 @@ export default function HeroMove(inputMapObject, hero, key) {
         case 'wall':
             msg = 'there is no the way';
             break;
+        case ' ':
+            msg = 'there is no the way';
+            break;
         case 'grass':
             msg = ' and feels fresh green leaves by your foots :з';
         default:

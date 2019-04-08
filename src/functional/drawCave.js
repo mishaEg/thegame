@@ -27,7 +27,6 @@ export default function drawCave(x, y, direction, treasure, inputMap, inputHero)
       case 'left':
         x -= 1;
         dx = [-3, -3, -3, -2, -2, -2, -1, -1, -1];
-        console.log('new x:', x);
         if (x <= 1) {
           line_dx = [-2, -2, -2, -2, -2, -1, 0, 1, -1, 0, 1];
         } else {

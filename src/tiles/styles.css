@@ -51,3 +51,13 @@
     background-image: url(./16x16/gem_01e.png);
     background-position: 0px 0px;
   }
+
+  .sleeping_enemy {
+    background-image: url(./characters.png);
+    background-position: 96px 144px;
+  }
+
+  .awaken_enemy {
+    background-image: url(./characters.png);
+    background-position: 64px 192px;
+  }

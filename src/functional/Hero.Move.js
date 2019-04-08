@@ -1,12 +1,19 @@
 /**
  * @description
  */
-export default function HeroMove(inputMapObject, hero, key) {
+
+import isContact from '../functional/isContact';
+
+export default function HeroMove(inputMap, inputHero, key, inputCreatures) {
     let dx = 0,
         dy = 0,
+        x = 0,
+        y = 0,
         gex = '',
         msg = '',
-        tempHero = Object.assign(hero); // Копирование объекта, чтобы по ссылке не менять состояние неправильным способом
+        contact = false,
+        hero = Object.assign(inputHero), // клон объекта (не стейт)
+        map = Object.assign(inputMap); // клон объекта (не стейт)
 
     switch (key) {
         case "left": dx = -1; break;
@@ -16,31 +23,47 @@ export default function HeroMove(inputMapObject, hero, key) {
         default: throw new Error("Невозможно обработать данное нажатие")
     };
 
-    gex = getGex(inputMapObject, hero.positionY + dy, hero.positionX + dx);
+    x = hero.positionX + dx;
+    y = hero.positionY + dy;
 
-    switch (gex.icon) {
-        case 'wall':
-            msg = 'there is no the way';
+    gex = getGex(map, y, x);
+
+    for (var i in inputCreatures) {
+        if (isContact({positionX: x, positionY: y}, inputCreatures[i])) {
+            contact = true;
             break;
-        case ' ':
-            msg = 'there is no the way';
-            break;
-        case 'grass':
-            msg = ' and feels fresh green leaves by your foots :з';
-        default:
-            msg = 'you stay at ' + gex.icon + msg + '.';
-            if (gex.type) {
-                msg += ' If you wanna pick it up, press "p"';
-            };
-            tempHero.positionY += dy;
-            tempHero.positionX += dx;
-            break;
-    }
+        };
+    };
+
+    if (!contact) {
+        switch (gex.icon) {
+            case 'wall':
+                msg = 'there is no the way';
+                break;
+            case 'sleeping_enemy':
+                break;
+            case ' ':
+                msg = 'there is no the way';
+                break;
+            case 'grass':
+                msg = ' and feels fresh green leaves by your foots :з';
+            default:
+                msg = 'you stay at ' + gex.icon + msg + '.';
+                if (gex.type) {
+                    msg += ' If you wanna pick it up, press "p"';
+                };
+                hero.positionY += dy;
+                hero.positionX += dx;
+                break;
+        };
+    };
 
     return {
-        hero: tempHero,
-        map: inputMapObject,
-        message: msg
+        hero: hero,
+        map: map,
+        message: msg,
+        x: x,
+        y: y
     };
 }
 

@@ -1,30 +1,33 @@
 /**
  * @description
  */
-export default function HeroPickUp(inputMapObject, hero) {
+export default function HeroPickUp(inputMap, inputHero) {
 
-    const gex = getGex(inputMapObject, hero.positionY, hero.positionX);
-    const length = inputMapObject[hero.positionY][hero.positionX].length;
+    const hero = Object.assign(inputHero), // клон объекта (не стейт)
+        map = Object.assign(inputMap), // клон объекта (не стейт)
+        gex = getGex(map, hero.positionY, hero.positionX),
+        length = map[hero.positionY][hero.positionX].length;
 
     switch (gex.type) {
         case 'money':
             hero.money += 10;
-            inputMapObject[hero.positionY][hero.positionX].splice(length - 1, 1);
+            map[hero.positionY][hero.positionX].splice(length - 1, 1);
             break;
         case 'shield':
             hero.shield = gex;
-            inputMapObject[hero.positionY][hero.positionX].splice(length - 1, 1);
+            map[hero.positionY][hero.positionX].splice(length - 1, 1);
             break;
         case 'weapon':
             hero.weapon = gex;
-            inputMapObject[hero.positionY][hero.positionX].splice(length - 1, 1);
+            hero.damage = hero.damage + hero.weapon.damage;
+            map[hero.positionY][hero.positionX].splice(length - 1, 1);
             break;
     }
 
     return {
         hero: hero,
-        map: inputMapObject
-     };
+        map: map
+    };
 }
 
 function getGex(map, y, x) {

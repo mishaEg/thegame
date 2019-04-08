@@ -4,7 +4,7 @@ import getRandomInt from './getRandomInt';
 /**
  * @description Функция для случайной генерации на карте там, где уже расположен пол
  * @param {Array} inputMap - Входящий двухмерный массив
- * @param {Number} countOfObjects - Количество щитов, необходимых сгенерировать на карте
+ * @param {Number} countOfObjects - Количество, необходимых сгенерировать на карте
  */
 export default function createObject(inputMap, countOfObjects, object) {
 

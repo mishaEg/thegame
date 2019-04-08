@@ -21,8 +21,8 @@ export default function drawCave(x, y, direction, treasure, inputMap, inputHero)
   if (treasure !== 'gem') {
 
     var dx = [-1, -1, -1, 0, 0, 0, 1, 1, 1], // смещения, соответствующие соседям ячейки
-    dy = [0, 1, -1, 0, 1, -1, 0, 1, -1]; // справа, снизу, слева и сверху
-    
+      dy = [0, 1, -1, 0, 1, -1, 0, 1, -1]; // справа, снизу, слева и сверху
+
     switch (direction) {
       case 'left':
         x -= 1;
@@ -65,8 +65,7 @@ export default function drawCave(x, y, direction, treasure, inputMap, inputHero)
 
   switch (treasure) {
     case 'enemy':
-      var new_enemy = new Enemy(x, y);
-      //creatures.push(new_enemy);
+      updated.enemy = new Enemy(x, y);
       break;
     case 'grass':
       map[y][x].push(grass);

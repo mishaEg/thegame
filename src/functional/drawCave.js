@@ -26,11 +26,12 @@ export default function drawCave(x, y, direction, treasure, inputMap, inputHero)
     switch (direction) {
       case 'left':
         x -= 1;
-        dx = [-2, -2, -2, -1, -1, -1, 0, 0, 0];
-        if (x < 0) {
-          line_dx = [-1, -1, -1, -1, -1, 0, 1, 2, 0, 1, 2];
+        dx = [-3, -3, -3, -2, -2, -2, -1, -1, -1];
+        console.log('new x:', x);
+        if (x <= 1) {
+          line_dx = [-2, -2, -2, -2, -2, -1, 0, 1, -1, 0, 1];
         } else {
-          line_dx = [-3, -3, -3, -3, -3, -2, -1, 0, -2, -1, 0];
+          line_dx = [-4, -4, -4, -4, -4, -3, -2, -1, -3, -2, -1];
         }
         line_dy = [0, -1, 1, 2, -2, -2, -2, -2, 2, 2, 2];
         break;

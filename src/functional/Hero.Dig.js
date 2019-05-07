@@ -29,9 +29,8 @@ export default function HeroDig(inputMapObject, inputHero, key) {
     if (gex.icon === 'wall') {
         const exDx = [1, 0, -1, 0], // смещения, соответствующие соседям ячейки
             exDy = [0, 1, 0, -1]; // справа, снизу, слева и сверху 
-        let updated = '';
         map[y][x][0] = elements.floor;
-        updated = expansionMap(x, y, exDx, exDy, map, hero, elements.wall, [elements.emptySpace]);
+        let updated = expansionMap(x, y, exDx, exDy, map, hero, elements.wall, [elements.emptySpace]);
         hero = updated.hero;
         map = updated.map;
         if (key === "left") {

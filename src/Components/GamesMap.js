@@ -60,7 +60,8 @@ export class GamesMap extends Component {
                 });
                 break;
             case 'p':
-                buffer = HeroPickUp(this.state.map, this.state.hero);
+                buffer = HeroPickUp(this.state.map, this.state.hero, this.state.message);
+                updated.message = buffer.message;
                 updated.map = buffer.map;
                 updated.hero = buffer.hero;
                 break;
@@ -82,25 +83,27 @@ export class GamesMap extends Component {
                         treasure = 'none';
                     switch (true) {
                         case (rnd_cave > 4 && rnd_cave < 6):
-                            updated.message += 'you found cave with enemy!';
+                            updated.message = 'you found cave with enemy!';
                             treasure = 'enemy';
                             break;
                         case (rnd_cave > 6 && rnd_cave < 8):
-                            updated.message += 'you found cave with grass!';
+                            updated.message = 'you found cave with grass!';
                             treasure = 'grass';
                             break;
                         case (rnd_cave === 8):
-                            updated.message += 'you found cave with iron shield!';
+                            updated.message = 'you found cave with iron shield!';
                             treasure = 'iron shield';
                             break;
                         case (rnd_cave === 9):
-                            updated.message += 'you found cave with iron sword!';
+                            updated.message = 'you found cave with iron sword!';
                             treasure = 'iron sword';
                             break;
                         case (rnd_cave > 9):
-                            updated.message += 'you found a gem!';
+                            updated.message = 'you found a gem!';
                             treasure = 'gem';
                             break;
+                        default: 
+                            updated.message = '';
                     };
                     if (treasure !== 'none') {
                         buffer = drawCave(updated.x, updated.y, key, treasure, updated.map, updated.hero); // return hero: hero, map: map

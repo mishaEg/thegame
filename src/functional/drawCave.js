@@ -54,6 +54,8 @@ export default function drawCave(x, y, direction, treasure, inputMap, inputHero)
         line_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, 2];
         line_dy = [2, 2, 2, 2, 2, 1, 1, 0, 0, -1, -1];
         break;
+      default:
+        throw new Error("direction is not a correct");
     };
 
     expansionMap(x, y, dx, dy, map, hero, floor, [emptySpace, wall]); //пещера
@@ -79,11 +81,12 @@ export default function drawCave(x, y, direction, treasure, inputMap, inputHero)
     case 'gem':
       map[y][x].push(gem);
       return {
-        map: map,
-        hero: hero
-      };
+          map: map,
+          hero: hero
+        };
+    default:
+      console.log('treasure?');
   };
 
   return updated;
-
 };

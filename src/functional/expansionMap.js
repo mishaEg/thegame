@@ -16,7 +16,7 @@ export default function expansionMap(x, y, dx, dy, inputMap, inputHero, gex, rep
       newX = x + dx[i];
     if (map[newY] === undefined) {
       var line = [];
-      for (var l in map[hero.positionY]) {
+      for (let l in map[hero.positionY]) {
         line[l] = [emptySpace];
       };
       line[newX] = [gex];
@@ -32,7 +32,7 @@ export default function expansionMap(x, y, dx, dy, inputMap, inputHero, gex, rep
       };
     } else if (map[newY][newX] === undefined) {
       if (newX < 0) { //добавление новой клетки к карте слева
-        for (var l in map) {
+        for (let l in map) {
           map[l].splice(0, 0, [emptySpace]);
         };
         map[newY][0][0] = gex;

@@ -20,7 +20,7 @@ export default function HeroMove(inputMap, inputHero, key, inputCreatures) {
         case "right": dx = 1; break;
         case "up": dy = -1; break;
         case "down": dy = 1; break;
-        default: throw new Error("Невозможно обработать данное нажатие")
+        default: throw new Error("key is not correct");
     };
 
     x = hero.positionX + dx;
@@ -43,18 +43,19 @@ export default function HeroMove(inputMap, inputHero, key, inputCreatures) {
             case 'sleeping_enemy':
                 break;
             case ' ':
-                msg = 'there is no the way';
+                msg = 'how you that doing??';
                 break;
             case 'grass':
-                msg = ' and feels fresh green leaves by your foots :з';
-            default:
-                msg = 'you stay at ' + gex.icon + msg + '.';
-                if (gex.type) {
-                    msg += ' If you wanna pick it up, press "p"';
-                };
+                msg = 'you stay at ' + gex.icon + ' and feels fresh green leaves by your foots :з.';
                 hero.positionY += dy;
                 hero.positionX += dx;
                 break;
+            default:
+                if (gex.type) {
+                    msg = 'you stay at ' + gex.icon + ', if you wanna pick it up, press "p"';
+                };
+                hero.positionY += dy;
+                hero.positionX += dx;
         };
     };
 

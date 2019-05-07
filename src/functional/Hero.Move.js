@@ -20,7 +20,7 @@ export default function HeroMove(inputMap, inputHero, key, inputCreatures) {
         case "right": dx = 1; break;
         case "up": dy = -1; break;
         case "down": dy = 1; break;
-        default: throw new Error("key is not correct");
+        default: throw new Error("key is not correct:" + key);
     };
 
     x = hero.positionX + dx;
@@ -28,10 +28,9 @@ export default function HeroMove(inputMap, inputHero, key, inputCreatures) {
 
     gex = getGex(map, y, x);
 
-    for (var i in inputCreatures) {
+    for (let i in inputCreatures) {
         if (isContact({positionX: x, positionY: y}, inputCreatures[i])) {
             contact = true;
-            break;
         };
     };
 

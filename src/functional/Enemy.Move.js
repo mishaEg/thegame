@@ -4,16 +4,13 @@
 
 import elements from '../data/elements';
 
-export default function EnemyMove(inputMapObject, inputEnemy, inputTarget) {
-
+export default function EnemyMove(map, inputEnemy, hero) {
     const { wall } = elements;
 
-    let target = Object.assign(inputTarget), // клон объекта (не стейт)
-        enemy = Object.assign(inputEnemy),
-        map = Object.assign(inputMapObject); // клон объекта (не стейт)
+    let enemy = Object.assign(inputEnemy);
 
     const WALL = -1, // непроходимая ячейка
-        BLANK = -2;
+          BLANK = -2;
     var grid = [],
         dx = [1, 0, -1, 0], // смещения, соответствующие соседям ячейки
         dy = [0, 1, 0, -1], // справа, снизу, слева и сверху
@@ -25,14 +22,16 @@ export default function EnemyMove(inputMapObject, inputEnemy, inputTarget) {
         py = [],
         stop = false;
 
-    for (var i in map) {
-        grid[i] = new Array(map[i].length);
-        for (var j in map[i]) {
-            if (map[i][j][map[i][j].length - 1].icon !== wall.icon) {
-                grid[i][j] = BLANK;
-            } else grid[i][j] = WALL;
-        };
-    };
+    map.forEach((currentRow, indexRow) => {
+        grid[indexRow] = [];
+        currentRow.forEach((currentColumn, indexColumn) => {
+            if (currentColumn[currentColumn.length -1].icon !== wall.icon) {
+                grid[indexRow][indexColumn] = BLANK;
+            } else {
+                grid[indexRow][indexColumn] = WALL;
+            }
+        })
+    });
 
     grid[enemy.positionY][enemy.positionX] = 0;
     do {
@@ -52,10 +51,10 @@ export default function EnemyMove(inputMapObject, inputEnemy, inputTarget) {
             };
         };
         d++;
-        if (grid[target.positionY][target.positionX] !== BLANK) {
-            d = grid[target.positionY][target.positionX];
-            x = target.positionX;
-            y = target.positionY;
+        if (grid[hero.positionY][hero.positionX] !== BLANK) {
+            d = grid[hero.positionY][hero.positionX];
+            x = hero.positionX;
+            y = hero.positionY;
             while (d > 0) {
                 px[d] = x;
                 py[d] = y;
@@ -70,8 +69,8 @@ export default function EnemyMove(inputMapObject, inputEnemy, inputTarget) {
                     };
                 };
                 if (d === 0) {
-                    if (px[1] === target.positionX && py[1] === target.positionY) {
-                        if (target.icon !== 'd') {
+                    if (px[1] === hero.positionX && py[1] === hero.positionY) {
+                        if (hero.icon !== 'd') {
                             //msg = 'the enemy attak you! :o';
                         };
                     } else {
@@ -85,10 +84,7 @@ export default function EnemyMove(inputMapObject, inputEnemy, inputTarget) {
                 };
             };
         };
-    } while (!stop && grid[target.positionY][target.positionX] === BLANK);
+    } while (!stop && grid[hero.positionY][hero.positionX] === BLANK);
 
-    return {
-        enemy: enemy,
-        hero: target
-    };
+    return enemy;
 }

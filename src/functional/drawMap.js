@@ -18,8 +18,8 @@ export default function drawMap(inputMap, hero, creatures) {
         generatedMap[creatures[i].positionY][creatures[i].positionX] = creatures[i].icon;
     };
     
-    return generatedMap.map(currentRow => {
-        return <tr>{currentRow.map(currentColumn => {
-            return <td><div className={`map_object ${currentColumn}`} /></td>})}</tr>
+    return generatedMap.map((currentRow, rowIndex) => {
+        return <tr key={rowIndex}>{currentRow.map((currentColumn, colIndex) => {
+            return <td key={colIndex}><div className={`map_object ${currentColumn}`}/></td>})}</tr>
     });
 }

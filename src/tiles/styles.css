@@ -1,30 +1,30 @@
 .map_object {
-  width: 16px;
-  height: 16px;
+    width: 16px;
+    height: 16px;
 }
 
 .hero {
-  background: url(./characters.png) 0 0px;
+    background: url(./characters.png) 0 0px;
 }
 
 .grass {
-  background-image: url(./world.png);
-  background-position: -144px 144px;
+    background-image: url(./world.png);
+    background-position: -144px 144px;
 }
 
 .floor {
-  background-image: url(./world.png);
-  background-position: -16px 142px;
+    background-image: url(./world.png);
+    background-position: -16px 142px;
 }
 
 .sword {
-  background-image: url(./16x16/sword_01d.png);
-  background-position: 0px 0px;
+    background-image: url(./16x16/sword_01d.png);
+    background-position: 0px 0px;
 }
 
 .shield {
-  background-image: url(./16x16/shield_01a.png);
-  background-position: 0px 0px;
+    background-image: url(./16x16/shield_01a.png);
+    background-position: 0px 0px;
 }
 
 .wall {
@@ -32,32 +32,32 @@
     background-position: 48px 0px;
   }
 
-  .message_bar {
+.message_bar {
     font-size: 16px;
     height: 36px;
-  }
+}
 
-  .iron_sword {
+.iron_sword {
     background-image: url(./16x16/sword_02a.png);
     background-position: 0px 0px;
-  }
-  
-  .iron_shield {
+}
+
+.iron_shield {
     background-image: url(./16x16/shield_02a.png);
     background-position: 0px 0px;
-  }
+}
 
-  .gem {
+.gem {
     background-image: url(./16x16/gem_01e.png);
     background-position: 0px 0px;
-  }
+}
 
-  .sleeping_enemy {
+.sleeping_enemy {
     background-image: url(./characters.png);
     background-position: 96px 144px;
-  }
+}
 
-  .awaken_enemy {
+.awaken_enemy {
     background-image: url(./characters.png);
     background-position: 64px 192px;
-  }
+}

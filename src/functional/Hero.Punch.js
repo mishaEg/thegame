@@ -4,13 +4,8 @@
 
 import EnemyGetDamage from '../functional/Enemy.getDamage';
 
-export default function HeroPunch(inputTarget, inputHero) {
-
-    const target = Object.assign(inputTarget), // клон объекта (не стейт)
-        hero = Object.assign(inputHero);
-
-    let msg = '',
-        buffer = {};
+export default function HeroPunch(target, hero) {
+    let msg = '';
 
     if (target.depthOfSleep > 0) {
         target.depthOfSleep -= 1;
@@ -23,10 +18,10 @@ export default function HeroPunch(inputTarget, inputHero) {
         target.wakedUp();
     };
 
-    buffer = EnemyGetDamage(target, hero);
+    const messageOfGetDamage = EnemyGetDamage(target, hero);
 
     return {
-        message: msg + buffer.message,
-        target: buffer.target
+        message: msg + messageOfGetDamage,
+        target: target
     }
 }

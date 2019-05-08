@@ -7,18 +7,17 @@ import getRandomInt from './getRandomInt';
  * @param {Number} countOfObjects - Количество, необходимых сгенерировать на карте
  */
 export default function createObject(inputMap, countOfObjects, object) {
-
     const { floor } = elements;
 
     for (let counter = 0; counter < countOfObjects; counter++) {
-        let x = getRandomInt(2, inputMap[0].length - 1),
+        const x = getRandomInt(2, inputMap[0].length - 1),
             y = getRandomInt(2, inputMap.length - 1),
             len = inputMap[y][x].length - 1;
 
-        if (inputMap[y][x][len].icon !== floor.icon) {
-            counter--;
-        } else {
+        if (inputMap[y][x][len].icon === floor.icon) {
             inputMap[y][x].push(object);
-        };
+        } else {
+            counter--;
+        }
     }
 }

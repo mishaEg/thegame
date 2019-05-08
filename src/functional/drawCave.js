@@ -3,90 +3,81 @@
  */
 
 import elements from '../data/elements';
-import expansionMap from '../functional/expansionMap';
+import expansionMap from './expansionMap';
 import { Enemy } from '../Units/Enemy';
 
-export default function drawCave(x, y, direction, treasure, inputMap, inputHero) {
+export default function drawCave(x, y, direction, treasure, map, hero) {
+    let updated = false,
+        line_dx = 0,
+        line_dy = 0;
 
-  let map = Object.assign(inputMap),
-    hero = Object.assign(inputHero); // клон объекта (не стейт)
+    const { floor, emptySpace, wall, grass, iron_shield, iron_sword, gem } = elements;
 
-  let updated = false;
+    if (treasure !== 'gem') {
+        let dx = [-1, -1, -1, 0, 0, 0, 1, 1, 1]; // смещения, соответствующие соседям ячейки
+        const dy = [0, 1, -1, 0, 1, -1, 0, 1, -1]; // справа, снизу, слева и сверху
 
-  var line_dx = 0,
-    line_dy = 0;
-
-  const { floor, emptySpace, wall, grass, iron_shield, iron_sword, gem } = elements;
-
-  if (treasure !== 'gem') {
-
-    var dx = [-1, -1, -1, 0, 0, 0, 1, 1, 1], // смещения, соответствующие соседям ячейки
-      dy = [0, 1, -1, 0, 1, -1, 0, 1, -1]; // справа, снизу, слева и сверху
-
-    switch (direction) {
-      case 'left':
-        x -= 1;
-        dx = [-3, -3, -3, -2, -2, -2, -1, -1, -1];
-        if (x <= 1) {
-          line_dx = [-2, -2, -2, -2, -2, -1, 0, 1, -1, 0, 1];
-        } else {
-          line_dx = [-4, -4, -4, -4, -4, -3, -2, -1, -3, -2, -1];
+        switch (direction) {
+            case 'left':
+                x -= 1;
+                dx = [-3, -3, -3, -2, -2, -2, -1, -1, -1];
+                if (x <= 1) {
+                    line_dx = [-2, -2, -2, -2, -2, -1, 0, 1, -1, 0, 1];
+                } else {
+                    line_dx = [-4, -4, -4, -4, -4, -3, -2, -1, -3, -2, -1];
+                }
+                line_dy = [0, -1, 1, 2, -2, -2, -2, -2, 2, 2, 2];
+                break;
+            case 'right':
+                x += 2;
+                line_dx = [2, 2, 2, 2, 2, 1, 0, 0, 1, -1, -1];
+                line_dy = [-1, 0, 1, -2, 2, 2, 2, -2, -2, -2, 2];
+                break;
+            case 'up':
+                y -= 1;
+                if (y < 0) {
+                    line_dy = [3, 2, 1, 3, 2, 1, 0, 0, 0, 0, 0];
+                } else {
+                    line_dy = [1, 0, -1, 1, 0, -1, -2, -2, -2, -2, -2];
+                }
+                line_dx = [-2, -2, -2, 2, 2, 2, 0, 1, 2, -1, -2];
+                // line_dy = [3, 2, 1, 3, 2, 1, 0, 0, 0, 0, 0];
+                break;
+            case 'down':
+                y += 2;
+                line_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, 2];
+                line_dy = [2, 2, 2, 2, 2, 1, 1, 0, 0, -1, -1];
+                break;
+            default:
+                throw new Error("direction is not a correct");
         }
-        line_dy = [0, -1, 1, 2, -2, -2, -2, -2, 2, 2, 2];
-        break;
-      case 'right':
-        x += 2;
-        line_dx = [2, 2, 2, 2, 2, 1, 0, 0, 1, -1, -1];
-        line_dy = [-1, 0, 1, -2, 2, 2, 2, -2, -2, -2, 2];
-        break;
-      case 'up':
-        y -= 1;
-        if (y < 0) {
-          line_dy = [3, 2, 1, 3, 2, 1, 0, 0, 0, 0, 0];
-        } else {
-          line_dy = [1, 0, -1, 1, 0, -1, -2, -2, -2, -2, -2];
-        }
-        line_dx = [-2, -2, -2, 2, 2, 2, 0, 1, 2, -1, -2];
-        // line_dy = [3, 2, 1, 3, 2, 1, 0, 0, 0, 0, 0];
-        break;
-      case 'down':
-        y += 2;
-        line_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, 2];
-        line_dy = [2, 2, 2, 2, 2, 1, 1, 0, 0, -1, -1];
-        break;
-      default:
-        throw new Error("direction is not a correct");
-    };
 
-    expansionMap(x, y, dx, dy, map, hero, floor, [emptySpace, wall]); //пещера
-    updated = expansionMap(x, y, line_dx, line_dy, map, hero, wall, [emptySpace]); //стены вокруг
+        expansionMap(x, y, dx, dy, map, hero, floor, [emptySpace, wall]); // пещера
+        updated = expansionMap(x, y, line_dx, line_dy, map, hero, wall, [emptySpace]); // стены вокруг
 
-    y = Math.abs(y);
-    x = Math.abs(x);
-  };
+        y = Math.abs(y);
+        x = Math.abs(x);
+    }
 
-  switch (treasure) {
-    case 'enemy':
-      updated.enemy = new Enemy(x, y);
-      break;
-    case 'grass':
-      map[y][x].push(grass);
-      break;
-    case 'iron sword':
-      map[y][x].push(iron_sword);
-      break;
-    case 'iron shield':
-      map[y][x].push(iron_shield);
-      break;
-    case 'gem':
-      map[y][x].push(gem);
-      return {
-          map: map,
-          hero: hero
-        };
-    default:
-      console.log('treasure?');
-  };
+    switch (treasure) {
+        case 'enemy':
+            updated.enemy = new Enemy(x, y);
+            break;
+        case 'grass':
+            map[y][x].push(grass);
+            break;
+        case 'iron sword':
+            map[y][x].push(iron_sword);
+            break;
+        case 'iron shield':
+            map[y][x].push(iron_shield);
+            break;
+        case 'gem':
+            map[y][x].push(gem);
+            break;
+        default:
+            throw new Error(`Treasure is not correct: ${treasure}`);
+    }
 
-  return updated;
-};
+    return updated;
+}

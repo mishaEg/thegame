@@ -1,19 +1,25 @@
+import isContact from './isContact';
+
 /**
- * @description
+ * @description функция поиска самого верхнего элемента по заданным координатам
+ * @return последний элемент массива в заданной ячейке карты
  */
+function getGex(map, y, x) {
+    const len = map[y][x].length;
 
-import isContact from '../functional/isContact';
+    return map[y][x][len - 1];
+}
 
-export default function HeroMove(inputMap, inputHero, key, inputCreatures) {
+/**
+ * @description реализация функции движения героя на карте
+ * !!!Мутирует входящие значения map, hero
+ * @return message - лог текущего события, x, y - новые координаты героя
+ */
+export default function HeroMove(map, hero, key, creatures) {
     let dx = 0,
         dy = 0,
-        x = 0,
-        y = 0,
-        gex = '',
         msg = '',
-        contact = false,
-        hero = Object.assign(inputHero), // клон объекта (не стейт)
-        map = Object.assign(inputMap); // клон объекта (не стейт)
+        contact = false;
 
     switch (key) {
         case "left": dx = -1; break;
@@ -21,18 +27,17 @@ export default function HeroMove(inputMap, inputHero, key, inputCreatures) {
         case "up": dy = -1; break;
         case "down": dy = 1; break;
         default: throw new Error("key is not correct:" + key);
-    };
+    }
 
-    x = hero.positionX + dx;
-    y = hero.positionY + dy;
+    const x = hero.positionX + dx,
+        y = hero.positionY + dy,
+        gex = getGex(map, y, x);
 
-    gex = getGex(map, y, x);
-
-    for (let i in inputCreatures) {
-        if (isContact({positionX: x, positionY: y}, inputCreatures[i])) {
+    creatures.forEach((currentCreature) => {
+        if (isContact({ positionX: x, positionY: y }, currentCreature)) {
             contact = true;
-        };
-    };
+        }
+    });
 
     if (!contact) {
         switch (gex.icon) {
@@ -52,21 +57,15 @@ export default function HeroMove(inputMap, inputHero, key, inputCreatures) {
             default:
                 if (gex.type) {
                     msg = 'you stay at ' + gex.icon + ', if you wanna pick it up, press "p"';
-                };
+                }
                 hero.positionY += dy;
                 hero.positionX += dx;
-        };
-    };
+        }
+    }
 
     return {
-        hero: hero,
-        map: map,
         message: msg,
         x: x,
         y: y
     };
-}
-
-function getGex(map, y, x) {
-    return map[y][x][map[y][x].length - 1];
 }

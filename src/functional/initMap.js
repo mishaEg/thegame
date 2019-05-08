@@ -6,16 +6,13 @@ import elements from '../data/elements';
  * @return {Array} Возвращает трехмерный массив объектов
  */
 export default function initMap(map) {
-
     const { floor, wall, emptySpace } = elements;
 
-    return map.map(currentRow => {
-        return currentRow.map(currentColumn => {
-            switch (currentColumn) {
-                case '=': return [wall]
-                case '*': return [floor]
-                default: return [emptySpace]
-            };
-        });
-    });
+    return map.map(currentRow => currentRow.map((currentColumn) => {
+        switch (currentColumn) {
+            case '=': return [wall];
+            case '*': return [floor];
+            default: return [emptySpace];
+        }
+    }));
 }

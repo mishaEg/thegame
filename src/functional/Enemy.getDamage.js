@@ -19,7 +19,7 @@ export default function EnemyGetDamage(creature, hero) {
         msg = ' => you killed the enemy!o:';
         creature.icon = 'd';
         creature.type = 'corpse';
-    };
+    }
 
     return msg;
-};
+}

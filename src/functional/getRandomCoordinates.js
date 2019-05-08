@@ -1,20 +1,27 @@
 import elements from '../data/elements';
 import getRandomInt from './getRandomInt';
 
-export default function getRandomCoordinates(inputMap) {
+// Тут отсутствуют проверки на существование пола на карте по текущим координатам.
+// Есть интересная возможность зациклиться всему приложению в этом месте.
+export default function getRandomCoordinates(map) {
     const { floor } = elements;
-    let findItemWithFloor = false;
+    let findItemWithFloor = false,
+        coordinateX,
+        coordinateY;
 
     while (!findItemWithFloor) {
-        let x = getRandomInt(2, inputMap[0].length - 1),
-            y = getRandomInt(2, inputMap.length - 1),
-            len = inputMap[y][x].length - 1;
+        coordinateX = getRandomInt(2, map[0].length - 1);
+        coordinateY = getRandomInt(2, map.length - 1);
 
-        if (inputMap[y][x][len].icon === floor.icon) {
-            return {
-                x: x,
-                y: y
-            };
-        };
+        const len = map[coordinateY][coordinateX].length - 1;
+
+        if (map[coordinateY][coordinateX][len].icon === floor.icon) {
+            findItemWithFloor = true;
+        }
     }
-};
+
+    return {
+        x: coordinateX,
+        y: coordinateY
+    };
+}

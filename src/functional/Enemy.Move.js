@@ -21,37 +21,37 @@ export default function EnemyMove(map, enemy, hero) {
         grid[indexRow] = [];
         currentRow.forEach((currentColumn, indexColumn) => {
             if (currentColumn[currentColumn.length - 1].icon !== wall.icon) {
-                grid[indexRow][indexColumn] = BLANK;
+                grid[indexRow][indexColumn] = BLANK; // генерируем карту из -2. Зачем?
             } else {
-                grid[indexRow][indexColumn] = WALL;
+                grid[indexRow][indexColumn] = WALL; // где стены ложим в ячейку -1. Зачем?
             }
         });
     });
 
-    grid[enemy.positionY][enemy.positionX] = 0;
+    grid[enemy.positionY][enemy.positionX] = 0; // где враг ложим в ячейку 0. Зачем?
     do {
         stop = true;
         for (let indexRow = 0; indexRow < map.length - 1; indexRow++) {
-            for (let indexCol = 0; indexCol < map[indexRow]; indexRow++) {
+            for (let indexCol = 0; indexCol < map[indexRow].length - 1; indexCol++) {
                 if (grid[indexRow][indexCol] === d) {
                     for (let indexDirection = 0; indexDirection < 4; indexDirection++) {
                         const newY = parseInt(indexRow, 10) + dy[indexDirection],
                             newX = parseInt(indexCol, 10) + dx[indexDirection];
 
-                        if (grid[newY][newX] === BLANK) {
+                        if (grid[newY][newX] === BLANK) { // если в ячейке -2
                             stop = false;
-                            grid[newY][newX] = d + 1;
+                            grid[newY][newX] = d + 1; // то ложим в ячейку 1. Зачем?
                         }
                     }
                 }
             }
         }
-        d++;
+        d++; // какой-то непонятный счетчик
         if (grid[hero.positionY][hero.positionX] !== BLANK) {
-            d = grid[hero.positionY][hero.positionX];
+            d = grid[hero.positionY][hero.positionX]; // ложим в d значение 1
             let x = hero.positionX,
                 y = hero.positionY;
-            while (d > 0) {
+            while (d > 0) { // здесь я уже теряю всякий смысл этого кода
                 px[d] = x;
                 py[d] = y;
                 d--;

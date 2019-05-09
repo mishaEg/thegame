@@ -34,9 +34,9 @@ export default function EnemyMove(map, enemy, hero) {
         for (let indexRow = 0; indexRow < map.length - 1; indexRow++) {
             for (let indexCol = 0; indexCol < map[indexRow]; indexRow++) {
                 if (grid[indexRow][indexCol] === d) {
-                    for (let k = 0; k < 4; k++) {
-                        const newY = parseInt(indexRow, 10) + dy[k],
-                            newX = parseInt(indexCol, 10) + dx[k];
+                    for (let indexDirection = 0; indexDirection < 4; indexDirection++) {
+                        const newY = parseInt(indexRow, 10) + dy[indexDirection],
+                            newX = parseInt(indexCol, 10) + dx[indexDirection];
 
                         if (grid[newY][newX] === BLANK) {
                             stop = false;
@@ -55,12 +55,12 @@ export default function EnemyMove(map, enemy, hero) {
                 px[d] = x;
                 py[d] = y;
                 d--;
-                for (let k = 0; k < 4; k++) {
-                    const pathY = parseInt(y, 10) + dy[k],
-                        pathX = parseInt(x, 10) + dx[k];
+                for (let indexDirection = 0; indexDirection < 4; indexDirection++) {
+                    const pathY = parseInt(y, 10) + dy[indexDirection],
+                        pathX = parseInt(x, 10) + dx[indexDirection];
                     if (grid[pathY][pathX] === d) {
-                        x = x + dx[k];
-                        y = y + dy[k];
+                        x = x + dx[indexDirection];
+                        y = y + dy[indexDirection];
                         break;
                     }
                 }

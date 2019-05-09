@@ -4,7 +4,7 @@ export default class NotificationHeader extends Component {
     heroStats = () => {
         const { hero } = this.props;
         if (hero) {
-            const message = `health: ${hero.health} | weapon: ${hero.weapon.name} | shield: ${hero.shield.name} | money: ' + hero.money`;
+            const message = `health: ${hero.health} | weapon: ${hero.weapon.name} | shield: ${hero.shield.name} | money: ${hero.money}`;
             return message;
         }
         return null;

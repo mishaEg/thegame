@@ -47,7 +47,7 @@ export default function HeroMove(map, hero, key, creatures) {
             case 'sleeping_enemy':
                 break;
             case ' ':
-                msg = 'how you that doing??';
+                msg = 'Its whitespace? how did you do this?? (bug!)';
                 break;
             case 'grass':
                 msg = 'you stay at ' + gex.icon + ' and feels fresh green leaves by your foots :з.';

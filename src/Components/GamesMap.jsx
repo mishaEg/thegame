@@ -4,11 +4,9 @@ import createMap from '../functional/createMap';
 import getRandomCoordinates from '../functional/getRandomCoordinates';
 import NotificationHeader from './NotificationHeader';
 import movingAndDigging from '../functional/movingAndDigging';
-
-import { Hero } from '../Units/Hero';
+import Hero from '../Units/Hero';
 import HeroPickUp from '../functional/Hero.PickUp';
-
-import { Enemy } from '../Units/Enemy';
+import Enemy from '../Units/Enemy';
 
 export default class GamesMap extends Component {
     constructor() {

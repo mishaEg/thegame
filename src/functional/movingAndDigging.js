@@ -11,68 +11,69 @@ export default function movingAndDigging(map, hero, key, creatures) {
         y: 0,
         x: 0
     };
+    let loggingMessage;
 
     if (hero.readyToMine) {
-        // Надо будет пофиксить функцию HeroDig(). Она возвращает излишний message
-        const buffer = HeroDig(map, hero, key), // return message: msg, x: x, y: y
-            RND_CAVE = getRandomInt(0, 12);
+        const { message, coordX, coordY } = HeroDig(map, hero, key),
+            RANDOM_GENERATE_CAVE = getRandomInt(0, 12);
 
-        coordinate.y = buffer.y;
-        coordinate.x = buffer.x;
+        loggingMessage = message;
+        coordinate.y = coordY;
+        coordinate.x = coordX;
 
         let treasure = 'none';
 
         switch (true) {
-            case (RND_CAVE > 4 && RND_CAVE < 6):
-                coordinate.message = 'you found cave with enemy!';
+            case (RANDOM_GENERATE_CAVE > 4 && RANDOM_GENERATE_CAVE < 6):
+                loggingMessage = 'you found cave with enemy!';
                 treasure = 'enemy';
                 break;
-            case (RND_CAVE > 6 && RND_CAVE < 8):
-                coordinate.message = 'you found cave with grass!';
+            case (RANDOM_GENERATE_CAVE > 6 && RANDOM_GENERATE_CAVE < 8):
+                loggingMessage = 'you found cave with grass!';
                 treasure = 'grass';
                 break;
-            case (RND_CAVE === 8):
-                coordinate.message = 'you found cave with iron shield!';
+            case (RANDOM_GENERATE_CAVE === 8):
+                loggingMessage = 'you found cave with iron shield!';
                 treasure = 'iron shield';
                 break;
-            case (RND_CAVE === 9):
-                coordinate.message = 'you found cave with iron sword!';
+            case (RANDOM_GENERATE_CAVE === 9):
+                loggingMessage = 'you found cave with iron sword!';
                 treasure = 'iron sword';
                 break;
-            case (RND_CAVE > 9):
-                coordinate.message = 'you found a gem!';
+            case (RANDOM_GENERATE_CAVE > 9):
+                loggingMessage = 'you found a gem!';
                 treasure = 'gem';
                 break;
             default:
-                coordinate.message = '';
+                loggingMessage = '';
         }
         if (treasure !== 'none') {
-            const drawBuffer = drawCave(coordinate.x, coordinate.y, key, treasure, coordinate.map, coordinate.hero);
+            const { generateEnemy } = drawCave(coordinate.x, coordinate.y, key, treasure, map, hero);
 
-            if (drawBuffer.enemy) {
-                coordinate.creatures.push(buffer.enemy);
+            if (generateEnemy) {
+                creatures.push(generateEnemy);
             }
         }
     } else {
-        const buffer = HeroMove(map, hero, key, creatures); // return message: msg, x: x, y: y
+        const { message, newCoordX, newCoordY } = HeroMove(map, hero, key, creatures);
 
-        coordinate.map = map;
-        coordinate.hero = hero;
-        coordinate.message = buffer.message;
-        coordinate.x = buffer.x;
-        coordinate.y = buffer.y;
+        loggingMessage = message;
+        coordinate.x = newCoordX;
+        coordinate.y = newCoordY;
     }
 
     creatures.forEach((currentCreature, indexCreature) => {
         if (isContact({ positionX: coordinate.x, positionY: coordinate.y }, currentCreature)) {
-            const buffer = HeroPunch(currentCreature, coordinate.hero); // return message: msg
+            const messageOfPunch = HeroPunch(currentCreature, hero);
 
-            coordinate.message += buffer.message;
-            coordinate.creatures[indexCreature] = currentCreature;
+            loggingMessage += messageOfPunch;
+            creatures[indexCreature] = currentCreature;
         }
 
         if (currentCreature.status !== 'sleeping') {
-            coordinate.creatures[indexCreature] = EnemyMove(coordinate.map, currentCreature, coordinate.hero);
+            EnemyMove(map, currentCreature, hero);
         }
     });
+
+    return loggingMessage;
 }

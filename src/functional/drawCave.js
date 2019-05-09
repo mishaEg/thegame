@@ -4,10 +4,10 @@
 
 import elements from '../data/elements';
 import expansionMap from './expansionMap';
-import { Enemy } from '../Units/Enemy';
+import Enemy from '../Units/Enemy';
 
 export default function drawCave(x, y, direction, treasure, map, hero) {
-    let updated = false,
+    let generateEnemy = false,
         line_dx = 0,
         line_dy = 0;
 
@@ -49,11 +49,11 @@ export default function drawCave(x, y, direction, treasure, map, hero) {
                 line_dy = [2, 2, 2, 2, 2, 1, 1, 0, 0, -1, -1];
                 break;
             default:
-                throw new Error("direction is not a correct");
+                throw new Error("direction is not a correct:" + direction);
         }
 
         expansionMap(x, y, dx, dy, map, hero, floor, [emptySpace, wall]); // пещера
-        updated = expansionMap(x, y, line_dx, line_dy, map, hero, wall, [emptySpace]); // стены вокруг
+        expansionMap(x, y, line_dx, line_dy, map, hero, wall, [emptySpace]); // стены вокруг
 
         y = Math.abs(y);
         x = Math.abs(x);
@@ -61,7 +61,7 @@ export default function drawCave(x, y, direction, treasure, map, hero) {
 
     switch (treasure) {
         case 'enemy':
-            updated.enemy = new Enemy(x, y);
+            generateEnemy = new Enemy(x, y);
             break;
         case 'grass':
             map[y][x].push(grass);
@@ -79,5 +79,7 @@ export default function drawCave(x, y, direction, treasure, map, hero) {
             throw new Error(`Treasure is not correct: ${treasure}`);
     }
 
-    return updated;
+    return {
+        generateEnemy: generateEnemy
+    };
 }

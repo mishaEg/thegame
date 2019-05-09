@@ -29,7 +29,7 @@ export default function HeroDig(map, hero, key) {
         case "right": dx = 1; break;
         case "up": dy = -1; break;
         case "down": dy = 1; break;
-        default: throw new Error("Невозможно обработать данное нажатие");
+        default: throw new Error("Невозможно обработать данное нажатие:" + key);
     }
 
     if (gex.icon === 'wall') {
@@ -49,7 +49,7 @@ export default function HeroDig(map, hero, key) {
 
     return {
         message: msg,
-        x: x,
-        y: y
+        coordX: x,
+        coordY: y
     };
 }

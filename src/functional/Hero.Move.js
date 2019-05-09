@@ -19,7 +19,7 @@ export default function HeroMove(map, hero, key, creatures) {
     let dx = 0,
         dy = 0,
         msg = '',
-        contact = false;
+        contactWithAnyEnemy = false;
 
     switch (key) {
         case "left": dx = -1; break;
@@ -35,11 +35,11 @@ export default function HeroMove(map, hero, key, creatures) {
 
     creatures.forEach((currentCreature) => {
         if (isContact({ positionX: x, positionY: y }, currentCreature)) {
-            contact = true;
+            contactWithAnyEnemy = true;
         }
     });
 
-    if (!contact) {
+    if (!contactWithAnyEnemy) {
         switch (gex.icon) {
             case 'wall':
                 msg = 'there is no the way';
@@ -65,7 +65,7 @@ export default function HeroMove(map, hero, key, creatures) {
 
     return {
         message: msg,
-        x: x,
-        y: y
+        newCoordX: x,
+        newCoordY: y
     };
 }

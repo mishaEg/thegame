@@ -25,7 +25,7 @@
         "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }],
         "arrow-body-style": ["error", "as-needed"],
         "react/no-array-index-key": ["off"],
-        "no-loop-func": "off",
+        "no-loop-func": "error",
         "operator-assignment": ["off"],
         "prefer-destructuring": ["error", { "array": false, "object": true}],
         "linebreak-style": ["off"]

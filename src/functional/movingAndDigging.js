@@ -12,31 +12,29 @@ export default function movingAndDigging(map, hero, key, creatures) {
     let loggingMessage;
 
     if (hero.readyToMine) {
-        const { message, coordX, coordY } = HeroDig(map, hero, key, creatures);
+        const { message } = HeroDig(map, hero, key, creatures);
 
         loggingMessage = message;
-        coordinate.y = coordY;
-        coordinate.x = coordX;
     } else {
         const { message, newCoordX, newCoordY } = HeroMove(map, hero, key, creatures);
 
         loggingMessage = message;
         coordinate.x = newCoordX;
         coordinate.y = newCoordY;
+
+        creatures.forEach((currentCreature, indexCreature) => {
+            if (isContact({ positionX: coordinate.x, positionY: coordinate.y }, currentCreature)) {
+                const messageOfPunch = HeroPunch(currentCreature, hero);
+
+                loggingMessage += messageOfPunch;
+                creatures[indexCreature] = currentCreature;
+            }
+
+            if (currentCreature.status !== 'sleeping') {
+                EnemyMove(map, currentCreature, hero);
+            }
+        });
     }
-
-    creatures.forEach((currentCreature, indexCreature) => {
-        if (isContact({ positionX: coordinate.x, positionY: coordinate.y }, currentCreature)) {
-            const messageOfPunch = HeroPunch(currentCreature, hero);
-
-            loggingMessage += messageOfPunch;
-            creatures[indexCreature] = currentCreature;
-        }
-
-        if (currentCreature.status !== 'sleeping') {
-            EnemyMove(map, currentCreature, hero);
-        }
-    });
 
     return loggingMessage;
 }

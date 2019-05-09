@@ -88,8 +88,6 @@ export default function HeroDig(map, hero, key, creatures) {
     hero.readyToMine = false;
 
     return {
-        message: msg,
-        coordX: x,
-        coordY: y
+        message: msg
     };
 }

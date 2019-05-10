@@ -21,7 +21,7 @@ function getGex(map, y, x) {
 export default function HeroDig(map, hero, key, creatures) {
     let dx = 0,
         dy = 0,
-        msg = 'digging...',
+        msg = '',
         x = 0,
         y = 0;
 
@@ -67,7 +67,6 @@ export default function HeroDig(map, hero, key, creatures) {
                 treasure = 'gem';
                 break;
             default:
-                msg = '';
                 expansionMap(x, y, exDx, exDy, map, hero, elements.wall, [elements.emptySpace]);
                 map[y][x][0] = elements.floor;
                 if (key === "left") {

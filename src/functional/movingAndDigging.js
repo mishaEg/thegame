@@ -5,10 +5,6 @@ import HeroPunch from './Hero.Punch';
 import EnemyMove from './Enemy.Move';
 
 export default function movingAndDigging(map, hero, key, creatures) {
-    const coordinate = {
-        y: 0,
-        x: 0
-    };
     let loggingMessage;
 
     if (hero.readyToMine) {
@@ -19,11 +15,9 @@ export default function movingAndDigging(map, hero, key, creatures) {
         const { message, newCoordX, newCoordY } = HeroMove(map, hero, key, creatures);
 
         loggingMessage = message;
-        coordinate.x = newCoordX;
-        coordinate.y = newCoordY;
 
         creatures.forEach((currentCreature, indexCreature) => {
-            if (isContact({ positionX: coordinate.x, positionY: coordinate.y }, currentCreature)) {
+            if (isContact({ positionX: newCoordX, positionY: newCoordY }, currentCreature)) {
                 const messageOfPunch = HeroPunch(currentCreature, hero);
 
                 loggingMessage += messageOfPunch;

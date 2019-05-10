@@ -37,9 +37,11 @@ export default function HeroDig(map, hero, key, creatures) {
     y = hero.positionY + dy;
 
     const gex = getGex(map, y, x),
-        exDx = [1, 0, -1, 0], // смещения, соответствующие соседям ячейки
-        exDy = [0, 1, 0, -1]; // справа, снизу, слева и сверху
+        dx_withoutCave = [0, 1, 1, +1, +0, -1, -1, -1], // смещения, соответствующие соседям ячейки
+        dy_withoutCave = [1, 1, 0, -1, -1, -1, +0, +1]; // справа, снизу, слева и сверху
 
+    /* dx_withoutCave = [1, 0, -1, 0], // смещения, соответствующие соседям ячейки
+        dy_withoutCave = [0, 1, 0, -1]; // справа, снизу, слева и сверху */
 
     if (gex.icon === 'wall') {
         const RANDOM_GENERATE_CAVE = getRandomInt(0, 12);
@@ -67,7 +69,7 @@ export default function HeroDig(map, hero, key, creatures) {
                 treasure = 'gem';
                 break;
             default:
-                expansionMap(x, y, exDx, exDy, map, hero, elements.wall, [elements.emptySpace]);
+                expansionMap(x, y, dx_withoutCave, dy_withoutCave, map, hero, elements.wall, [elements.emptySpace]);
                 map[y][x][0] = elements.floor;
                 if (key === "left") {
                     x = hero.positionX;
@@ -75,7 +77,7 @@ export default function HeroDig(map, hero, key, creatures) {
                 }
         }
         if (treasure !== 'none') {
-            expansionMap(x, y, exDx, exDy, map, hero, elements.wall, [elements.emptySpace]);
+            expansionMap(x, y, dx_withoutCave, dy_withoutCave, map, hero, elements.wall, [elements.emptySpace]);
             map[y][x][0] = elements.floor;
 
             const { generateEnemy } = drawCave(x, y, key, treasure, map, hero);

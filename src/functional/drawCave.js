@@ -15,6 +15,9 @@ export default function drawCave(x, y, direction, treasure, map, hero) {
     const { floor, emptySpace, wall, grass, iron_shield, iron_sword, gem } = elements,
         dy = [0, 1, -1, 0, 1, -1, 0, 1, -1]; // справа, снизу, слева и сверху
 
+    /* line_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, +2, -2, -1, +0, +1, +2]; полные координаты для отрисовки всех пещер
+       line_dy = [+2, 2, 2, +2, 2, +1, 1, +0, 0, -1, -1, -2, -2, -2, -2, -2]; */
+
     switch (direction) {
         case 'left':
             x -= 1;
@@ -43,8 +46,8 @@ export default function drawCave(x, y, direction, treasure, map, hero) {
             break;
         case 'down':
             y += 2;
-            line_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, 2];
-            line_dy = [2, 2, 2, 2, 2, 1, 1, 0, 0, -1, -1];
+            line_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, +2, -2, -1, +1, +2];
+            line_dy = [+2, 2, 2, +2, 2, +1, 1, +0, 0, -1, -1, -2, -2, -2, -2];
             break;
         default:
             throw new Error("direction is not a correct:" + direction);

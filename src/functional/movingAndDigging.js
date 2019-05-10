@@ -16,12 +16,11 @@ export default function movingAndDigging(map, hero, key, creatures) {
 
         loggingMessage = message;
 
-        creatures.forEach((currentCreature, indexCreature) => {
+        creatures.forEach((currentCreature) => {
             if (isContact({ positionX: newCoordX, positionY: newCoordY }, currentCreature)) {
                 const messageOfPunch = HeroPunch(currentCreature, hero);
 
                 loggingMessage += messageOfPunch;
-                creatures[indexCreature] = currentCreature;
             }
 
             if (currentCreature.status !== 'sleeping') {

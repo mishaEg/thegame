@@ -75,6 +75,9 @@ export default function HeroDig(map, hero, key, creatures) {
                 }
         }
         if (treasure !== 'none') {
+            expansionMap(x, y, exDx, exDy, map, hero, elements.wall, [elements.emptySpace]);
+            map[y][x][0] = elements.floor;
+
             const { generateEnemy } = drawCave(x, y, key, treasure, map, hero);
 
             if (generateEnemy) {

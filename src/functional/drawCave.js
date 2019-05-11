@@ -11,31 +11,25 @@ export default function drawCave(targetCoordinate, direction, treasure, map, her
     let generateEnemy = false;
 
     const { floor, emptySpace, wall, grass, iron_shield, iron_sword, gem } = elements,
-        dx = [-1, -1, -1, 0, 0, +0, 1, 1, +1, -1], // смещения, для обхвата площади
-        dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1, +0], // размером 3х3 с центром в указанной точке
+        dx = [-1, -1, -1, 0, 0, +0, 1, 1, +1], // смещения, для обхвата площади
+        dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1], // размером 3х3 с центром в указанной точке
         line_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, +2, -2, -1, +0, +1, +2], // смещения для отрисовки
         line_dy = [+2, 2, 2, +2, 2, +1, 1, +0, 0, -1, -1, -2, -2, -2, -2, -2]; // стен во всех пещерах
 
-    expansionMap(targetCoordinate, dx, dy, map, hero, wall, [emptySpace]); // Генерация стен вокруг указанной точки
-    expansionMap(targetCoordinate, [0], [0], map, hero, floor, [wall]); // Замена стены в указанной точке на пол
+    // Генерация стен вокруг указанной точки
+    expansionMap(targetCoordinate, dx, dy, map, hero, wall, [emptySpace]);
+    // Замена стены в указанной точке на пол
+    expansionMap(targetCoordinate, [0], [0], map, hero, floor, [wall]);
 
     switch (direction) {
         case 'left':
-            if (targetCoordinate.x < 1) {
-                targetCoordinate.x -= 1;
-            } else {
-                targetCoordinate.x -= 2;
-            }
+            targetCoordinate.x -= 2;
             break;
         case 'right':
             targetCoordinate.x += 2;
             break;
         case 'up':
-            if (targetCoordinate.y < 1) {
-                targetCoordinate.y -= 1;
-            } else {
-                targetCoordinate.y -= 2;
-            }
+            targetCoordinate.y -= 2;
             break;
         case 'down':
             targetCoordinate.y += 2;
@@ -46,6 +40,8 @@ export default function drawCave(targetCoordinate, direction, treasure, map, her
 
     // Генерация пола пещеры размером 3х3 с центром в указанной точке
     expansionMap(targetCoordinate, dx, dy, map, hero, floor, [emptySpace, wall]);
+    // Генерация стен вокруг пещеры с центром в указанной точке
+    expansionMap(targetCoordinate, line_dx, line_dy, map, hero, wall, [emptySpace]);
 
     switch (treasure) {
         case 'enemy':
@@ -66,9 +62,6 @@ export default function drawCave(targetCoordinate, direction, treasure, map, her
         default:
             throw new Error(`Treasure is not correct: ${treasure}`);
     }
-
-    // Генерация стен вокруг пещеры с центром в указанной точке
-    expansionMap(targetCoordinate, line_dx, line_dy, map, hero, wall, [emptySpace]); // стены вокруг
 
     return {
         generateEnemy: generateEnemy

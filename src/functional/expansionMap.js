@@ -8,36 +8,42 @@ export default function expansionMap(targetCoordinate, dx, dy, map, hero, gex, r
     const { emptySpace } = elements;
 
     dy.forEach((currentItem, index) => {
-        const newY = targetCoordinate.y + currentItem,
+        let newY = targetCoordinate.y + currentItem,
             newX = targetCoordinate.x + dx[index];
 
         if (map[newY] === undefined) {
-            const line = [];
+            while (newY < 0 || newY > map.length - 1) {
+                const line = [];
 
-            for (let column = 0; column < map[hero.positionY].length - 1; column++) {
-                line[column] = [emptySpace];
-            }
-            line[newX] = [gex];
-            if (newY < 0) { // добавление новой линии к карте сверху
-                map.unshift(line); // добавление в начало массива map значения line
-                hero.positionY += 1;
-                targetCoordinate.y += 1;
-            } else if (newY > map.length - 1) { // добавление линии снизу
-                map.push(line);
+                for (let column = 0; column < map[hero.positionY].length - 1; column++) {
+                    line[column] = [emptySpace];
+                }
+                line[newX] = [gex];
+                if (newY < 0) { // добавление новой линии к карте сверху
+                    map.unshift(line); // добавление в начало массива map значения line
+                    hero.positionY += 1;
+                    targetCoordinate.y += 1;
+                    newY += 1;
+                } else if (newY > map.length - 1) { // добавление линии снизу
+                    map.push(line);
+                }
             }
         } else if (map[newY][newX] === undefined) {
-            if (newX < 0) { // добавление новой клетки к карте слева
-                map.forEach((rowInMap) => {
-                    rowInMap.unshift([emptySpace]); // добавление в начало каждой строки элемента
-                });
-                map[newY][0][0] = gex;
-                hero.positionX += 1;
-                targetCoordinate.x += 1;
-            } else { // добавление столбца к карте справа
-                map.forEach((rowInMap) => {
-                    rowInMap.push([emptySpace]);
-                });
-                map[newY][newX][0] = gex;
+            while (newX < 0 || newX > map[newY].length - 1) {
+                if (newX < 0) { // добавление новой клетки к карте слева
+                    map.forEach((rowInMap) => {
+                        rowInMap.unshift([emptySpace]); // добавление в начало каждой строки элемента
+                    });
+                    map[newY][0][0] = gex;
+                    hero.positionX += 1;
+                    targetCoordinate.x += 1;
+                    newX += 1;
+                } else { // добавление столбца к карте справа
+                    map.forEach((rowInMap) => {
+                        rowInMap.push([emptySpace]);
+                    });
+                    map[newY][newX][0] = gex;
+                }
             }
         } else {
             replasments.forEach((currentReplace) => {

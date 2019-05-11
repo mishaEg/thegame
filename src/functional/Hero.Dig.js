@@ -21,9 +21,7 @@ function getGex(map, y, x) {
 export default function HeroDig(map, hero, key, creatures) {
     let dx = 0,
         dy = 0,
-        msg = '',
-        x = 0,
-        y = 0;
+        msg = '';
 
     switch (key) {
         case "left": dx = -1; break;
@@ -33,15 +31,13 @@ export default function HeroDig(map, hero, key, creatures) {
         default: throw new Error("Некорректный ключ key:" + key);
     }
 
-    x = hero.positionX + dx;
-    y = hero.positionY + dy;
-
-    const gex = getGex(map, y, x),
+    const targetCoordinate = { // Объект нужен для мутации координат внутри
+            x: hero.positionX + dx, // функции expansionMap. Это bad practice, но иначе нужно
+            y: hero.positionY + dy // возвращать и expansionMap новые координаты, а это больше переделывать :D
+        }, // да и у нас все объекты мутируют везде как хотят, поэтому на начало сгодится и так
+        gex = getGex(map, targetCoordinate.y, targetCoordinate.x),
         dx_withoutCave = [0, 1, 1, +1, +0, -1, -1, -1], // смещения, соответствующие соседям ячейки
         dy_withoutCave = [1, 1, 0, -1, -1, -1, +0, +1]; // справа, снизу, слева и сверху
-
-    /* dx_withoutCave = [1, 0, -1, 0], // смещения, соответствующие соседям ячейки
-        dy_withoutCave = [0, 1, 0, -1]; // справа, снизу, слева и сверху */
 
     if (gex.icon === 'wall') {
         const RANDOM_GENERATE_CAVE = getRandomInt(0, 12);
@@ -69,18 +65,11 @@ export default function HeroDig(map, hero, key, creatures) {
                 treasure = 'gem';
                 break;
             default:
-                expansionMap(x, y, dx_withoutCave, dy_withoutCave, map, hero, elements.wall, [elements.emptySpace]);
-                map[y][x][0] = elements.floor;
-                if (key === "left") {
-                    x = hero.positionX;
-                    y = hero.positionY;
-                }
+                expansionMap(targetCoordinate, dx_withoutCave, dy_withoutCave, map, hero, elements.wall, [elements.emptySpace]);
+                expansionMap(targetCoordinate, [0], [0], map, hero, elements.floor, [elements.wall]);
         }
         if (treasure !== 'none') {
-            expansionMap(x, y, dx_withoutCave, dy_withoutCave, map, hero, elements.wall, [elements.emptySpace]);
-            map[y][x][0] = elements.floor;
-
-            const { generateEnemy } = drawCave(x, y, key, treasure, map, hero);
+            const { generateEnemy } = drawCave(targetCoordinate, key, treasure, map, hero);
 
             if (generateEnemy) {
                 creatures.push(generateEnemy);

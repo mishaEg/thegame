@@ -1,83 +1,74 @@
-/**
- * @description
- */
-
 import elements from '../data/elements';
 import expansionMap from './expansionMap';
 import Enemy from '../Units/Enemy';
 
-export default function drawCave(x, y, direction, treasure, map, hero) {
-    let generateEnemy = false,
-        line_dx = 0,
-        line_dy = 0,
-        dx = [-1, -1, -1, 0, 0, 0, 1, 1, 1]; // смещения, соответствующие соседям ячейки
+/**
+ * @description реализация генерации пещеры на карте
+ * !!Данная функция мутирует значения map, hero!!
+ * @return generateEnemy false - если пещера сгенерирована без врага, object - враг
+ */
+export default function drawCave(targetCoordinate, direction, treasure, map, hero) {
+    let generateEnemy = false;
 
     const { floor, emptySpace, wall, grass, iron_shield, iron_sword, gem } = elements,
-        dy = [0, 1, -1, 0, 1, -1, 0, 1, -1]; // справа, снизу, слева и сверху
+        dx = [-1, -1, -1, 0, 0, +0, 1, 1, +1, -1], // смещения, для обхвата площади
+        dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1, +0], // размером 3х3 с центром в указанной точке
+        line_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, +2, -2, -1, +0, +1, +2], // смещения для отрисовки
+        line_dy = [+2, 2, 2, +2, 2, +1, 1, +0, 0, -1, -1, -2, -2, -2, -2, -2]; // стен во всех пещерах
 
-    /* line_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, +2, -2, -1, +0, +1, +2]; полные координаты для отрисовки всех пещер
-       line_dy = [+2, 2, 2, +2, 2, +1, 1, +0, 0, -1, -1, -2, -2, -2, -2, -2]; */
+    expansionMap(targetCoordinate, dx, dy, map, hero, wall, [emptySpace]); // Генерация стен вокруг указанной точки
+    expansionMap(targetCoordinate, [0], [0], map, hero, floor, [wall]); // Замена стены в указанной точке на пол
 
     switch (direction) {
         case 'left':
-            x -= 1;
-            dx = [-3, -3, -3, -2, -2, -2, -1, -1, -1];
-            if (x <= 1) {
-                line_dx = [-2, -2, -2, -2, -2, -1, 0, 1, -1, 0, 1];
+            if (targetCoordinate.x < 1) {
+                targetCoordinate.x -= 1;
             } else {
-                line_dx = [-4, -4, -4, -4, -4, -3, -2, -1, -3, -2, -1];
+                targetCoordinate.x -= 2;
             }
-            line_dy = [0, -1, 1, 2, -2, -2, -2, -2, 2, 2, 2];
             break;
         case 'right':
-            x += 2;
-            line_dx = [2, 2, 2, 2, 2, 1, 0, 0, 1, -1, -1];
-            line_dy = [-1, 0, 1, -2, 2, 2, 2, -2, -2, -2, 2];
+            targetCoordinate.x += 2;
             break;
         case 'up':
-            y -= 1;
-            if (y < 0) {
-                line_dy = [3, 2, 1, 3, 2, 1, 0, 0, 0, 0, 0];
+            if (targetCoordinate.y < 1) {
+                targetCoordinate.y -= 1;
             } else {
-                line_dy = [1, 0, -1, 1, 0, -1, -2, -2, -2, -2, -2];
+                targetCoordinate.y -= 2;
             }
-            line_dx = [-2, -2, -2, 2, 2, 2, 0, 1, 2, -1, -2];
-            // line_dy = [3, 2, 1, 3, 2, 1, 0, 0, 0, 0, 0];
             break;
         case 'down':
-            y += 2;
-            line_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, +2, -2, -1, +1, +2];
-            line_dy = [+2, 2, 2, +2, 2, +1, 1, +0, 0, -1, -1, -2, -2, -2, -2];
+            targetCoordinate.y += 2;
             break;
         default:
             throw new Error("direction is not a correct:" + direction);
     }
 
-    expansionMap(x, y, dx, dy, map, hero, floor, [emptySpace, wall]); // пещера
-    expansionMap(x, y, line_dx, line_dy, map, hero, wall, [emptySpace]); // стены вокруг
-
-    y = Math.abs(y);
-    x = Math.abs(x);
+    // Генерация пола пещеры размером 3х3 с центром в указанной точке
+    expansionMap(targetCoordinate, dx, dy, map, hero, floor, [emptySpace, wall]);
 
     switch (treasure) {
         case 'enemy':
-            generateEnemy = new Enemy(x, y);
+            generateEnemy = new Enemy(targetCoordinate.x, targetCoordinate.y);
             break;
         case 'grass':
-            map[y][x].push(grass);
+            map[targetCoordinate.y][targetCoordinate.x].push(grass);
             break;
         case 'iron sword':
-            map[y][x].push(iron_sword);
+            map[targetCoordinate.y][targetCoordinate.x].push(iron_sword);
             break;
         case 'iron shield':
-            map[y][x].push(iron_shield);
+            map[targetCoordinate.y][targetCoordinate.x].push(iron_shield);
             break;
         case 'gem':
-            map[y][x].push(gem);
+            map[targetCoordinate.y][targetCoordinate.x].push(gem);
             break;
         default:
             throw new Error(`Treasure is not correct: ${treasure}`);
     }
+
+    // Генерация стен вокруг пещеры с центром в указанной точке
+    expansionMap(targetCoordinate, line_dx, line_dy, map, hero, wall, [emptySpace]); // стены вокруг
 
     return {
         generateEnemy: generateEnemy

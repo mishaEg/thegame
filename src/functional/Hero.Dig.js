@@ -65,11 +65,11 @@ export default function HeroDig(map, hero, key, creatures) {
                 treasure = 'gem';
                 break;
             default:
-                expansionMap(targetCoordinate, dx_withoutCave, dy_withoutCave, map, hero, elements.wall, [elements.emptySpace]);
-                expansionMap(targetCoordinate, [0], [0], map, hero, elements.floor, [elements.wall]);
+                expansionMap(targetCoordinate, dx_withoutCave, dy_withoutCave, map, hero, elements.wall, [elements.emptySpace], creatures);
+                expansionMap(targetCoordinate, [0], [0], map, hero, elements.floor, [elements.wall], creatures);
         }
         if (treasure !== 'none') {
-            const { generateEnemy } = drawCave(targetCoordinate, key, treasure, map, hero);
+            const { generateEnemy } = drawCave(targetCoordinate, key, treasure, map, hero, creatures);
 
             if (generateEnemy) {
                 creatures.push(generateEnemy);

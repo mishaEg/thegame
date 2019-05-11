@@ -4,10 +4,10 @@ import Enemy from '../Units/Enemy';
 
 /**
  * @description реализация генерации пещеры на карте
- * !!Данная функция мутирует значения map, hero!!
+ * !!Данная функция мутирует значения map, hero, targetCoordinate, creatures!!
  * @return generateEnemy false - если пещера сгенерирована без врага, object - враг
  */
-export default function drawCave(targetCoordinate, direction, treasure, map, hero) {
+export default function drawCave(targetCoordinate, direction, treasure, map, hero, creatures) {
     let generateEnemy = false;
 
     const { floor, emptySpace, wall, grass, iron_shield, iron_sword, gem } = elements,
@@ -17,9 +17,9 @@ export default function drawCave(targetCoordinate, direction, treasure, map, her
         line_dy = [+2, 2, 2, +2, 2, +1, 1, +0, 0, -1, -1, -2, -2, -2, -2, -2]; // стен во всех пещерах
 
     // Генерация стен вокруг указанной точки
-    expansionMap(targetCoordinate, dx, dy, map, hero, wall, [emptySpace]);
+    expansionMap(targetCoordinate, dx, dy, map, hero, wall, [emptySpace], creatures);
     // Замена стены в указанной точке на пол
-    expansionMap(targetCoordinate, [0], [0], map, hero, floor, [wall]);
+    expansionMap(targetCoordinate, [0], [0], map, hero, floor, [wall], creatures);
 
     switch (direction) {
         case 'left':
@@ -39,9 +39,9 @@ export default function drawCave(targetCoordinate, direction, treasure, map, her
     }
 
     // Генерация пола пещеры размером 3х3 с центром в указанной точке
-    expansionMap(targetCoordinate, dx, dy, map, hero, floor, [emptySpace, wall]);
+    expansionMap(targetCoordinate, dx, dy, map, hero, floor, [emptySpace, wall], creatures);
     // Генерация стен вокруг пещеры с центром в указанной точке
-    expansionMap(targetCoordinate, line_dx, line_dy, map, hero, wall, [emptySpace]);
+    expansionMap(targetCoordinate, line_dx, line_dy, map, hero, wall, [emptySpace], creatures);
 
     switch (treasure) {
         case 'enemy':

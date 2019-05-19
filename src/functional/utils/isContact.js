@@ -1,5 +1,5 @@
 /**
- * @description Проверка совпадения координат 2 разных объектов
+ * @description Проверка совпадения координат 2 объектов
  * @return {Boolean} true - если объекты находятся в 1 ячейке
  */
 export default function isContact(target_one, target_two) {

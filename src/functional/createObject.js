@@ -1,12 +1,12 @@
 import elements from '../data/elements';
-import getRandomInt from './getRandomInt';
+import getRandomInt from './utils/getRandomInt';
 
 /**
  * @description Функция для случайной генерации на карте там, где уже расположен пол
  * @param {Array} inputMap - Входящий двухмерный массив
  * @param {Number} countOfObjects - Количество, необходимых сгенерировать на карте
  */
-export default function createObject(inputMap, countOfObjects, object) {
+function createObject(inputMap, countOfObjects, object) {
     const { floor } = elements;
 
     for (let counter = 0; counter < countOfObjects; counter++) {
@@ -21,3 +21,5 @@ export default function createObject(inputMap, countOfObjects, object) {
         }
     }
 }
+
+module.exports = createObject;

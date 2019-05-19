@@ -1,18 +1,18 @@
-import isContact from './isContact';
-import HeroMove from './Hero.Move';
-import HeroDig from './Hero.Dig';
+import isContact from './utils/isContact';
+import moveHero from './moveHero';
+import digging from './digging';
 import HeroPunch from './Hero.Punch';
 import EnemyMove from './Enemy.Move';
 
-export default function movingAndDigging(map, hero, key, creatures) {
+function movingAndDigging(map, hero, key, creatures) {
     let loggingMessage;
 
     if (hero.readyToMine) {
-        const { message } = HeroDig(map, hero, key, creatures);
+        const { message } = digging(map, hero, key, creatures);
 
         loggingMessage = message;
     } else {
-        const { message, newCoordX, newCoordY } = HeroMove(map, hero, key, creatures);
+        const { message, newCoordX, newCoordY } = moveHero(map, hero, key, creatures);
 
         loggingMessage = message;
 
@@ -31,3 +31,5 @@ export default function movingAndDigging(map, hero, key, creatures) {
 
     return loggingMessage;
 }
+
+module.exports = movingAndDigging;

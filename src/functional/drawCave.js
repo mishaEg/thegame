@@ -1,69 +1,105 @@
 import elements from '../data/elements';
 import expansionMap from './expansionMap';
 import Enemy from '../Units/Enemy';
+import drawTunnel from './drawTunnel';
 
 /**
- * @description реализация генерации пещеры на карте
- * !!Данная функция мутирует значения map, hero, targetCoordinate, creatures!!
- * @return generateEnemy false - если пещера сгенерирована без врага, object - враг
+ * Реализация генерации пещеры с сокровищем на карте
  */
-export default function drawCave(targetCoordinate, direction, treasure, map, hero, creatures) {
-    let generateEnemy = false;
-
-    const { floor, emptySpace, wall, grass, iron_shield, iron_sword, gem } = elements,
+function drawBodyCave(targetCoordinate, treasure, map, hero, creatures) {
+    const { floor, emptySpace, wall, grass, iron_sword, iron_shield, gem } = elements,
         dx = [-1, -1, -1, 0, 0, +0, 1, 1, +1], // смещения, для обхвата площади
         dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1], // размером 3х3 с центром в указанной точке
-        line_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, +2, -2, -1, +0, +1, +2], // смещения для отрисовки
-        line_dy = [+2, 2, 2, +2, 2, +1, 1, +0, 0, -1, -1, -2, -2, -2, -2, -2]; // стен во всех пещерах
+        wall_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, +2, -2, -1, +0, +1, +2], // смещения для отрисовки
+        wall_dy = [+2, 2, 2, +2, 2, +1, 1, +0, 0, -1, -1, -2, -2, -2, -2, -2], // стен во всех пещерах
 
-    // Генерация стен вокруг указанной точки
-    expansionMap(targetCoordinate, dx, dy, map, hero, wall, [emptySpace], creatures);
-    // Замена стены в указанной точке на пол
-    expansionMap(targetCoordinate, [0], [0], map, hero, floor, [wall], creatures);
+        { // Генерация пола пещеры размером 3х3 с центром в указанной точке
+            updatedTargetCoordinates: targetCoordinateOnMapWithFloorCave,
+            map: mapWithFloorCave,
+            hero: heroOnMapWithFloorCave,
+            creatures: creaturesOnMapWithFloorCave
+        } = expansionMap(targetCoordinate, dx, dy, map, hero, floor, [emptySpace, wall], creatures),
 
-    switch (direction) {
-        case 'left':
-            targetCoordinate.x -= 2;
-            break;
-        case 'right':
-            targetCoordinate.x += 2;
-            break;
-        case 'up':
-            targetCoordinate.y -= 2;
-            break;
-        case 'down':
-            targetCoordinate.y += 2;
-            break;
-        default:
-            throw new Error("direction is not a correct:" + direction);
-    }
-
-    // Генерация пола пещеры размером 3х3 с центром в указанной точке
-    expansionMap(targetCoordinate, dx, dy, map, hero, floor, [emptySpace, wall], creatures);
-    // Генерация стен вокруг пещеры с центром в указанной точке
-    expansionMap(targetCoordinate, line_dx, line_dy, map, hero, wall, [emptySpace], creatures);
+        { // Генерация стен вокруг пещеры с центром в указанной точке
+            updatedTargetCoordinates: targetCoordOnMapWithCave,
+            map: mapWithCave,
+            hero: heroOnMapWithCave,
+            creatures: creaturesOnMapWithCave
+        } = expansionMap(
+            targetCoordinateOnMapWithFloorCave, wall_dx, wall_dy, mapWithFloorCave,
+            heroOnMapWithFloorCave, wall, [emptySpace], creaturesOnMapWithFloorCave
+        );
+    let resultCreaturesOnMap = [...creaturesOnMapWithCave];
 
     switch (treasure) {
         case 'enemy':
-            generateEnemy = new Enemy(targetCoordinate.x, targetCoordinate.y);
+            resultCreaturesOnMap = [
+                ...resultCreaturesOnMap,
+                new Enemy(targetCoordOnMapWithCave.x, targetCoordOnMapWithCave.y)
+            ];
             break;
         case 'grass':
-            map[targetCoordinate.y][targetCoordinate.x].push(grass);
+            mapWithCave[targetCoordOnMapWithCave.y][targetCoordOnMapWithCave.x].push(grass);
             break;
         case 'iron sword':
-            map[targetCoordinate.y][targetCoordinate.x].push(iron_sword);
+            mapWithCave[targetCoordOnMapWithCave.y][targetCoordOnMapWithCave.x].push(iron_sword);
             break;
         case 'iron shield':
-            map[targetCoordinate.y][targetCoordinate.x].push(iron_shield);
+            mapWithCave[targetCoordOnMapWithCave.y][targetCoordOnMapWithCave.x].push(iron_shield);
             break;
         case 'gem':
-            map[targetCoordinate.y][targetCoordinate.x].push(gem);
+            mapWithCave[targetCoordOnMapWithCave.y][targetCoordOnMapWithCave.x].push(gem);
             break;
         default:
             throw new Error(`Treasure is not correct: ${treasure}`);
     }
 
     return {
-        generateEnemy: generateEnemy
+        mapWithCave: [...mapWithCave],
+        heroOnMapWithCave: { ...heroOnMapWithCave },
+        creaturesOnMapWithCave: [...resultCreaturesOnMap]
     };
 }
+
+/**
+ * @description реализация генерации пещеры на карте
+ * @return generateEnemy false - если пещера сгенерирована без врага, object - враг
+ */
+function drawCave(diggingCoordinate, direction, treasure, map, hero, creatures) {
+    const {
+        updateDiggingCoordinate: diggingCoordinateWithTunnel,
+        map: mapWithTunnel,
+        hero: heroOnMapWithTunnel,
+        creatures: creaturesOnMapWithTunnel
+    } = drawTunnel(diggingCoordinate, map, hero, creatures);
+
+    switch (direction) {
+        case 'left':
+            diggingCoordinateWithTunnel.x -= 2;
+            break;
+        case 'right':
+            diggingCoordinateWithTunnel.x += 2;
+            break;
+        case 'up':
+            diggingCoordinateWithTunnel.y -= 2;
+            break;
+        case 'down':
+            diggingCoordinateWithTunnel.y += 2;
+            break;
+        default:
+            throw new Error("direction is not a correct:" + direction);
+    }
+    const {
+        mapWithCave,
+        heroOnMapWithCave,
+        creaturesOnMapWithCave
+    } = drawBodyCave(diggingCoordinateWithTunnel, treasure, mapWithTunnel, heroOnMapWithTunnel, creaturesOnMapWithTunnel);
+
+    return {
+        mapWithCave: [...mapWithCave],
+        heroOnMapWithCave: { ...heroOnMapWithCave },
+        creaturesOnMapWithCave: [...creaturesOnMapWithCave]
+    };
+}
+
+module.exports = drawCave;

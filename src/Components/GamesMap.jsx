@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import drawMap from '../functional/drawMap';
 import createMap from '../functional/createMap';
-import getRandomCoordinates from '../functional/getRandomCoordinates';
+import getRandomCoordinates from '../functional/utils/getRandomCoordinates';
 import NotificationHeader from './NotificationHeader';
 import movingAndDigging from '../functional/movingAndDigging';
 import Hero from '../Units/Hero';

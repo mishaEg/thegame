@@ -7,7 +7,7 @@
     "parser": "babel-eslint",
     "rules": {
         "comma-dangle": ["error", "never"],
-        "one-var": ["error", "always"],
+        "one-var": ["error", "consecutive"],
         "object-shorthand": ["error", "never"],
         "object-curly-newline": ["error", { "consistent": true }],
         "react/jsx-indent": ["error", 4, {"indentLogicalExpressions": true}],

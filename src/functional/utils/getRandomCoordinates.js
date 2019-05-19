@@ -1,4 +1,4 @@
-import elements from '../data/elements';
+import elements from '../../data/elements';
 import getRandomInt from './getRandomInt';
 
 // Тут отсутствуют проверки на существование пола на карте по текущим координатам.

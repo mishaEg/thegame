@@ -1,4 +1,4 @@
-export default class Enemy {
+class Enemy {
     constructor(positionX, positionY) {
         this.positionX = positionX;
         this.positionY = positionY;
@@ -17,6 +17,23 @@ export default class Enemy {
         this.stamina = 12;
     }
 
+    getDamage(damage) {
+        if (+damage) {
+            this.health = this.health - damage;
+            if (this.status !== 'sleeping') {
+                this.stamina = 12;
+            }
+            if (this.depthOfSleep === 1) {
+                this.wakedUp();
+            }
+            if (this.depthOfSleep !== 0) {
+                this.depthOfSleep -= 1;
+            }
+        } else {
+            throw new Error('damage is not a number');
+        }
+    }
+
     regeneration() {
         if (this.health < 100 && this.health > 0) {
             this.health += 1;
@@ -29,3 +46,5 @@ export default class Enemy {
         this.depthOfSleep = 2;
     }
 }
+
+module.exports = Enemy;

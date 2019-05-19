@@ -1,19 +1,11 @@
-/**
- * @description функция поиска самого верхнего элемента по заданным координатам
- * @return последний элемент массива в заданной ячейке карты
- */
-function getGex(map, y, x) {
-    const len = map[y][x].length;
-
-    return map[y][x][len - 1];
-}
+import getTopItem from './utils/getTopItem';
 
 /**
  * @description Функция реализации поднятия героем предметов
  * !!!Осторожно, функция мутирует переданные в нее параметры (map, hero)!!!
  */
-export default function HeroPickUp(map, hero, message) {
-    const gex = getGex(map, hero.positionY, hero.positionX);
+function HeroPickUp(map, hero, message) {
+    const gex = getTopItem(map, hero.positionY, hero.positionX);
 
     switch (gex.type) {
         case 'money':
@@ -37,3 +29,5 @@ export default function HeroPickUp(map, hero, message) {
     }
     return message;
 }
+
+module.exports = HeroPickUp;

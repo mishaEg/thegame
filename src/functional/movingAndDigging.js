@@ -1,39 +1,48 @@
 import moveHero from './moveHero';
 import digging from './digging';
-import HeroPunch from './Hero.Punch';
-import EnemyMove from './Enemy.Move';
 
 function movingAndDigging(map, hero, key, creatures) {
     let loggingMessage,
-        updatedHero,
-        updatedEnemy;
+        heroAfterAction = hero,
+        allEnemyAfterAction = creatures,
+        mapAfterAction = map;
 
     if (hero.readyToMine) {
-        const { message } = digging(map, hero, key, creatures);
+        const {
+            message,
+            diggedUp,
+            updatedMap,
+            updatedHero,
+            updatedCreatures
+        } = digging(map, hero, key, creatures);
 
+        if (diggedUp) {
+            allEnemyAfterAction = updatedCreatures;
+            mapAfterAction = updatedMap;
+        }
+        heroAfterAction = updatedHero;
         loggingMessage = message;
     } else {
         const {
             message,
-            isMoved,
             wasAfight,
             movedHero,
             updatedCreatures
         } = moveHero(map, hero, key, creatures);
 
+        if (wasAfight) {
+            allEnemyAfterAction = updatedCreatures;
+        }
+        heroAfterAction = movedHero;
         loggingMessage = message;
-        if (isMoved) {
-            updatedHero = movedHero;
-        } else if (wasAfight) {
-            updatedEnemy = updatedCreatures;
-        }
-
-        if (currentCreature.status !== 'sleeping') {
-            EnemyMove(map, currentCreature, hero);
-        }
     }
 
-    return loggingMessage;
+    return {
+        map: mapAfterAction,
+        hero: heroAfterAction,
+        message: loggingMessage,
+        creatures: allEnemyAfterAction
+    };
 }
 
 module.exports = movingAndDigging;

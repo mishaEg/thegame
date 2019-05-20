@@ -23,6 +23,8 @@ describe('Негативные тесты функции digging', () => {
                 "diggedUp": false,
                 "message": "there is nothing to dig",
                 "updatedHero": {
+                    "positionX": 0,
+                    "positionY": 0,
                     "readyToMine": false
                 }
             }

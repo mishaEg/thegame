@@ -1,6 +1,15 @@
 import getTopItem from './utils/getTopItem';
 import isContact from './utils/isContact';
+
+/*
 import enemyAction from './enemyAction';
+
+const creaturesWithoutCurrent = creatures.filter((currFilterCreature) => {
+    return currFilterCreature !== currentCreature;
+});
+
+enemyAction(currentCreature, map, hero, creaturesWithoutCurrent);
+ */
 
 /**
  * @description реализация сражения героя с монстром
@@ -54,12 +63,6 @@ function moveHero(map, hero, key, creatures) {
 
                 wasAfight = true;
                 message = fightMessage;
-            } else {
-                const creaturesWithoutCurrent = creatures.filter((currFilterCreature) => {
-                    return currFilterCreature !== currentCreature;
-                });
-
-                enemyAction(currentCreature, map, hero, creaturesWithoutCurrent);
             }
             // короче, невероятно, но если использовать методы класса
             // то объект отвратительно деструктурировать.
@@ -90,7 +93,6 @@ function moveHero(map, hero, key, creatures) {
 
     return {
         message: message,
-        isMoved: isMoved,
         wasAfight: wasAfight,
         movedHero: {
             ...hero,

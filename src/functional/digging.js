@@ -33,6 +33,7 @@ function digging(map, hero, direction, creatures) {
             diggedUp: false,
             message: "there is nothing to dig",
             updatedHero: {
+                ...hero,
                 readyToMine: false
             }
         };

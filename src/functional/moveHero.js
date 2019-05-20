@@ -1,11 +1,12 @@
 import getTopItem from './utils/getTopItem';
 import isContact from './utils/isContact';
+import enemyAction from './enemyAction';
 
 /**
  * @description реализация сражения героя с монстром
  * @return creature - объект монстра после сражения
  */
-function clashHeroWithCreature(hero, creature) {
+function heroHitsCreature(hero, creature) {
     let message = 'you punch enemy';
 
     if (creature.depthOfSleep === 2) {
@@ -14,11 +15,6 @@ function clashHeroWithCreature(hero, creature) {
         message = "you punch sleeping enemy and woke him up";
     }
     creature.getDamage(hero.damage);
-    /**
-     * Это вынесено в отдельную функцию,
-     * чтобы в будущем добавить получение урона герою
-     * ну и для других ништяков (фич)
-     */
 
     return {
         fightMessage: message
@@ -27,7 +23,11 @@ function clashHeroWithCreature(hero, creature) {
 
 /**
  * @description реализация функции движения героя на карте
- * @return message - лог текущего события, x, y - новые координаты героя
+ * @return message - лог событий или false,
+ * isMoved - флаг на изменение координат героя,
+ * wasAfight - флаг на изменение объектов героя и врагов,
+ * movedHero - обновленный объект героя,
+ * updatedCreatures - обновленный список врагов
  */
 function moveHero(map, hero, key, creatures) {
     let dx = 0,
@@ -50,15 +50,21 @@ function moveHero(map, hero, key, creatures) {
 
         updatedCreatures = creatures.map((currentCreature) => {
             if (isContact({ positionX: xTravelCoordinates, positionY: yTravelCoordinates }, currentCreature)) {
-                const { fightMessage } = clashHeroWithCreature(hero, currentCreature);
+                const { fightMessage } = heroHitsCreature(hero, currentCreature);
 
                 wasAfight = true;
                 message = fightMessage;
+            } else {
+                const creaturesWithoutCurrent = creatures.filter((currFilterCreature) => {
+                    return currFilterCreature !== currentCreature;
+                });
+
+                enemyAction(currentCreature, map, hero, creaturesWithoutCurrent);
             }
             // короче, невероятно, но если использовать методы класса
             // то объект отвратительно деструктурировать.
             // приходиться все время его прокидывать, и мутировать,
-            // иначе он теряем методы класса
+            // иначе он теряет методы класса
             return currentCreature;
         });
 
@@ -86,7 +92,7 @@ function moveHero(map, hero, key, creatures) {
         message: message,
         isMoved: isMoved,
         wasAfight: wasAfight,
-        updatedHero: {
+        movedHero: {
             ...hero,
             positionX: isMoved ? xTravelCoordinates : hero.positionX,
             positionY: isMoved ? yTravelCoordinates : hero.positionY

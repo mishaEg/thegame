@@ -1,32 +1,36 @@
-import isContact from './utils/isContact';
 import moveHero from './moveHero';
 import digging from './digging';
 import HeroPunch from './Hero.Punch';
 import EnemyMove from './Enemy.Move';
 
 function movingAndDigging(map, hero, key, creatures) {
-    let loggingMessage;
+    let loggingMessage,
+        updatedHero,
+        updatedEnemy;
 
     if (hero.readyToMine) {
         const { message } = digging(map, hero, key, creatures);
 
         loggingMessage = message;
     } else {
-        const { message, newCoordX, newCoordY } = moveHero(map, hero, key, creatures);
+        const {
+            message,
+            isMoved,
+            wasAfight,
+            movedHero,
+            updatedCreatures
+        } = moveHero(map, hero, key, creatures);
 
         loggingMessage = message;
+        if (isMoved) {
+            updatedHero = movedHero;
+        } else if (wasAfight) {
+            updatedEnemy = updatedCreatures;
+        }
 
-        creatures.forEach((currentCreature) => {
-            if (isContact({ positionX: newCoordX, positionY: newCoordY }, currentCreature)) {
-                const messageOfPunch = HeroPunch(currentCreature, hero);
-
-                loggingMessage += messageOfPunch;
-            }
-
-            if (currentCreature.status !== 'sleeping') {
-                EnemyMove(map, currentCreature, hero);
-            }
-        });
+        if (currentCreature.status !== 'sleeping') {
+            EnemyMove(map, currentCreature, hero);
+        }
     }
 
     return loggingMessage;

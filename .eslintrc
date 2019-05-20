@@ -23,7 +23,7 @@
         "max-len": ["error", { "code": 150 }],
         "no-param-reassign": ["off"],
         "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }],
-        "arrow-body-style": ["error", "as-needed"],
+        "arrow-body-style": ["off"],
         "react/no-array-index-key": ["off"],
         "no-loop-func": "error",
         "operator-assignment": ["off"],

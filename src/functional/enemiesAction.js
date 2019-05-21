@@ -1,8 +1,8 @@
 import PF from 'pathfinding';
 import isContact from './utils/isContact';
 
-function createMatrixForPF(map, otherCreatures) {
-    const matrixForPF = map.map((currentRow, indexRow) => {
+function createMatrixForPF(inputMap, otherCreatures) {
+    const matrixForPF = inputMap.map((currentRow, indexRow) => {
         return currentRow.map((currentColumn, indexCol) => {
             const iconLastItem = currentColumn[currentColumn.length - 1].icon;
             let hereEnemy = false;
@@ -39,12 +39,9 @@ function enemyHitsHero(creature, hero) {
 /**
  * @description реализация функции передвижения переданного врага
  */
-function enemyAction(creature, map, hero, otherCreatures) {
+function onceEnemyAction(creature, map, hero, otherCreatures) {
     const dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1], // смещения, для обхвата площади
         dx = [-1, -1, -1, 0, 0, +0, 1, 1, +1]; // размером 3х3 с центром в указанной точке
-
-    let isDamagedAhero = false,
-        isCreatureMoved = false;
 
     dy.forEach((currentDy, index) => {
         const XpositionForCheckHero = creature.positionX + dx[index],
@@ -54,7 +51,6 @@ function enemyAction(creature, map, hero, otherCreatures) {
             const { damagedHero } = enemyHitsHero(creature, hero);
 
             hero = damagedHero;
-            isDamagedAhero = true;
         }
     });
 
@@ -72,7 +68,6 @@ function enemyAction(creature, map, hero, otherCreatures) {
     // Если путь не найден, массив будет пустым
     // Если путь найден и следующий шаг будет не на позицию героя, тогда монстр двигается
     if (path.length !== 0 && !(path[1][0] === hero.positionX && path[1][1] === hero.positionY)) {
-        isCreatureMoved = true;
         creature.positionX = path[1][0];
         creature.positionY = path[1][1];
     }
@@ -80,11 +75,32 @@ function enemyAction(creature, map, hero, otherCreatures) {
     creature.stamina -= 1;
 
     return {
-        isDamagedAhero: isDamagedAhero,
-        isCreatureMoved: isCreatureMoved,
-        hero: { ...hero },
+        updatedHero: { ...hero },
         updatedCreature: creature
     };
 }
 
-module.exports = enemyAction;
+/**
+ * Реализация действий всех существ на карте
+ */
+function enemiesAction(hero, map, creatures) {
+    const updatedAllCreatures = creatures.map((creature) => {
+        const enemyWithoutCurrent = creatures.filter((currCreature) => {
+                return currCreature !== creature;
+            }),
+            {
+                updatedHero,
+                updatedCreature
+            } = onceEnemyAction(creature, map, hero, enemyWithoutCurrent);
+
+        hero = updatedHero;
+        return updatedCreature;
+    });
+
+    return {
+        updatedCreatures: [...updatedAllCreatures],
+        updatedHero: { ...hero }
+    };
+}
+
+module.exports = enemiesAction;

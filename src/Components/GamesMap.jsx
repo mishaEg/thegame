@@ -6,6 +6,7 @@ import NotificationHeader from './NotificationHeader';
 import movingAndDigging from '../functional/movingAndDigging';
 import Hero from '../Units/Hero';
 import HeroPickUp from '../functional/Hero.PickUp';
+import enemiesAction from '../functional/enemiesAction';
 import Enemy from '../Units/Enemy';
 
 export default class GamesMap extends Component {
@@ -41,8 +42,8 @@ export default class GamesMap extends Component {
     }
 
     handleKeyPressed = (key) => {
-        const { map, hero, creatures, onHelp } = this.state;
-        let { message } = this.state;
+        let { map, hero, creatures, message } = this.state;
+        const { onHelp } = this.state;
 
         switch (key) {
             case 'h':
@@ -65,15 +66,28 @@ export default class GamesMap extends Component {
                     message = 'you need any weapon to dig';
                 }
                 break;
-            default:
-                message = movingAndDigging(map, hero, key, creatures);
+            default: {
+                const {
+                    map: mapAfterHeroAction,
+                    hero: heroAfterAction,
+                    message: messageOfHeroAction,
+                    creatures: creaturesAfterHeroAction
+                } = movingAndDigging(map, hero, key, creatures);
+
+                map = mapAfterHeroAction;
+                hero = heroAfterAction;
+                message = messageOfHeroAction;
+                creatures = creaturesAfterHeroAction;
+            }
         }
 
+        const { updatedHero, updatedCreatures } = enemiesAction(hero, map, creatures);
+
         this.setState({
-            hero: hero,
+            hero: updatedHero,
             map: map,
             message: message,
-            creatures: creatures
+            creatures: updatedCreatures
         });
     };
 

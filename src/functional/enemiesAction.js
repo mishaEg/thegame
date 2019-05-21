@@ -103,4 +103,4 @@ function enemiesAction(hero, map, creatures) {
     };
 }
 
-module.exports = enemiesAction;
+export default enemiesAction;

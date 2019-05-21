@@ -8,4 +8,4 @@ function getTopItem(map, y, x) {
     return map[y][x][len - 1];
 }
 
-module.exports = getTopItem;
+export default getTopItem;

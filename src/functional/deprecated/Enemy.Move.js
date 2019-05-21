@@ -2,7 +2,7 @@
  * @description
  */
 
-import elements from '../data/elements';
+import elements from '../../data/elements';
 
 export default function EnemyMove(map, enemy, hero) {
     const { wall } = elements,

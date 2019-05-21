@@ -102,4 +102,4 @@ function drawCave(diggingCoordinate, direction, treasure, map, hero, creatures) 
     };
 }
 
-module.exports = drawCave;
+export default drawCave;

@@ -7,7 +7,7 @@ import drawTunnel from './drawTunnel';
  * @description реализация функции копания для героя
  * @return message, x, y
  */
-function digging(map, hero, direction, creatures) {
+export default function digging(map, hero, direction, creatures) {
     let dx = 0,
         dy = 0,
         treasure = 'none',
@@ -105,5 +105,3 @@ function digging(map, hero, direction, creatures) {
 
     return updatedObjects;
 }
-
-module.exports = digging;

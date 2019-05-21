@@ -2,7 +2,7 @@ import Enemy from '../Units/Enemy';
 
 describe('Негативные тесты функции digging', () => {
     it('Попытка раскопки прочего элемента, отличного от стены, вправо', () => {
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -41,7 +41,7 @@ describe('Тесты с генерацией туннеля в функции di
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 1)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -85,7 +85,7 @@ describe('Тесты с генерацией туннеля в функции di
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 1)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -129,7 +129,7 @@ describe('Тесты с генерацией туннеля в функции di
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 1)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -172,7 +172,7 @@ describe('Тесты с генерацией туннеля в функции di
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 1)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
 
         expect(digging(
@@ -216,7 +216,7 @@ describe('Тесты с генерацией туннеля в функции di
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 1)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -259,7 +259,7 @@ describe('Тесты с генерацией пещеры с врагом в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 6)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -301,7 +301,7 @@ describe('Тесты с генерацией пещеры с врагом в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 6)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -343,7 +343,7 @@ describe('Тесты с генерацией пещеры с врагом в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 6)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -387,7 +387,7 @@ describe('Тесты с генерацией пещеры с врагом в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 6)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -431,7 +431,7 @@ describe('Тесты с генерацией пещеры с врагом в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 6)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -484,7 +484,7 @@ describe('Тесты с генерацией пещеры с травой в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 7)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -526,7 +526,7 @@ describe('Тесты с генерацией пещеры с травой в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 7)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -568,7 +568,7 @@ describe('Тесты с генерацией пещеры с травой в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 7)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -608,7 +608,7 @@ describe('Тесты с генерацией пещеры с травой в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 7)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -648,7 +648,7 @@ describe('Тесты с генерацией пещеры с травой в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 7)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -698,7 +698,7 @@ describe('Тесты с генерацией пещеры с железным щ
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 8)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -740,7 +740,7 @@ describe('Тесты с генерацией пещеры с железным щ
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 8)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -782,7 +782,7 @@ describe('Тесты с генерацией пещеры с железным щ
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 8)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -822,7 +822,7 @@ describe('Тесты с генерацией пещеры с железным щ
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 8)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -862,7 +862,7 @@ describe('Тесты с генерацией пещеры с железным щ
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 8)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -912,7 +912,7 @@ describe('Тесты с генерацией пещеры с железным м
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 9)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -954,7 +954,7 @@ describe('Тесты с генерацией пещеры с железным м
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 9)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -996,7 +996,7 @@ describe('Тесты с генерацией пещеры с железным м
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 9)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -1036,7 +1036,7 @@ describe('Тесты с генерацией пещеры с железным м
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 9)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -1076,7 +1076,7 @@ describe('Тесты с генерацией пещеры с железным м
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 9)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -1126,7 +1126,7 @@ describe('Тесты с генерацией пещеры с камнем в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 10)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -1168,7 +1168,7 @@ describe('Тесты с генерацией пещеры с камнем в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 10)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -1210,7 +1210,7 @@ describe('Тесты с генерацией пещеры с камнем в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 10)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -1250,7 +1250,7 @@ describe('Тесты с генерацией пещеры с камнем в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 10)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [
@@ -1290,7 +1290,7 @@ describe('Тесты с генерацией пещеры с камнем в ф�
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn(() => 10)
         });
-        const digging = require('../functional/digging');
+        const digging = require('../functional/digging').default;
 
         expect(digging(
             [

@@ -35,4 +35,4 @@ function drawTunnel(diggingCoordinate, map, hero, creatures) {
     };
 }
 
-module.exports = drawTunnel;
+export default drawTunnel;

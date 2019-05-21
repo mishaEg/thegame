@@ -1,4 +1,4 @@
-class Enemy {
+export default class Enemy {
     constructor(positionX, positionY) {
         this.positionX = positionX;
         this.positionY = positionY;
@@ -46,5 +46,3 @@ class Enemy {
         this.depthOfSleep = 2;
     }
 }
-
-module.exports = Enemy;

@@ -6,7 +6,7 @@ import getRandomInt from './utils/getRandomInt';
  * @param {Array} inputMap - Входящий двухмерный массив
  * @param {Number} countOfObjects - Количество, необходимых сгенерировать на карте
  */
-function createObject(inputMap, countOfObjects, object) {
+export default function createObject(inputMap, countOfObjects, object) {
     const { floor } = elements;
 
     for (let counter = 0; counter < countOfObjects; counter++) {
@@ -21,5 +21,3 @@ function createObject(inputMap, countOfObjects, object) {
         }
     }
 }
-
-module.exports = createObject;

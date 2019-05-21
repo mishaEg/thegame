@@ -103,4 +103,4 @@ function moveHero(map, hero, key, creatures) {
     };
 }
 
-module.exports = moveHero;
+export default moveHero;

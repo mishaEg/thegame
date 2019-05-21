@@ -4,7 +4,7 @@ import getTopItem from './utils/getTopItem';
  * @description Функция реализации поднятия героем предметов
  * !!!Осторожно, функция мутирует переданные в нее параметры (map, hero)!!!
  */
-function HeroPickUp(map, hero, message) {
+export default function HeroPickUp(map, hero, message) {
     const gex = getTopItem(map, hero.positionY, hero.positionX);
 
     switch (gex.type) {
@@ -29,5 +29,3 @@ function HeroPickUp(map, hero, message) {
     }
     return message;
 }
-
-module.exports = HeroPickUp;

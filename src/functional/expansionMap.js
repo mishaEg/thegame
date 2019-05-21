@@ -92,4 +92,4 @@ function expansionMap(targetCoordinate, dx, dy, map, hero, replacement, replacem
     };
 }
 
-module.exports = expansionMap;
+export default expansionMap;

@@ -45,4 +45,4 @@ function movingAndDigging(map, hero, key, creatures) {
     };
 }
 
-module.exports = movingAndDigging;
+export default movingAndDigging;

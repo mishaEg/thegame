@@ -10,16 +10,14 @@ function movingAndDigging(map, hero, key, creatures) {
     if (hero.readyToMine) {
         const {
             message,
-            diggedUp,
             updatedMap,
             updatedHero,
             updatedCreatures
         } = digging(map, hero, key, creatures);
 
-        if (diggedUp) {
-            allEnemyAfterAction = updatedCreatures;
-            mapAfterAction = updatedMap;
-        }
+
+        allEnemyAfterAction = updatedCreatures;
+        mapAfterAction = updatedMap;
         heroAfterAction = updatedHero;
         loggingMessage = message;
     } else {

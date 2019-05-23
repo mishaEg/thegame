@@ -9,9 +9,7 @@ import drawTunnel from './drawTunnel';
  */
 export default function digging(map, hero, direction, creatures) {
     let dx = 0,
-        dy = 0,
-        treasure = 'none',
-        msg = false;
+        dy = 0;
 
     switch (direction) {
         case "left": dx = -1; break;
@@ -25,67 +23,51 @@ export default function digging(map, hero, direction, creatures) {
             x: hero.positionX + dx,
             y: hero.positionY + dy
         },
-        diggingItem = getTopItem(map, diggingCoordinate.y, diggingCoordinate.x),
-        RANDOM_GENERATE_CAVE = getRandomInt(0, 12);
-
-    if (diggingItem.icon !== 'wall') {
-        return {
-            diggedUp: false,
-            message: "there is nothing to dig",
-            updatedHero: {
-                ...hero,
-                readyToMine: false
-            }
-        };
-    }
-
-    switch (true) {
-        case (RANDOM_GENERATE_CAVE === 6):
-            msg = 'you found cave with enemy!';
-            treasure = 'enemy';
-            break;
-        case (RANDOM_GENERATE_CAVE === 7):
-            msg = 'you found cave with grass!';
-            treasure = 'grass';
-            break;
-        case (RANDOM_GENERATE_CAVE === 8):
-            msg = 'you found cave with iron shield!';
-            treasure = 'iron shield';
-            break;
-        case (RANDOM_GENERATE_CAVE === 9):
-            msg = 'you found cave with iron sword!';
-            treasure = 'iron sword';
-            break;
-        case (RANDOM_GENERATE_CAVE === 10):
-            msg = 'you found a gem!';
-            treasure = 'gem';
-            break;
-        default: // по умолчанию отрисовываем туннель без сообщения
-            break;
-    }
+        diggingItem = getTopItem(map, diggingCoordinate.y, diggingCoordinate.x);
 
     let updatedObjects = {
-        diggedUp: true,
-        message: msg
+        message: "there is nothing to dig",
+        updatedCreatures: [...creatures],
+        updatedHero: {
+            ...hero,
+            readyToMine: false
+        },
+        updatedMap: [...map]
     };
 
-    if (treasure === 'none') {
-        const {
-            map: mapWithTunnel,
-            hero: heroOnMapWithTunnel,
-            creatures: creaturesOnMapWithTunnel
-        } = drawTunnel(diggingCoordinate, map, hero, creatures);
+    if (diggingItem.icon !== 'wall') {
+        return updatedObjects;
+    }
 
-        updatedObjects = {
-            ...updatedObjects,
-            updatedMap: [...mapWithTunnel],
-            updatedHero: {
-                ...heroOnMapWithTunnel,
-                readyToMine: false
-            },
-            updatedCreatures: [...creaturesOnMapWithTunnel]
-        };
-    } else {
+    const RANDOM_GENERATE_CAVE = getRandomInt(0, 4);
+
+    if (RANDOM_GENERATE_CAVE === 0) { // Условие для генерации пещеры, шанс 20%
+        const RANDOM_GENERATE_ITEM = getRandomInt(0, 7);
+        let message = '',
+            treasure = '';
+
+        switch (true) {
+            case (RANDOM_GENERATE_ITEM === 2 || RANDOM_GENERATE_ITEM === 3):
+                message = 'you found cave with enemy!';
+                treasure = 'enemy';
+                break;
+            case (RANDOM_GENERATE_ITEM === 4 || RANDOM_GENERATE_ITEM === 5):
+                message = 'you found cave with grass!';
+                treasure = 'grass';
+                break;
+            case (RANDOM_GENERATE_ITEM === 6):
+                message = 'you found cave with iron shield!';
+                treasure = 'iron shield';
+                break;
+            case (RANDOM_GENERATE_ITEM === 7):
+                message = 'you found cave with iron sword!';
+                treasure = 'iron sword';
+                break;
+            default:
+                message = 'you found empty cave';
+                treasure = 'none';
+        }
+
         const {
             mapWithCave,
             heroOnMapWithCave,
@@ -94,12 +76,33 @@ export default function digging(map, hero, direction, creatures) {
 
         updatedObjects = {
             ...updatedObjects,
+            message: message,
             updatedMap: [...mapWithCave],
             updatedHero: {
                 ...heroOnMapWithCave,
                 readyToMine: false
             },
             updatedCreatures: [...creaturesOnMapWithCave]
+        };
+    } else {
+        // Если рандом на пещеру не выпал, тогда отрисовываем
+        // туннель с вероятностью раскопки камня 10%
+        const {
+            map: mapWithTunnel,
+            hero: heroOnMapWithTunnel,
+            creatures: creaturesOnMapWithTunnel,
+            message: messageAboutGeneratedGem
+        } = drawTunnel(diggingCoordinate, true, map, hero, creatures);
+
+        updatedObjects = {
+            ...updatedObjects,
+            message: messageAboutGeneratedGem,
+            updatedMap: [...mapWithTunnel],
+            updatedHero: {
+                ...heroOnMapWithTunnel,
+                readyToMine: false
+            },
+            updatedCreatures: [...creaturesOnMapWithTunnel]
         };
     }
 

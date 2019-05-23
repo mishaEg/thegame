@@ -7,7 +7,7 @@ import drawTunnel from './drawTunnel';
  * Реализация генерации пещеры с сокровищем на карте
  */
 function drawBodyCave(targetCoordinate, treasure, map, hero, creatures) {
-    const { floor, emptySpace, wall, grass, iron_sword, iron_shield, gem } = elements,
+    const { floor, emptySpace, wall, grass, iron_sword, iron_shield } = elements,
         dx = [-1, -1, -1, 0, 0, +0, 1, 1, +1], // смещения, для обхвата площади
         dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1], // размером 3х3 с центром в указанной точке
         wall_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, +2, -2, -1, +0, +1, +2], // смещения для отрисовки
@@ -47,8 +47,7 @@ function drawBodyCave(targetCoordinate, treasure, map, hero, creatures) {
         case 'iron shield':
             mapWithCave[targetCoordOnMapWithCave.y][targetCoordOnMapWithCave.x].push(iron_shield);
             break;
-        case 'gem':
-            mapWithCave[targetCoordOnMapWithCave.y][targetCoordOnMapWithCave.x].push(gem);
+        case 'none':
             break;
         default:
             throw new Error(`Treasure is not correct: ${treasure}`);
@@ -71,7 +70,7 @@ function drawCave(diggingCoordinate, direction, treasure, map, hero, creatures) 
         map: mapWithTunnel,
         hero: heroOnMapWithTunnel,
         creatures: creaturesOnMapWithTunnel
-    } = drawTunnel(diggingCoordinate, map, hero, creatures);
+    } = drawTunnel(diggingCoordinate, false, map, hero, creatures);
 
     switch (direction) {
         case 'left':

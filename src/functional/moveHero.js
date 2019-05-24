@@ -1,16 +1,6 @@
 import getTopItem from './utils/getTopItem';
 import isContact from './utils/isContact';
 
-/*
-import enemyAction from './enemyAction';
-
-const creaturesWithoutCurrent = creatures.filter((currFilterCreature) => {
-    return currFilterCreature !== currentCreature;
-});
-
-enemyAction(currentCreature, map, hero, creaturesWithoutCurrent);
- */
-
 /**
  * @description реализация сражения героя с монстром
  * @return creature - объект монстра после сражения
@@ -93,7 +83,6 @@ function moveHero(map, hero, key, creatures) {
 
     return {
         message: message,
-        wasAfight: wasAfight,
         movedHero: {
             ...hero,
             positionX: isMoved ? xTravelCoordinates : hero.positionX,

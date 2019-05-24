@@ -68,11 +68,8 @@ function onceEnemyAction(creature, map, hero, otherCreatures) {
     // Если путь не найден, массив будет пустым
     // Если путь найден и следующий шаг будет не на позицию героя, тогда монстр двигается
     if (path.length !== 0 && !(path[1][0] === hero.positionX && path[1][1] === hero.positionY)) {
-        creature.positionX = path[1][0];
-        creature.positionY = path[1][1];
+        creature.move(path[1][0], path[1][1]);
     }
-
-    creature.stamina -= 1;
 
     return {
         updatedHero: { ...hero },
@@ -85,6 +82,11 @@ function onceEnemyAction(creature, map, hero, otherCreatures) {
  */
 function enemiesAction(hero, map, creatures) {
     const updatedAllCreatures = creatures.map((creature) => {
+        if (creature.status === 'sleeping') {
+            creature.regeneration();
+
+            return creature;
+        }
         const enemyWithoutCurrent = creatures.filter((currCreature) => {
                 return currCreature !== creature;
             }),

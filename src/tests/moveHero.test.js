@@ -15,7 +15,6 @@ describe('Проверка функции moveHero', () => {
             []
         )).toEqual({
             "message": false,
-            "wasAfight": false,
             "movedHero": {
                 "positionX": 1,
                 "positionY": 0
@@ -37,7 +36,6 @@ describe('Проверка функции moveHero', () => {
             []
         )).toEqual({
             "message": false,
-            "wasAfight": false,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 0
@@ -60,7 +58,6 @@ describe('Проверка функции moveHero', () => {
             []
         )).toEqual({
             "message": false,
-            "wasAfight": false,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 1
@@ -83,7 +80,6 @@ describe('Проверка функции moveHero', () => {
             []
         )).toEqual({
             "message": false,
-            "wasAfight": false,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 0
@@ -106,7 +102,6 @@ describe('Проверка функции moveHero', () => {
             []
         )).toEqual({
             "message": "you stay at grass and feels fresh green leaves by your foots :з.",
-            "wasAfight": false,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 0
@@ -129,7 +124,6 @@ describe('Проверка функции moveHero', () => {
             []
         )).toEqual({
             "message": 'you stay at sword, if you wanna pick it up, press "p"',
-            "wasAfight": false,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 0
@@ -152,7 +146,6 @@ describe('Проверка функции moveHero', () => {
             []
         )).toEqual({
             "message": 'you stay at shield, if you wanna pick it up, press "p"',
-            "wasAfight": false,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 0
@@ -175,7 +168,6 @@ describe('Проверка функции moveHero', () => {
             []
         )).toEqual({
             "message": 'you stay at iron_sword, if you wanna pick it up, press "p"',
-            "wasAfight": false,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 0
@@ -198,7 +190,6 @@ describe('Проверка функции moveHero', () => {
             []
         )).toEqual({
             "message": 'you stay at iron_shield, if you wanna pick it up, press "p"',
-            "wasAfight": false,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 0
@@ -221,7 +212,6 @@ describe('Проверка функции moveHero', () => {
             []
         )).toEqual({
             "message": 'you stay at gem, if you wanna pick it up, press "p"',
-            "wasAfight": false,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 0
@@ -234,8 +224,7 @@ describe('Проверка функции moveHero', () => {
         const inputEnemy = new Enemy(0, 0),
             outputEnemy = new Enemy(0, 0);
 
-        outputEnemy.depthOfSleep = 1;
-        outputEnemy.health = 90;
+        outputEnemy.getDamage(10);
 
         expect(moveHero(
             [
@@ -251,7 +240,6 @@ describe('Проверка функции moveHero', () => {
             [inputEnemy]
         )).toEqual({
             "message": "you punch sleeping enemy, once more punch for waked up",
-            "wasAfight": true,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 1,
@@ -265,13 +253,9 @@ describe('Проверка функции moveHero', () => {
         const inputEnemy = new Enemy(0, 0),
             outputEnemy = new Enemy(0, 0);
 
-        inputEnemy.depthOfSleep = 1;
-        inputEnemy.health = 90;
-        outputEnemy.depthOfSleep = 0;
-        outputEnemy.status = 'awake';
-        outputEnemy.icon = 'awaken_enemy';
-        outputEnemy.health = 80;
-        outputEnemy.stamina = 12;
+        inputEnemy.getDamage(10);
+        outputEnemy.getDamage(10);
+        outputEnemy.getDamage(10);
 
         expect(moveHero(
             [
@@ -287,7 +271,6 @@ describe('Проверка функции moveHero', () => {
             [inputEnemy]
         )).toEqual({
             "message": "you punch sleeping enemy and woke him up",
-            "wasAfight": true,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 1,
@@ -301,17 +284,11 @@ describe('Проверка функции moveHero', () => {
         const inputEnemy = new Enemy(0, 0),
             outputEnemy = new Enemy(0, 0);
 
-        inputEnemy.depthOfSleep = 0;
-        inputEnemy.status = 'awake';
-        inputEnemy.icon = 'awaken_enemy';
-        inputEnemy.health = 90;
-        inputEnemy.stamina = 10;
-
-        outputEnemy.depthOfSleep = 0;
-        outputEnemy.status = 'awake';
-        outputEnemy.icon = 'awaken_enemy';
-        outputEnemy.health = 80;
-        outputEnemy.stamina = 12;
+        inputEnemy.getDamage(10);
+        inputEnemy.getDamage(10);
+        outputEnemy.getDamage(10);
+        outputEnemy.getDamage(10);
+        outputEnemy.getDamage(10);
 
         expect(moveHero(
             [
@@ -327,7 +304,6 @@ describe('Проверка функции moveHero', () => {
             [inputEnemy]
         )).toEqual({
             "message": "you punch enemy",
-            "wasAfight": true,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 1,
@@ -353,7 +329,6 @@ describe('Негативные тесты функции moveHero', () => {
             []
         )).toEqual({
             "message": "there is no the way",
-            "wasAfight": false,
             "movedHero": {
                 "positionX": 0,
                 "positionY": 1

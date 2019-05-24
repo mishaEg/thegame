@@ -23,14 +23,11 @@ function movingAndDigging(map, hero, key, creatures) {
     } else {
         const {
             message,
-            wasAfight,
             movedHero,
             updatedCreatures
         } = moveHero(map, hero, key, creatures);
 
-        if (wasAfight) {
-            allEnemyAfterAction = updatedCreatures;
-        }
+        allEnemyAfterAction = updatedCreatures;
         heroAfterAction = movedHero;
         loggingMessage = message;
     }

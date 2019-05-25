@@ -1,21 +1,50 @@
 import getTopItem from './utils/getTopItem';
 import isContact from './utils/isContact';
+import elements from '../data/elements';
 
 /**
  * @description реализация сражения героя с монстром
  * @return creature - объект монстра после сражения
  */
 function heroHitsCreature(hero, creature) {
-    let message = 'you punch enemy';
+    let message = 'you punch enemy',
+        isDied = false;
 
-    if (creature.depthOfSleep === 2) {
-        message = "you punch sleeping enemy, once more punch for waked up";
-    } else if (creature.depthOfSleep === 1) {
-        message = "you punch sleeping enemy and woke him up";
+    if (creature.status === 'sleeping') {
+        if (creature.depthOfSleep === 2) {
+            message = "you punch sleeping enemy, once more punch for waked up";
+        } else if (creature.depthOfSleep === 1) {
+            message = "you punch sleeping enemy and woke him up";
+        }
+        creature.getDamage(hero.damage);
+    } else {
+        const enemyStatusBefore = creature.status;
+
+        creature.getDamage(hero.damage);
+        if (enemyStatusBefore !== creature.status) {
+            switch (creature.status) {
+                case 'irritation':
+                    message = 'you punch enemy and he became irritated';
+                    break;
+                case 'rage':
+                    message = 'you punch enemy and he became raged';
+                    break;
+                case 'humility':
+                    message = 'you punch enemy and he became humble';
+                    break;
+                default:
+                    break;
+            }
+        }
     }
-    creature.getDamage(hero.damage);
+
+    if (creature.status === 'dead') {
+        message = 'you punch enemy and kill him';
+        isDied = true;
+    }
 
     return {
+        isDied: isDied,
         fightMessage: message
     };
 }
@@ -23,8 +52,6 @@ function heroHitsCreature(hero, creature) {
 /**
  * @description реализация функции движения героя на карте
  * @return message - лог событий или false,
- * isMoved - флаг на изменение координат героя,
- * wasAfight - флаг на изменение объектов героя и врагов,
  * movedHero - обновленный объект героя,
  * updatedCreatures - обновленный список врагов
  */
@@ -33,6 +60,7 @@ function moveHero(map, hero, key, creatures) {
         dy = 0,
         message = false,
         wasAfight = false,
+        changeMap = false,
         isMoved = false;
 
     switch (key) {
@@ -47,19 +75,28 @@ function moveHero(map, hero, key, creatures) {
         yTravelCoordinates = hero.positionY + dy,
         upperItem = getTopItem(map, yTravelCoordinates, xTravelCoordinates),
 
-        updatedCreatures = creatures.map((currentCreature) => {
+        updatedCreatures = creatures.reduce((accumulator, currentCreature) => {
             if (isContact({ positionX: xTravelCoordinates, positionY: yTravelCoordinates }, currentCreature)) {
-                const { fightMessage } = heroHitsCreature(hero, currentCreature);
+                const {
+                        fightMessage,
+                        isDied
+                    } = heroHitsCreature(hero, currentCreature),
+                    { ectoplasma } = elements;
 
                 wasAfight = true;
                 message = fightMessage;
+                if (isDied) {
+                    changeMap = true;
+                    map[yTravelCoordinates][xTravelCoordinates].push(ectoplasma);
+                } else {
+                    accumulator.push(currentCreature);
+                }
+            } else {
+                accumulator.push(currentCreature);
             }
-            // короче, невероятно, но если использовать методы класса
-            // то объект отвратительно деструктурировать.
-            // приходиться все время его прокидывать, и мутировать,
-            // иначе он теряет методы класса
-            return currentCreature;
-        });
+
+            return accumulator;
+        }, []);
 
     if (!wasAfight) {
         switch (upperItem.icon) {
@@ -81,6 +118,8 @@ function moveHero(map, hero, key, creatures) {
         }
     }
 
+    const updatedMap = changeMap ? map : [];
+
     return {
         message: message,
         movedHero: {
@@ -88,6 +127,7 @@ function moveHero(map, hero, key, creatures) {
             positionX: isMoved ? xTravelCoordinates : hero.positionX,
             positionY: isMoved ? yTravelCoordinates : hero.positionY
         },
+        updatedMap: updatedMap,
         updatedCreatures: updatedCreatures
     };
 }

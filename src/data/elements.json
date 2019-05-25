@@ -35,5 +35,9 @@
         "type": "shield",
         "icon": "iron_shield",
         "defence": 20
+    },
+    "ectoplasma": {
+        "type": "food",
+        "icon": "ectoplasma"
     }
 }

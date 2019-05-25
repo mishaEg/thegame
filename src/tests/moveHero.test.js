@@ -19,6 +19,7 @@ describe('Проверка функции moveHero', () => {
                 "positionX": 1,
                 "positionY": 0
             },
+            "updatedMap": [],
             "updatedCreatures": []
         })
     });
@@ -40,6 +41,7 @@ describe('Проверка функции moveHero', () => {
                 "positionX": 0,
                 "positionY": 0
             },
+            "updatedMap": [],
             "updatedCreatures": []
         })
     });
@@ -62,6 +64,7 @@ describe('Проверка функции moveHero', () => {
                 "positionX": 0,
                 "positionY": 1
             },
+            "updatedMap": [],
             "updatedCreatures": []
         })
     });
@@ -84,6 +87,7 @@ describe('Проверка функции moveHero', () => {
                 "positionX": 0,
                 "positionY": 0
             },
+            "updatedMap": [],
             "updatedCreatures": []
         })
     });
@@ -106,6 +110,7 @@ describe('Проверка функции moveHero', () => {
                 "positionX": 0,
                 "positionY": 0
             },
+            "updatedMap": [],
             "updatedCreatures": []
         })
     });
@@ -128,6 +133,7 @@ describe('Проверка функции moveHero', () => {
                 "positionX": 0,
                 "positionY": 0
             },
+            "updatedMap": [],
             "updatedCreatures": []
         })
     });
@@ -150,6 +156,7 @@ describe('Проверка функции moveHero', () => {
                 "positionX": 0,
                 "positionY": 0
             },
+            "updatedMap": [],
             "updatedCreatures": []
         })
     });
@@ -172,6 +179,7 @@ describe('Проверка функции moveHero', () => {
                 "positionX": 0,
                 "positionY": 0
             },
+            "updatedMap": [],
             "updatedCreatures": []
         })
     });
@@ -194,6 +202,7 @@ describe('Проверка функции moveHero', () => {
                 "positionX": 0,
                 "positionY": 0
             },
+            "updatedMap": [],
             "updatedCreatures": []
         })
     });
@@ -216,6 +225,7 @@ describe('Проверка функции moveHero', () => {
                 "positionX": 0,
                 "positionY": 0
             },
+            "updatedMap": [],
             "updatedCreatures": []
         })
     });
@@ -245,6 +255,7 @@ describe('Проверка функции moveHero', () => {
                 "positionY": 1,
                 "damage": 10
             },
+            "updatedMap": [],
             "updatedCreatures": [outputEnemy]
         })
     });
@@ -276,6 +287,7 @@ describe('Проверка функции moveHero', () => {
                 "positionY": 1,
                 "damage": 10
             },
+            "updatedMap": [],
             "updatedCreatures": [outputEnemy]
         })
     });
@@ -309,7 +321,201 @@ describe('Проверка функции moveHero', () => {
                 "positionY": 1,
                 "damage": 10
             },
+            "updatedMap": [],
             "updatedCreatures": [outputEnemy]
+        })
+    });
+
+    it('Проверка перехода состояния монстра из пробужденного в раздраженный', () => {
+        const inputEnemy = new Enemy(0, 0),
+            outputEnemy = new Enemy(0, 0);
+
+        inputEnemy.wakedUp();
+        outputEnemy.wakedUp();
+        outputEnemy.getDamage(20);
+
+        expect(moveHero(
+            [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            {
+                "positionX": 0,
+                "positionY": 1,
+                "damage": 20
+            },
+            "up",
+            [inputEnemy]
+        )).toEqual({
+            "message": "you punch enemy and he became irritated",
+            "movedHero": {
+                "positionX": 0,
+                "positionY": 1,
+                "damage": 20
+            },
+            "updatedMap": [],
+            "updatedCreatures": [outputEnemy]
+        })
+    });
+
+    it('Проверка отсутствия перехода состояния монстра из пробужденного в раздраженный', () => {
+        const inputEnemy = new Enemy(0, 0),
+            outputEnemy = new Enemy(0, 0);
+
+        inputEnemy.wakedUp();
+        outputEnemy.wakedUp();
+        outputEnemy.getDamage(5);
+
+        expect(moveHero(
+            [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            {
+                "positionX": 0,
+                "positionY": 1,
+                "damage": 5
+            },
+            "up",
+            [inputEnemy]
+        )).toEqual({
+            "message": "you punch enemy",
+            "movedHero": {
+                "positionX": 0,
+                "positionY": 1,
+                "damage": 5
+            },
+            "updatedMap": [],
+            "updatedCreatures": [outputEnemy]
+        })
+    });
+
+    it('Проверка перехода состояния монстра из раздраженного в яростный', () => {
+        const inputEnemy = new Enemy(0, 0),
+            outputEnemy = new Enemy(0, 0);
+
+        inputEnemy.wakedUp();
+        inputEnemy.getDamage(40);
+        outputEnemy.wakedUp();
+        outputEnemy.getDamage(40);
+        outputEnemy.getDamage(20);
+
+        expect(moveHero(
+            [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            {
+                "positionX": 0,
+                "positionY": 1,
+                "damage": 20
+            },
+            "up",
+            [inputEnemy]
+        )).toEqual({
+            "message": "you punch enemy and he became raged",
+            "movedHero": {
+                "positionX": 0,
+                "positionY": 1,
+                "damage": 20
+            },
+            "updatedMap": [],
+            "updatedCreatures": [outputEnemy]
+        })
+    });
+
+    it('Проверка перехода состояния монстра из яростного в смиренный', () => {
+        const inputEnemy = new Enemy(0, 0),
+            outputEnemy = new Enemy(0, 0);
+
+        inputEnemy.wakedUp();
+        inputEnemy.getDamage(60);
+        outputEnemy.wakedUp();
+        outputEnemy.getDamage(60);
+        outputEnemy.getDamage(30);
+
+        expect(moveHero(
+            [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            {
+                "positionX": 0,
+                "positionY": 1,
+                "damage": 30
+            },
+            "up",
+            [inputEnemy]
+        )).toEqual({
+            "message": "you punch enemy and he became humble",
+            "movedHero": {
+                "positionX": 0,
+                "positionY": 1,
+                "damage": 30
+            },
+            "updatedMap": [],
+            "updatedCreatures": [outputEnemy]
+        })
+    });
+
+    it('Проверка появление эктоплазмы при смерти монстра', () => {
+        const enemy = new Enemy(0, 0);
+
+        enemy.wakedUp();
+        expect(moveHero(
+            [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            {
+                "positionX": 0,
+                "positionY": 1,
+                "damage": 100
+            },
+            "up",
+            [enemy]
+        )).toEqual({
+            "message": "you punch enemy and kill him",
+            "movedHero": {
+                "positionX": 0,
+                "positionY": 1,
+                "damage": 100
+            },
+            "updatedMap": [
+                [[{ "icon": "floor" }, { "type": "food", "icon": "ectoplasma" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            "updatedCreatures": []
+        })
+    });
+
+    it('Проверка убийства спящего монстра', () => {
+        const enemy = new Enemy(0, 0);
+
+        expect(moveHero(
+            [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            {
+                "positionX": 0,
+                "positionY": 1,
+                "damage": 100
+            },
+            "up",
+            [enemy]
+        )).toEqual({
+            "message": "you punch enemy and kill him",
+            "movedHero": {
+                "positionX": 0,
+                "positionY": 1,
+                "damage": 100
+            },
+            "updatedMap": [
+                [[{ "icon": "floor" }, { "type": "food", "icon": "ectoplasma" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            "updatedCreatures": []
         })
     });
 })
@@ -333,6 +539,7 @@ describe('Негативные тесты функции moveHero', () => {
                 "positionX": 0,
                 "positionY": 1
             },
+            "updatedMap": [],
             "updatedCreatures": []
         })
     });

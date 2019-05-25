@@ -15,6 +15,7 @@ export default class Enemy {
         this.status = 'awake';
         this.icon = 'awaken_enemy';
         this.stamina = 20;
+        this.depthOfSleep = 0;
     }
 
     fallAsleep() {
@@ -50,6 +51,10 @@ export default class Enemy {
     getDamage(damage) {
         if (+damage) {
             this.health = this.health - damage;
+            if (this.health <= 0) {
+                this.dead();
+                return;
+            }
             if (this.depthOfSleep === 1) {
                 this.wakedUp();
             }
@@ -89,6 +94,10 @@ export default class Enemy {
         this.positionX = newPositionX;
         this.positionY = newPositionY;
         this.tired();
+    }
+
+    dead() {
+        this.status = 'dead';
     }
 
     tired() {

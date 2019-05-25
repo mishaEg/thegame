@@ -24,9 +24,13 @@ function movingAndDigging(map, hero, key, creatures) {
         const {
             message,
             movedHero,
+            updatedMap,
             updatedCreatures
         } = moveHero(map, hero, key, creatures);
 
+        if (updatedMap.length !== 0) {
+            mapAfterAction = updatedMap;
+        }
         allEnemyAfterAction = updatedCreatures;
         heroAfterAction = movedHero;
         loggingMessage = message;

@@ -61,3 +61,8 @@
     background-image: url(./characters.png);
     background-position: 64px 192px;
 }
+
+.ectoplasma {
+    background-image: url(./characters.png);
+    background-position: 0px 144px;
+}

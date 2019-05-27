@@ -3,11 +3,10 @@ import drawMap from '../functional/drawMap';
 import createMap from '../functional/createMap';
 import getRandomCoordinates from '../functional/utils/getRandomCoordinates';
 import NotificationHeader from './NotificationHeader';
-import movingAndDigging from '../functional/movingAndDigging';
 import Hero from '../Units/Hero';
-import HeroPickUp from '../functional/Hero.PickUp';
 import enemiesAction from '../functional/enemiesAction';
 import Enemy from '../Units/Enemy';
+import heroActions from '../functional/heroActions';
 
 export default class GamesMap extends Component {
     constructor() {
@@ -42,46 +41,18 @@ export default class GamesMap extends Component {
     }
 
     handleKeyPressed = (key) => {
-        let { map, hero, creatures, message } = this.state;
-        const { onHelp } = this.state;
+        const { map, hero, creatures, onHelp } = this.state;
 
-        switch (key) {
-            case 'h':
-                this.setState({
-                    onHelp: !onHelp
-                });
-                return;
-            case 'p':
-                message = HeroPickUp(map, hero, message);
-                break;
-            case 'd':
-                if (hero.weapon.name !== 'none') {
-                    hero.readyToMine = !hero.readyToMine;
-                    if (hero.readyToMine) {
-                        message = `you rised the pickaxe (${hero.weapon.name}). Now, choose direction to dig`;
-                    } else {
-                        message = `you lower the pickaxe (${hero.weapon.name})`;
-                    }
-                } else {
-                    message = 'you need any weapon to dig';
-                }
-                break;
-            default: {
-                const {
-                    map: mapAfterHeroAction,
-                    hero: heroAfterAction,
-                    message: messageOfHeroAction,
-                    creatures: creaturesAfterHeroAction
-                } = movingAndDigging(map, hero, key, creatures);
+        if (key === 'h') {
+            this.setState({
+                onHelp: !onHelp
+            });
 
-                map = mapAfterHeroAction;
-                hero = heroAfterAction;
-                message = messageOfHeroAction;
-                creatures = creaturesAfterHeroAction;
-            }
+            return;
         }
 
-        const { updatedHero, updatedCreatures } = enemiesAction(hero, map, creatures);
+        const { message } = heroActions(hero, map, creatures, key),
+            { updatedHero, updatedCreatures } = enemiesAction(hero, map, creatures);
 
         this.setState({
             hero: updatedHero,

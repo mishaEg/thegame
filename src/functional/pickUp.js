@@ -2,10 +2,10 @@ import getTopItem from './utils/getTopItem';
 
 /**
  * @description Функция реализации поднятия героем предметов
- * !!!Осторожно, функция мутирует переданные в нее параметры (map, hero)!!!
  */
-export default function HeroPickUp(map, hero, message) {
+export default function pickUp(map, hero) {
     const gex = getTopItem(map, hero.positionY, hero.positionX);
+    let message;
 
     switch (gex.type) {
         case 'money':
@@ -14,15 +14,19 @@ export default function HeroPickUp(map, hero, message) {
             message = 'you raised money and take 10 gold! ^_^';
             break;
         case 'shield':
-            hero.shield = gex;
+            hero.takeShield(gex);
             map[hero.positionY][hero.positionX].pop(); // удаляем на карте предмет, который подняли
-            message = 'you raised shield';
+            message = 'you raised ' + gex.name + '!';
             break;
         case 'weapon':
-            hero.weapon = gex;
-            hero.damage = hero.damage + hero.weapon.damage;
+            hero.takeWeapon(gex);
             map[hero.positionY][hero.positionX].pop(); // удаляем на карте предмет, который подняли
-            message = 'you raised shield and increace your power!';
+            message = 'you raised ' + gex.name + ' and increace your power!';
+            break;
+        case 'food':
+            hero.eat();
+            map[hero.positionY][hero.positionX].pop(); // удаляем на карте предмет, который подняли
+            message = 'you picked up and eat ' + gex.name + ', but feel bad';
             break;
         default:
             message = 'no items to take';

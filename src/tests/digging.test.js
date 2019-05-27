@@ -339,7 +339,7 @@ describe('Тесты с генерацией пещеры с железным щ
                     [[{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "wall" }]],
-                    [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }, { "icon": "iron_shield", "type": "shield", "defence": 20 }], [{ 'icon': "floor" }], [{ 'icon': "wall" }]],
+                    [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }, { "icon": "iron_shield", "name": "iron shield", "type": "shield", "defence": 20 }], [{ 'icon': "floor" }], [{ 'icon': "wall" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "wall" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }]]
                 ],
@@ -380,7 +380,7 @@ describe('Тесты с генерацией пещеры с железным щ
                     [[{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "wall" }]],
-                    [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }, { "icon": "iron_shield", "type": "shield", "defence": 20 }], [{ 'icon': "floor" }], [{ 'icon': "wall" }]],
+                    [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }, { "icon": "iron_shield", "name": "iron shield", "type": "shield", "defence": 20 }], [{ 'icon': "floor" }], [{ 'icon': "wall" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "wall" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }]]
                 ],
@@ -429,7 +429,7 @@ describe('Тесты с генерацией пещеры с железным м
                 "updatedMap": [
                     [[{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "floor" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "wall" }], [{ 'icon': "floor" }]],
-                    [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }, { "icon": "iron_sword", "type": "weapon", "damage": 50 }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }]],
+                    [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }, { "icon": "iron_sword", "name": "iron sword", "type": "weapon", "damage": 50 }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "wall" }], [{ 'icon': "floor" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "floor" }]]
                 ],
@@ -470,7 +470,7 @@ describe('Тесты с генерацией пещеры с железным м
                     [[{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "wall" }]],
-                    [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }, { "icon": "iron_sword", "type": "weapon", "damage": 50 }], [{ 'icon': "floor" }], [{ 'icon': "wall" }]],
+                    [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }, { "icon": "iron_sword", "name": "iron sword", "type": "weapon", "damage": 50 }], [{ 'icon': "floor" }], [{ 'icon': "wall" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "floor" }], [{ 'icon': "wall" }]],
                     [[{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }], [{ 'icon': "wall" }]]
                 ],

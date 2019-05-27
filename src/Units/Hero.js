@@ -13,7 +13,28 @@ export default class Hero {
         this.shield = {
             name: 'none'
         };
-        this.poisoned = false;
+        this.countOfPoison = 0;
         this.readyToMine = false;
+    }
+
+    effectsHandler() {
+        if (this.countOfPoison > 0) {
+            this.health -= this.countOfPoison;
+        }
+    }
+
+    eat() {
+        this.health += 100;
+        this.countOfPoison += 1;
+    }
+
+    takeWeapon(weapon) {
+        this.weapon = weapon;
+        this.damage += weapon.damage;
+    }
+
+    takeShield(shield) {
+        this.shield = shield;
+        this.defence += shield.defence;
     }
 }

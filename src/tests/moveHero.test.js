@@ -482,7 +482,7 @@ describe('Проверка функции moveHero', () => {
                 "damage": 100
             },
             "updatedMap": [
-                [[{ "icon": "floor" }, { "type": "food", "icon": "ectoplasma" }]],
+                [[{ "icon": "floor" }, { "type": "food", "name": "ectoplasma", "icon": "ectoplasma" }]],
                 [[{ "icon": "floor" }]]
             ],
             "updatedCreatures": []
@@ -512,7 +512,7 @@ describe('Проверка функции moveHero', () => {
                 "damage": 100
             },
             "updatedMap": [
-                [[{ "icon": "floor" }, { "type": "food", "icon": "ectoplasma" }]],
+                [[{ "icon": "floor" }, { "type": "food", "name": "ectoplasma", "icon": "ectoplasma" }]],
                 [[{ "icon": "floor" }]]
             ],
             "updatedCreatures": []

@@ -17,27 +17,32 @@
         "icon": "gem"
     },
     "sword": {
+        "name": "wooden sword",
         "type": "weapon",
         "icon": "sword",
         "damage": 18
     },
     "iron_sword": {
+        "name": "iron sword",
         "type": "weapon",
         "icon": "iron_sword",
         "damage": 50
     },
     "shield": {
+        "name": "wooden shield",
         "type": "shield",
         "icon": "shield",
         "defence": 2
     },
     "iron_shield": {
+        "name": "iron shield",
         "type": "shield",
         "icon": "iron_shield",
         "defence": 20
     },
     "ectoplasma": {
         "type": "food",
+        "name": "ectoplasma",
         "icon": "ectoplasma"
     }
 }

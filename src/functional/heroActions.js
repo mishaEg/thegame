@@ -34,7 +34,7 @@ export default function heroActions(hero, map, creatures, key) {
             creatures = creaturesAfterHeroAction;
         }
     }
-    hero.effectsHandler();
+    // hero.effectsHandler();
 
     return message;
 }

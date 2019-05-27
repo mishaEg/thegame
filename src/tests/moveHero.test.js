@@ -1,546 +1,485 @@
 import moveHero from '../functional/moveHero';
 import Enemy from '../Units/Enemy';
+import Hero from '../Units/Hero';
 
 describe('Проверка функции moveHero', () => {
     it('Передвижение героя вправо на чистую ячейку', () => {
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }], [{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 0
-            },
-            "right",
-            []
-        )).toEqual({
-            "message": false,
-            "movedHero": {
-                "positionX": 1,
-                "positionY": 0
-            },
-            "updatedMap": [],
-            "updatedCreatures": []
-        })
+            outputMap = [
+                [[{ "icon": "floor" }], [{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(0, 0),
+            outputHero = new Hero(0, 1),
+            inputCreatures = [],
+            outputCreatures = [],
+            message = moveHero(inputMap, inputHero, "right", inputCreatures);
+
+        expect(message).toEqual(false);
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Передвижение героя влево на чистую ячейку', () => {
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }], [{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 1,
-                "positionY": 0
-            },
-            "left",
-            []
-        )).toEqual({
-            "message": false,
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 0
-            },
-            "updatedMap": [],
-            "updatedCreatures": []
-        })
+            outputMap = [
+                [[{ "icon": "floor" }], [{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(0, 1),
+            outputHero = new Hero(0, 0),
+            inputCreatures = [],
+            outputCreatures = [],
+            message = moveHero(inputMap, inputHero, "left", inputCreatures);
+
+        expect(message).toEqual(false);
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Передвижение героя вниз на чистую ячейку', () => {
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 0
-            },
-            "down",
-            []
-        )).toEqual({
-            "message": false,
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 1
-            },
-            "updatedMap": [],
-            "updatedCreatures": []
-        })
+            outputMap = [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(0, 0),
+            outputHero = new Hero(1, 0),
+            inputCreatures = [],
+            outputCreatures = [],
+            message = moveHero(inputMap, inputHero, "down", inputCreatures);
+
+        expect(message).toEqual(false);
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Передвижение героя вверх на чистую ячейку', () => {
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1
-            },
-            "up",
-            []
-        )).toEqual({
-            "message": false,
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 0
-            },
-            "updatedMap": [],
-            "updatedCreatures": []
-        })
+            outputMap = [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(0, 0),
+            inputCreatures = [],
+            outputCreatures = [],
+            message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual(false);
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Передвижение героя вверх на траву', () => {
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }, { "icon": "grass" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1
-            },
-            "up",
-            []
-        )).toEqual({
-            "message": "you stay at grass and feels fresh green leaves by your foots :з.",
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 0
-            },
-            "updatedMap": [],
-            "updatedCreatures": []
-        })
+            outputMap = [
+                [[{ "icon": "floor" }, { "icon": "grass" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(0, 0),
+            inputCreatures = [],
+            outputCreatures = [],
+            message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual("you stay at grass and feels fresh green leaves by your foots :з.");
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Передвижение героя вверх на деревянный меч', () => {
-        expect(moveHero(
-            [
-                [[{ "icon": "floor" }, { "icon": "sword", "type": "weapon" }]],
+        const inputMap = [
+                [[{ "icon": "floor" }, { "icon": "sword", "name": "wooden sword", "type": "weapon" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1
-            },
-            "up",
-            []
-        )).toEqual({
-            "message": 'you stay at sword, if you wanna pick it up, press "p"',
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 0
-            },
-            "updatedMap": [],
-            "updatedCreatures": []
-        })
+            outputMap = [
+                [[{ "icon": "floor" }, { "icon": "sword", "name": "wooden sword", "type": "weapon" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(0, 0),
+            inputCreatures = [],
+            outputCreatures = [],
+            message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you stay at wooden sword, if you wanna pick it up, press "p"');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Передвижение героя вверх на деревянный щит', () => {
-        expect(moveHero(
-            [
-                [[{ "icon": "floor" }, { "icon": "shield", "type": "shield" }]],
+        const inputMap = [
+                [[{ "icon": "floor" }, { "icon": "shield", "name": "wooden shield", "type": "shield" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1
-            },
-            "up",
-            []
-        )).toEqual({
-            "message": 'you stay at shield, if you wanna pick it up, press "p"',
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 0
-            },
-            "updatedMap": [],
-            "updatedCreatures": []
-        })
+            outputMap = [
+                [[{ "icon": "floor" }, { "icon": "shield", "name": "wooden shield", "type": "shield" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(0, 0),
+            inputCreatures = [],
+            outputCreatures = [],
+            message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you stay at wooden shield, if you wanna pick it up, press "p"');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Передвижение героя вверх на железный меч', () => {
-        expect(moveHero(
-            [
-                [[{ "icon": "floor" }, { "icon": "iron_sword", "type": "weapon" }]],
+        const inputMap = [
+                [[{ "icon": "floor" }, { "icon": "iron_sword", "name": "iron sword", "type": "weapon" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1
-            },
-            "up",
-            []
-        )).toEqual({
-            "message": 'you stay at iron_sword, if you wanna pick it up, press "p"',
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 0
-            },
-            "updatedMap": [],
-            "updatedCreatures": []
-        })
+            outputMap = [
+                [[{ "icon": "floor" }, { "icon": "iron_sword", "name": "iron sword", "type": "weapon" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(0, 0),
+            inputCreatures = [],
+            outputCreatures = [],
+            message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you stay at iron sword, if you wanna pick it up, press "p"');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Передвижение героя вверх на железный щит', () => {
-        expect(moveHero(
-            [
-                [[{ "icon": "floor" }, { "icon": "iron_shield", "type": "shield" }]],
+        const inputMap = [
+                [[{ "icon": "floor" }, { "icon": "iron_shield", "name": "iron shield", "type": "shield" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1
-            },
-            "up",
-            []
-        )).toEqual({
-            "message": 'you stay at iron_shield, if you wanna pick it up, press "p"',
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 0
-            },
-            "updatedMap": [],
-            "updatedCreatures": []
-        })
+            outputMap = [
+                [[{ "icon": "floor" }, { "icon": "iron_shield", "name": "iron shield", "type": "shield" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(0, 0),
+            inputCreatures = [],
+            outputCreatures = [],
+            message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you stay at iron shield, if you wanna pick it up, press "p"');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Передвижение героя вверх на гем', () => {
-        expect(moveHero(
-            [
-                [[{ "icon": "floor" }, { "icon": "gem", "type": "money" }]],
+        const inputMap = [
+                [[{ "icon": "floor" }, { "icon": "gem", "name": "gem", "type": "money" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1
-            },
-            "up",
-            []
-        )).toEqual({
-            "message": 'you stay at gem, if you wanna pick it up, press "p"',
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 0
-            },
-            "updatedMap": [],
-            "updatedCreatures": []
-        })
+            outputMap = [
+                [[{ "icon": "floor" }, { "icon": "gem", "name": "gem", "type": "money" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(0, 0),
+            inputCreatures = [],
+            outputCreatures = [],
+            message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you stay at gem, if you wanna pick it up, press "p"');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Столкновение героя с монстром(спящим) при движении вверх', () => {
-        const inputEnemy = new Enemy(0, 0),
-            outputEnemy = new Enemy(0, 0);
-
-        outputEnemy.getDamage(10);
-
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 10
-            },
-            "up",
-            [inputEnemy]
-        )).toEqual({
-            "message": "you punch sleeping enemy, once more punch for waked up",
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 10
-            },
-            "updatedMap": [],
-            "updatedCreatures": [outputEnemy]
-        })
+            outputMap = [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(1, 0),
+            inputCreatures = [new Enemy(0, 0)],
+            outputCreatures = [new Enemy(0, 0)];
+
+        inputHero.damage = 10;
+        outputHero.damage = 10;
+        outputCreatures[0].getDamage(10);
+        const message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you punch sleeping enemy, once more punch for waked up');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Столкновение героя с монстром(пробуждение) при движении вверх', () => {
-        const inputEnemy = new Enemy(0, 0),
-            outputEnemy = new Enemy(0, 0);
-
-        inputEnemy.getDamage(10);
-        outputEnemy.getDamage(10);
-        outputEnemy.getDamage(10);
-
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 10
-            },
-            "up",
-            [inputEnemy]
-        )).toEqual({
-            "message": "you punch sleeping enemy and woke him up",
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 10
-            },
-            "updatedMap": [],
-            "updatedCreatures": [outputEnemy]
-        })
+            outputMap = [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(1, 0),
+            inputCreatures = [new Enemy(0, 0)],
+            outputCreatures = [new Enemy(0, 0)];
+
+        inputHero.damage = 10;
+        outputHero.damage = 10;
+        inputCreatures[0].getDamage(10);
+        outputCreatures[0].getDamage(10);
+        outputCreatures[0].getDamage(10);
+
+        const message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you punch sleeping enemy and woke him up');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Столкновение героя с монстром(проснувшимся) при движении вверх', () => {
-        const inputEnemy = new Enemy(0, 0),
-            outputEnemy = new Enemy(0, 0);
-
-        inputEnemy.getDamage(10);
-        inputEnemy.getDamage(10);
-        outputEnemy.getDamage(10);
-        outputEnemy.getDamage(10);
-        outputEnemy.getDamage(10);
-
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 10
-            },
-            "up",
-            [inputEnemy]
-        )).toEqual({
-            "message": "you punch enemy",
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 10
-            },
-            "updatedMap": [],
-            "updatedCreatures": [outputEnemy]
-        })
+            outputMap = [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(1, 0),
+            inputCreatures = [new Enemy(0, 0)],
+            outputCreatures = [new Enemy(0, 0)];
+
+        inputHero.damage = 10;
+        outputHero.damage = 10;
+        inputCreatures[0].getDamage(10);
+        inputCreatures[0].getDamage(10);
+        outputCreatures[0].getDamage(10);
+        outputCreatures[0].getDamage(10);
+        outputCreatures[0].getDamage(10);
+
+        const message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you punch enemy');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Проверка перехода состояния монстра из пробужденного в раздраженный', () => {
-        const inputEnemy = new Enemy(0, 0),
-            outputEnemy = new Enemy(0, 0);
-
-        inputEnemy.wakedUp();
-        outputEnemy.wakedUp();
-        outputEnemy.getDamage(20);
-
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 20
-            },
-            "up",
-            [inputEnemy]
-        )).toEqual({
-            "message": "you punch enemy and he became irritated",
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 20
-            },
-            "updatedMap": [],
-            "updatedCreatures": [outputEnemy]
-        })
+            outputMap = [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(1, 0),
+            inputCreatures = [new Enemy(0, 0)],
+            outputCreatures = [new Enemy(0, 0)];
+
+        inputHero.damage = 20;
+        outputHero.damage = 20;
+        inputCreatures[0].wakedUp();
+        outputCreatures[0].wakedUp();
+        outputCreatures[0].getDamage(20);
+
+        const message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you punch enemy and he became irritated');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Проверка отсутствия перехода состояния монстра из пробужденного в раздраженный', () => {
-        const inputEnemy = new Enemy(0, 0),
-            outputEnemy = new Enemy(0, 0);
-
-        inputEnemy.wakedUp();
-        outputEnemy.wakedUp();
-        outputEnemy.getDamage(5);
-
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 5
-            },
-            "up",
-            [inputEnemy]
-        )).toEqual({
-            "message": "you punch enemy",
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 5
-            },
-            "updatedMap": [],
-            "updatedCreatures": [outputEnemy]
-        })
+            outputMap = [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(1, 0),
+            inputCreatures = [new Enemy(0, 0)],
+            outputCreatures = [new Enemy(0, 0)];
+
+        inputHero.damage = 5;
+        outputHero.damage = 5;
+        inputCreatures[0].wakedUp();
+        outputCreatures[0].wakedUp();
+        outputCreatures[0].getDamage(5);
+
+        const message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you punch enemy');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Проверка перехода состояния монстра из раздраженного в яростный', () => {
-        const inputEnemy = new Enemy(0, 0),
-            outputEnemy = new Enemy(0, 0);
-
-        inputEnemy.wakedUp();
-        inputEnemy.getDamage(40);
-        outputEnemy.wakedUp();
-        outputEnemy.getDamage(40);
-        outputEnemy.getDamage(20);
-
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 20
-            },
-            "up",
-            [inputEnemy]
-        )).toEqual({
-            "message": "you punch enemy and he became raged",
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 20
-            },
-            "updatedMap": [],
-            "updatedCreatures": [outputEnemy]
-        })
+            outputMap = [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(1, 0),
+            inputCreatures = [new Enemy(0, 0)],
+            outputCreatures = [new Enemy(0, 0)];
+
+        inputHero.damage = 20;
+        outputHero.damage = 20;
+        inputCreatures[0].wakedUp();
+        inputCreatures[0].getDamage(40);
+        outputCreatures[0].wakedUp();
+        outputCreatures[0].getDamage(40);
+        outputCreatures[0].getDamage(20);
+
+        const message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you punch enemy and he became raged');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Проверка перехода состояния монстра из яростного в смиренный', () => {
-        const inputEnemy = new Enemy(0, 0),
-            outputEnemy = new Enemy(0, 0);
-
-        inputEnemy.wakedUp();
-        inputEnemy.getDamage(60);
-        outputEnemy.wakedUp();
-        outputEnemy.getDamage(60);
-        outputEnemy.getDamage(30);
-
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 30
-            },
-            "up",
-            [inputEnemy]
-        )).toEqual({
-            "message": "you punch enemy and he became humble",
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 30
-            },
-            "updatedMap": [],
-            "updatedCreatures": [outputEnemy]
-        })
+            outputMap = [
+                [[{ "icon": "floor" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(1, 0),
+            inputCreatures = [new Enemy(0, 0)],
+            outputCreatures = [new Enemy(0, 0)];
+
+        inputHero.damage = 30;
+        outputHero.damage = 30;
+        inputCreatures[0].wakedUp();
+        inputCreatures[0].getDamage(60);
+        outputCreatures[0].wakedUp();
+        outputCreatures[0].getDamage(60);
+        outputCreatures[0].getDamage(30);
+
+        const message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you punch enemy and he became humble');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Проверка появление эктоплазмы при смерти монстра', () => {
-        const enemy = new Enemy(0, 0);
-
-        enemy.wakedUp();
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 100
-            },
-            "up",
-            [enemy]
-        )).toEqual({
-            "message": "you punch enemy and kill him",
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 100
-            },
-            "updatedMap": [
+            outputMap = [
                 [[{ "icon": "floor" }, { "type": "food", "name": "ectoplasma", "icon": "ectoplasma" }]],
                 [[{ "icon": "floor" }]]
             ],
-            "updatedCreatures": []
-        })
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(1, 0),
+            inputCreatures = [new Enemy(0, 0)],
+            outputCreatures = [];
+
+        inputHero.damage = 100;
+        outputHero.damage = 100;
+        inputCreatures[0].wakedUp();
+
+        const message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you punch enemy and kill him');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Проверка убийства спящего монстра', () => {
-        const enemy = new Enemy(0, 0);
-
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "floor" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 100
-            },
-            "up",
-            [enemy]
-        )).toEqual({
-            "message": "you punch enemy and kill him",
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 1,
-                "damage": 100
-            },
-            "updatedMap": [
+            outputMap = [
                 [[{ "icon": "floor" }, { "type": "food", "name": "ectoplasma", "icon": "ectoplasma" }]],
                 [[{ "icon": "floor" }]]
             ],
-            "updatedCreatures": []
-        })
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(1, 0),
+            inputCreatures = [new Enemy(0, 0)],
+            outputCreatures = [];
+
+        inputHero.damage = 100;
+        outputHero.damage = 100;
+
+        const message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('you punch enemy and kill him');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 })
 
 describe('Негативные тесты функции moveHero', () => {
     it('Невозможность перемещения героя вверх на ячейку со стеной', () => {
-        expect(moveHero(
-            [
+        const inputMap = [
                 [[{ "icon": "wall" }]],
                 [[{ "icon": "floor" }]]
             ],
-            {
-                "positionX": 0,
-                "positionY": 1
-            },
-            "up",
-            []
-        )).toEqual({
-            "message": "there is no the way",
-            "movedHero": {
-                "positionX": 0,
-                "positionY": 1
-            },
-            "updatedMap": [],
-            "updatedCreatures": []
-        })
+            outputMap = [
+                [[{ "icon": "wall" }]],
+                [[{ "icon": "floor" }]]
+            ],
+            inputHero = new Hero(1, 0),
+            outputHero = new Hero(1, 0),
+            inputCreatures = [],
+            outputCreatures = [];
+
+        const message = moveHero(inputMap, inputHero, "up", inputCreatures);
+
+        expect(message).toEqual('there is no the way');
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 })

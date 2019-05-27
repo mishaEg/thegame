@@ -37,4 +37,9 @@ export default class Hero {
         this.shield = shield;
         this.defence += shield.defence;
     }
+
+    changeCoordinates(x, y) {
+        this.positionX = x;
+        this.positionY = y;
+    }
 }

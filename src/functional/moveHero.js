@@ -3,8 +3,7 @@ import isContact from './utils/isContact';
 import elements from '../data/elements';
 
 /**
- * @description реализация сражения героя с монстром
- * @return creature - объект монстра после сражения
+ * Реализация сражения героя с монстром
  */
 function heroHitsCreature(hero, creature) {
     let message = 'you punch enemy',
@@ -50,18 +49,14 @@ function heroHitsCreature(hero, creature) {
 }
 
 /**
- * @description реализация функции движения героя на карте
- * @return message - лог событий или false,
- * movedHero - обновленный объект героя,
- * updatedCreatures - обновленный список врагов
+ * Реализация функции движения героя на карте
+ * @return message - лог событий или false
  */
 function moveHero(map, hero, key, creatures) {
     let dx = 0,
         dy = 0,
         message = false,
-        wasAfight = false,
-        changeMap = false,
-        isMoved = false;
+        wasAfight = false;
 
     switch (key) {
         case "left": dx = -1; break;
@@ -73,30 +68,24 @@ function moveHero(map, hero, key, creatures) {
 
     const xTravelCoordinates = hero.positionX + dx,
         yTravelCoordinates = hero.positionY + dy,
-        upperItem = getTopItem(map, yTravelCoordinates, xTravelCoordinates),
+        { ectoplasma } = elements,
+        upperItem = getTopItem(map, yTravelCoordinates, xTravelCoordinates);
 
-        updatedCreatures = creatures.reduce((accumulator, currentCreature) => {
-            if (isContact({ positionX: xTravelCoordinates, positionY: yTravelCoordinates }, currentCreature)) {
-                const {
-                        fightMessage,
-                        isDied
-                    } = heroHitsCreature(hero, currentCreature),
-                    { ectoplasma } = elements;
+    creatures.forEach((currentCreature, index, arrayCreatures) => {
+        if (isContact({ positionX: xTravelCoordinates, positionY: yTravelCoordinates }, currentCreature)) {
+            const {
+                fightMessage,
+                isDied
+            } = heroHitsCreature(hero, currentCreature);
 
-                wasAfight = true;
-                message = fightMessage;
-                if (isDied) {
-                    changeMap = true;
-                    map[yTravelCoordinates][xTravelCoordinates].push(ectoplasma);
-                } else {
-                    accumulator.push(currentCreature);
-                }
-            } else {
-                accumulator.push(currentCreature);
+            wasAfight = true;
+            message = fightMessage;
+            if (isDied) {
+                map[yTravelCoordinates][xTravelCoordinates].push(ectoplasma);
+                arrayCreatures.splice(index, 1); // Удаляем текущее существо из массива, если оно умерло
             }
-
-            return accumulator;
-        }, []);
+        }
+    });
 
     if (!wasAfight) {
         switch (upperItem.icon) {
@@ -107,29 +96,19 @@ function moveHero(map, hero, key, creatures) {
                 message = 'Its whitespace? how did you do this?? (bug!)';
                 break;
             case 'grass':
-                isMoved = true;
-                message = 'you stay at ' + upperItem.icon + ' and feels fresh green leaves by your foots :з.';
+                message = 'you stay at grass and feels fresh green leaves by your foots :з.';
+                hero.changeCoordinates(xTravelCoordinates, yTravelCoordinates);
                 break;
-            default:
+            default: {
                 if (upperItem.type) {
-                    message = 'you stay at ' + upperItem.icon + ', if you wanna pick it up, press "p"';
+                    message = 'you stay at ' + upperItem.name + ', if you wanna pick it up, press "p"';
                 }
-                isMoved = true;
+                hero.changeCoordinates(xTravelCoordinates, yTravelCoordinates);
+            }
         }
     }
 
-    const updatedMap = changeMap ? map : [];
-
-    return {
-        message: message,
-        movedHero: {
-            ...hero,
-            positionX: isMoved ? xTravelCoordinates : hero.positionX,
-            positionY: isMoved ? yTravelCoordinates : hero.positionY
-        },
-        updatedMap: updatedMap,
-        updatedCreatures: updatedCreatures
-    };
+    return message;
 }
 
 export default moveHero;

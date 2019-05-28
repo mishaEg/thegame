@@ -8,44 +8,24 @@ import getRandomInt from './utils/getRandomInt';
 function drawTunnel(diggingCoordinate, generateGem, map, hero, creatures) {
     const { floor, emptySpace, wall, gem } = elements,
         dx = [-1, -1, -1, 0, 0, +0, 1, 1, +1], // смещения, для обхвата площади
-        dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1], // размером 3х3 с центром в указанной точке
+        dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1]; // размером 3х3 с центром в указанной точке
 
-        { // Генерация стен вокруг указанной точки
-            updatedTargetCoordinates: digCoordinateOnMapWithWall,
-            map: mapWithWall,
-            hero: heroCoordOnMapWithWall,
-            creatures: creaturesOnMapWithWall
-        } = expansionMap(
-            diggingCoordinate, dx, dy, map,
-            hero, wall, [emptySpace], creatures
-        ),
-        { // Замена стены в указанной точке на пол
-            updatedTargetCoordinates: digCoordOnMapWithTunnel,
-            map: mapWithTunnel,
-            hero: heroOnMapWithTunnel,
-            creatures: creaturesOnMapWithTunnel
-        } = expansionMap(
-            digCoordinateOnMapWithWall, [0], [0], mapWithWall,
-            heroCoordOnMapWithWall, floor, [wall], creaturesOnMapWithWall
-        );
+    // Генерация стен вокруг указанной точки
+    expansionMap(diggingCoordinate, dx, dy, map, hero, wall, [emptySpace], creatures);
+    // Замена стены в указанной точке на пол
+    expansionMap(diggingCoordinate, [0], [0], map, hero, floor, [wall], creatures);
+
     let message = false;
-
     if (generateGem) {
         const RANDOM_GENERATE_GEM = getRandomInt(0, 9);
 
         if (RANDOM_GENERATE_GEM === 0) {
-            mapWithTunnel[digCoordinateOnMapWithWall.y][digCoordinateOnMapWithWall.x].push(gem);
+            map[diggingCoordinate.y][diggingCoordinate.x].push(gem);
             message = 'you found a gem!';
         }
     }
 
-    return {
-        updateDiggingCoordinate: { ...digCoordOnMapWithTunnel },
-        map: [...mapWithTunnel],
-        hero: { ...heroOnMapWithTunnel },
-        creatures: [...creaturesOnMapWithTunnel],
-        message: message
-    };
+    return message;
 }
 
 export default drawTunnel;

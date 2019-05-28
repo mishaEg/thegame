@@ -21,17 +21,7 @@ export default function heroActions(hero, map, creatures, key) {
             }
             break;
         default: {
-            const {
-                map: mapAfterHeroAction,
-                hero: heroAfterAction,
-                message: messageOfHeroAction,
-                creatures: creaturesAfterHeroAction
-            } = movingAndDigging(map, hero, key, creatures);
-
-            map = mapAfterHeroAction;
-            hero = heroAfterAction;
-            message = messageOfHeroAction;
-            creatures = creaturesAfterHeroAction;
+            message = movingAndDigging(map, hero, key, creatures);
         }
     }
     hero.effectsHandler();

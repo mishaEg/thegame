@@ -3,20 +3,12 @@ import Enemy from '../Units/Enemy';
 
 describe('Тесты функции drawCave', () => {
     it('Проверка генерации пещеры c травой на карте и сохранение координат героя, врагов, координат копания при копании вверх', () => {
-        expect(drawCave(
-            { x: 2, y: 0 },
-            "up", // direction
-            "grass", // treasure
-            [
+        const targetCoordinates = { x: 2, y: 0 },
+            inputMap = [
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
                 [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }]]
             ],
-            { positionX: 2, positionY: 1 },
-            [{
-                positionX: 3, positionY: 1
-            }]
-        )).toEqual({
-            "mapWithCave": [
+            outputMap = [
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }, { "icon": "grass" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
@@ -24,30 +16,28 @@ describe('Тесты функции drawCave', () => {
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
                 [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }]]
             ],
-            "heroOnMapWithCave": {
-                positionX: 2, positionY: 5
-            },
-            "creaturesOnMapWithCave": [{
+            inputHero = { positionX: 2, positionY: 1 },
+            outputHero = { positionX: 2, positionY: 5 },
+            inputCreatures = [{
+                positionX: 3, positionY: 1
+            }],
+            outputCreatures = [{
                 positionX: 3, positionY: 5
-            }]
-        })
+            }];
+        drawCave(targetCoordinates, "up", "grass", inputMap, inputHero, inputCreatures);
+
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Проверка генерации пещеры c травой на карте и сохранение координат героя, врагов, координат копания при копании вниз', () => {
-        expect(drawCave(
-            { x: 2, y: 1 },
-            "down", // direction
-            "grass", // treasure
-            [
+        const targetCoordinates = { x: 2, y: 1 },
+            inputMap = [
                 [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]]
             ],
-            { positionX: 2, positionY: 0 },
-            [{
-                positionX: 3, positionY: 0
-            }]
-        )).toEqual({
-            "mapWithCave": [
+            outputMap = [
                 [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
@@ -55,135 +45,139 @@ describe('Тесты функции drawCave', () => {
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
             ],
-            "heroOnMapWithCave": {
-                positionX: 2, positionY: 0
-            },
-            "creaturesOnMapWithCave": [{
+            inputHero = { positionX: 2, positionY: 0 },
+            outputHero = { positionX: 2, positionY: 0 },
+            inputCreatures = [{
                 positionX: 3, positionY: 0
-            }]
-        })
+            }],
+            outputCreatures = [{
+                positionX: 3, positionY: 0
+            }];
+        drawCave(targetCoordinates, "down", "grass", inputMap, inputHero, inputCreatures);
+
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Проверка генерации пещеры c травой на карте и сохранение координат героя, врагов, координат копания при копании вправо', () => {
-        expect(drawCave(
-            { x: 1, y: 2 },
-            "right", // direction
-            "grass", // treasure
-            [
+        const targetCoordinates = { x: 1, y: 2 },
+            inputMap = [
                 [[{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "floor" }], [{ "icon": "wall" }]],
             ],
-            { positionX: 0, positionY: 2 },
-            [{ positionX: 0, positionY: 3 }]
-        )).toEqual({
-            "mapWithCave": [
+            outputMap = [
                 [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
                 [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }, { "icon": "grass" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
             ],
-            "heroOnMapWithCave": {
-                positionX: 0, positionY: 2
-            },
-            "creaturesOnMapWithCave": [{
+            inputHero = { positionX: 0, positionY: 2 },
+            outputHero = { positionX: 0, positionY: 2 },
+            inputCreatures = [{
                 positionX: 0, positionY: 3
-            }]
-        })
+            }],
+            outputCreatures = [{
+                positionX: 0, positionY: 3
+            }];
+        drawCave(targetCoordinates, "right", "grass", inputMap, inputHero, inputCreatures);
+
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Проверка генерации пещеры c травой на карте и сохранение координат героя, врагов, координат копания при копании влево', () => {
-        expect(drawCave(
-            { x: 0, y: 2 },
-            "left", // direction
-            "grass", // treasure
-            [
+        const targetCoordinates = { x: 0, y: 2 },
+            inputMap = [
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
             ],
-            { positionX: 1, positionY: 2 },
-            [{ positionX: 1, positionY: 3 }]
-        )).toEqual({
-            "mapWithCave": [
+            outputMap = [
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }, { "icon": "grass" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
             ],
-            "heroOnMapWithCave": {
-                positionX: 5, positionY: 2
-            },
-            "creaturesOnMapWithCave": [{
+            inputHero = { positionX: 1, positionY: 2 },
+            outputHero = { positionX: 5, positionY: 2 },
+            inputCreatures = [{
+                positionX: 1, positionY: 3
+            }],
+            outputCreatures = [{
                 positionX: 5, positionY: 3
-            }]
-        })
+            }];
+        drawCave(targetCoordinates, "left", "grass", inputMap, inputHero, inputCreatures);
+
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Проверка генерации пещеры c врагом на карте и сохранение координат героя, врагов, координат копания при копании влево', () => {
-        expect(drawCave(
-            { x: 0, y: 2 },
-            "left", // direction
-            "enemy", // treasure
-            [
+        const targetCoordinates = { x: 0, y: 2 },
+            inputMap = [
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
             ],
-            { positionX: 1, positionY: 2 },
-            [{ positionX: 1, positionY: 3 }]
-        )).toEqual({
-            "mapWithCave": [
+            outputMap = [
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
             ],
-            "heroOnMapWithCave": {
-                positionX: 5, positionY: 2
-            },
-            "creaturesOnMapWithCave": [
+            inputHero = { positionX: 1, positionY: 2 },
+            outputHero = { positionX: 5, positionY: 2 },
+            inputCreatures = [{
+                positionX: 1, positionY: 3
+            }],
+            outputCreatures = [
                 { positionX: 5, positionY: 3 },
                 new Enemy(2, 2)
-            ]
-        })
+            ];
+        drawCave(targetCoordinates, "left", "enemy", inputMap, inputHero, inputCreatures);
+
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 
     it('Проверка генерации пещеры c травой без врагов на карте на карте и сохранение координат при копании влево', () => {
-        expect(drawCave(
-            { x: 0, y: 2 },
-            "left", // direction
-            "grass", // treasure
-            [
+        const targetCoordinates = { x: 0, y: 2 },
+            inputMap = [
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }]],
             ],
-            { positionX: 1, positionY: 2 },
-            []
-        )).toEqual({
-            "mapWithCave": [
+            outputMap = [
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }, { "icon": "grass" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
             ],
-            "heroOnMapWithCave": {
-                positionX: 5, positionY: 2
-            },
-            "creaturesOnMapWithCave": []
-        })
+            inputHero = { positionX: 1, positionY: 2 },
+            outputHero = { positionX: 5, positionY: 2 },
+            inputCreatures = [],
+            outputCreatures = [];
+        drawCave(targetCoordinates, "left", "grass", inputMap, inputHero, inputCreatures);
+
+        expect(inputMap).toEqual(outputMap);
+        expect(inputHero).toEqual(outputHero);
+        expect(inputCreatures).toEqual(outputCreatures);
     });
 })

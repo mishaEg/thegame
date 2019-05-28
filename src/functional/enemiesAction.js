@@ -1,13 +1,13 @@
 import PF from 'pathfinding';
 import isContact from './utils/isContact';
 
-function createMatrixForPF(inputMap, otherCreatures) {
-    const matrixForPF = inputMap.map((currentRow, indexRow) => {
+function createMatrixForPF(map, allCreatures) {
+    const matrixForPF = map.map((currentRow, indexRow) => {
         return currentRow.map((currentColumn, indexCol) => {
             const iconLastItem = currentColumn[currentColumn.length - 1].icon;
             let hereEnemy = false;
 
-            otherCreatures.forEach((currentCreature) => {
+            allCreatures.forEach((currentCreature) => {
                 if (currentCreature.positionY === indexRow && currentCreature.positionX === indexCol) {
                     hereEnemy = true;
                 }
@@ -22,24 +22,11 @@ function createMatrixForPF(inputMap, otherCreatures) {
     return matrixForPF;
 }
 
-/**
- * @description реализация нанесения урона текущим врагом по герою
- */
-function enemyHitsHero(creature, hero) {
-    const damagedHero = {
-        ...hero,
-        health: hero.health - creature.damage
-    };
-
-    return {
-        damagedHero: damagedHero
-    };
-}
 
 /**
  * @description реализация функции передвижения переданного врага
  */
-function onceEnemyAction(creature, map, hero, otherCreatures) {
+function onceEnemyAction(creature, map, hero, allCreatures) {
     const dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1], // смещения, для обхвата площади
         dx = [-1, -1, -1, 0, 0, +0, 1, 1, +1]; // размером 3х3 с центром в указанной точке
 
@@ -48,61 +35,33 @@ function onceEnemyAction(creature, map, hero, otherCreatures) {
             YpositionForCheckHero = creature.positionY + currentDy;
 
         if (isContact({ positionX: XpositionForCheckHero, positionY: YpositionForCheckHero }, hero)) {
-            const { damagedHero } = enemyHitsHero(creature, hero);
-
-            hero = damagedHero;
+            hero.health -= creature.damage;
         }
     });
 
-    const matrixForPF = createMatrixForPF(map, otherCreatures),
+    const matrixForPF = createMatrixForPF(map, allCreatures),
         finder = new PF.AStarFinder(),
         grid = new PF.Grid(matrixForPF),
-        path = finder.findPath(
-            creature.positionX,
-            creature.positionY,
-            hero.positionX,
-            hero.positionY,
-            grid
-        );
+        path = finder.findPath(creature.positionX, creature.positionY, hero.positionX, hero.positionY, grid);
 
     // Если путь не найден, массив будет пустым
     // Если путь найден и следующий шаг будет не на позицию героя, тогда монстр двигается
     if (path.length !== 0 && !(path[1][0] === hero.positionX && path[1][1] === hero.positionY)) {
         creature.move(path[1][0], path[1][1]);
     }
-
-    return {
-        updatedHero: { ...hero },
-        updatedCreature: creature
-    };
 }
 
 /**
  * Реализация действий всех существ на карте
  */
 function enemiesAction(hero, map, creatures) {
-    const updatedAllCreatures = creatures.map((creature) => {
+    creatures.forEach((creature) => {
         if (creature.status === 'sleeping') {
             creature.regeneration();
-
-            return creature;
+        } else {
+            onceEnemyAction(creature, map, hero, creatures);
         }
-        const enemyWithoutCurrent = creatures.filter((currCreature) => {
-                return currCreature !== creature;
-            }),
-            {
-                updatedHero,
-                updatedCreature
-            } = onceEnemyAction(creature, map, hero, enemyWithoutCurrent);
-
-        hero = updatedHero;
-        return updatedCreature;
     });
-
-    return {
-        updatedCreatures: [...updatedAllCreatures],
-        updatedHero: { ...hero }
-    };
 }
 
 export default enemiesAction;

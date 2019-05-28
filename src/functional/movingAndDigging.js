@@ -2,46 +2,15 @@ import moveHero from './moveHero';
 import digging from './digging';
 
 function movingAndDigging(map, hero, key, creatures) {
-    let loggingMessage,
-        heroAfterAction = hero,
-        allEnemyAfterAction = creatures,
-        mapAfterAction = map;
+    let loggingMessage;
 
     if (hero.readyToMine) {
-        const {
-            message,
-            updatedMap,
-            updatedHero,
-            updatedCreatures
-        } = digging(map, hero, key, creatures);
-
-
-        allEnemyAfterAction = updatedCreatures;
-        mapAfterAction = updatedMap;
-        heroAfterAction = updatedHero;
-        loggingMessage = message;
+        loggingMessage = digging(map, hero, key, creatures);
     } else {
-        const {
-            message,
-            movedHero,
-            updatedMap,
-            updatedCreatures
-        } = moveHero(map, hero, key, creatures);
-
-        if (updatedMap.length !== 0) {
-            mapAfterAction = updatedMap;
-        }
-        allEnemyAfterAction = updatedCreatures;
-        heroAfterAction = movedHero;
-        loggingMessage = message;
+        loggingMessage = moveHero(map, hero, key, creatures);
     }
 
-    return {
-        map: mapAfterAction,
-        hero: heroAfterAction,
-        message: loggingMessage,
-        creatures: allEnemyAfterAction
-    };
+    return loggingMessage;
 }
 
 export default movingAndDigging;

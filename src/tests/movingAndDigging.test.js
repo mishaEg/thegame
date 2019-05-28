@@ -1,67 +1,46 @@
 import movingAndDigging from '../functional/movingAndDigging';
+import Hero from '../Units/Hero';
 
 it('Передвижение героя на карте вправо на чистую ячейку', () => {
-    expect(movingAndDigging(
-        [
-            [[{ "icon": "floor" }], [{ "icon": "floor" }]]
-        ],
-        {
-            positionX: 0, positionY: 0, readyToMine: false
-        },
-        "right",
-        []
-    )).toEqual({
-        message: false,
-        map: [
-            [[{ "icon": "floor" }], [{ "icon": "floor" }]]
-        ],
-        hero: { positionY: 0, positionX: 1, readyToMine: false },
-        creatures: []
-    })
+    const inputHero = new Hero(0, 0),
+        outputHero = new Hero(0, 1),
+        inputMap = [[[{ "icon": "floor" }], [{ "icon": "floor" }]]],
+        outputMap = [[[{ "icon": "floor" }], [{ "icon": "floor" }]]],
+        creatures = [],
+        message = movingAndDigging(inputMap, inputHero, "right", creatures);
+
+    expect(inputMap).toEqual(outputMap);
+    expect(message).toEqual(false);
+    expect(inputHero).toEqual(outputHero);
+    expect(creatures).toEqual([]);
 });
 
 it('Передвижение героя на карте вправо на траву', () => {
-    expect(movingAndDigging(
-        [
-            [[{ "icon": "floor" }], [{ "icon": "floor" }, { "icon": "grass" }]]
-        ],
-        {
-            positionX: 0, positionY: 0, readyToMine: false
-        },
-        "right",
-        []
-    )).toEqual({
-        message: "you stay at grass and feels fresh green leaves by your foots :з.",
-        map: [
-            [[{ "icon": "floor" }], [{ "icon": "floor" }, { "icon": "grass" }]]
-        ],
-        hero: { positionY: 0, positionX: 1, readyToMine: false },
-        creatures: []
-    })
+    const inputHero = new Hero(0, 0),
+        outputHero = new Hero(0, 1),
+        inputMap = [[[{ "icon": "floor" }], [{ "icon": "floor" }, { "icon": "grass" }]]],
+        outputMap = [[[{ "icon": "floor" }], [{ "icon": "floor" }, { "icon": "grass" }]]],
+        creatures = [],
+        message = movingAndDigging(inputMap, inputHero, "right", creatures);
+
+    expect(inputMap).toEqual(outputMap);
+    expect(message).toEqual("you stay at grass and feels fresh green leaves by your foots :з.");
+    expect(inputHero).toEqual(outputHero);
+    expect(creatures).toEqual([]);
 });
 
-it('Раскопка туннеля вправо', () => {
-    expect(movingAndDigging(
-        [
-            [[{ 'icon': "floor" }], [{ 'icon': "floor" }]]
-        ],
-        {
-            positionX: 0,
-            positionY: 0,
-            readyToMine: true
-        },
-        "right",
-        []
-    )).toEqual({
-        message: "there is nothing to dig",
-        map: [
-            [[{ 'icon': "floor" }], [{ 'icon': "floor" }]]
-        ],
-        hero: {
-            positionX: 0,
-            positionY: 0,
-            readyToMine: false
-        },
-        creatures: []
-    })
+it('раскопка элемента, отличного от стены вправо', () => {
+    const inputHero = new Hero(0, 0),
+        outputHero = new Hero(0, 0),
+        inputMap = [[[{ "icon": "floor" }], [{ "icon": "floor" }]]],
+        outputMap = [[[{ "icon": "floor" }], [{ "icon": "floor" }]]],
+        creatures = [];
+
+    inputHero.readyToMine = true;
+    const message = movingAndDigging(inputMap, inputHero, "right", creatures);
+
+    expect(inputMap).toEqual(outputMap);
+    expect(message).toEqual("there is nothing to dig");
+    expect(inputHero).toEqual(outputHero);
+    expect(creatures).toEqual([]);
 });

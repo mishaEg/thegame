@@ -51,14 +51,14 @@ export default class GamesMap extends Component {
             return;
         }
 
-        const { message } = heroActions(hero, map, creatures, key),
-            { updatedHero, updatedCreatures } = enemiesAction(hero, map, creatures);
+        const message = heroActions(hero, map, creatures, key);
 
+        enemiesAction(hero, map, creatures);
         this.setState({
-            hero: updatedHero,
+            hero: hero,
             map: map,
             message: message,
-            creatures: updatedCreatures
+            creatures: creatures
         });
     };
 

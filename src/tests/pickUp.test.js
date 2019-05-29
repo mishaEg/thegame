@@ -38,7 +38,7 @@ it('Проверка поднятия деревянного меча', () => {
     ]]]);
     expect(inputHero).toEqual(outputHero);
     expect(message).toEqual(
-        'you raised wooden sword and increace your power!'
+        'you raised wooden sword!'
     );
 });
 
@@ -60,7 +60,44 @@ it('Проверка поднятия железного меча', () => {
     ]]]);
     expect(inputHero).toEqual(outputHero);
     expect(message).toEqual(
-        'you raised iron sword and increace your power!'
+        'you raised iron sword!'
+    );
+});
+
+
+it('Проверка поднятия железного меча, при этом имея деревянный меч', () => {
+    const map = [[[
+        { 'icon': "wall" },
+        {
+            "name": "iron sword",
+            "type": "weapon",
+            "icon": "iron_sword",
+            "damage": 50
+        }
+    ]]],
+        { iron_sword, sword } = elements,
+        inputHero = new Hero(0, 0),
+        outputHero = new Hero(0, 0);
+    
+    inputHero.weapon = sword;
+    inputHero.damage += sword.damage;
+    const message = pickUp(map, inputHero);
+
+    outputHero.weapon = iron_sword;
+    outputHero.damage += iron_sword.damage;
+
+    expect(map).toEqual([[[
+        { 'icon': "wall" },
+        {
+            "name": "wooden sword",
+            "type": "weapon",
+            "icon": "sword",
+            "damage": 18
+        }
+    ]]]);
+    expect(inputHero).toEqual(outputHero);
+    expect(message).toEqual(
+        'you raised iron sword!'
     );
 });
 
@@ -111,6 +148,78 @@ it('Проверка поднятия железного щита', () => {
 
     expect(map).toEqual([[[
         { 'icon': "wall" }
+    ]]]);
+    expect(inputHero).toEqual(outputHero);
+    expect(message).toEqual(
+        'you raised iron shield!'
+    );
+});
+
+it('Проверка поднятия железного щита, при этом имея деревянный щит', () => {
+    const map = [[[
+        { 'icon': "wall" },
+        {
+            "name": "iron shield",
+            "type": "shield",
+            "icon": "iron_shield",
+            "defence": 20
+        }
+    ]]],
+        { iron_shield, shield } = elements,
+        inputHero = new Hero(0, 0),
+        outputHero = new Hero(0, 0);
+    
+    inputHero.shield = shield;
+    inputHero.defence += shield.defence;
+    const message = pickUp(map, inputHero);
+
+    outputHero.shield = iron_shield;
+    outputHero.defence += iron_shield.defence;
+
+    expect(map).toEqual([[[
+        { 'icon': "wall" },
+        {
+            "name": "wooden shield",
+            "type": "shield",
+            "icon": "shield",
+            "defence": 2
+        }
+    ]]]);
+    expect(inputHero).toEqual(outputHero);
+    expect(message).toEqual(
+        'you raised iron shield!'
+    );
+});
+
+it('Проверка поднятия железного щита, при этом имея железный щит', () => {
+    const map = [[[
+        { 'icon': "wall" },
+        {
+            "name": "iron shield",
+            "type": "shield",
+            "icon": "iron_shield",
+            "defence": 20
+        }
+    ]]],
+        { iron_shield } = elements,
+        inputHero = new Hero(0, 0),
+        outputHero = new Hero(0, 0);
+    
+    inputHero.shield = iron_shield;
+    inputHero.defence += iron_shield.defence;
+    const message = pickUp(map, inputHero);
+
+    outputHero.shield = iron_shield;
+    outputHero.defence += iron_shield.defence;
+
+    expect(map).toEqual([[[
+        { 'icon': "wall" },
+        {
+            "name": "iron shield",
+            "type": "shield",
+            "icon": "iron_shield",
+            "defence": 20
+        }
     ]]]);
     expect(inputHero).toEqual(outputHero);
     expect(message).toEqual(

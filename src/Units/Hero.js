@@ -33,9 +33,23 @@ export default class Hero {
         this.damage += weapon.damage;
     }
 
+    dropWeapon() {
+        this.damage -= this.weapon.damage;
+        this.weapon = {
+            name: 'none'
+        };
+    }
+
     takeShield(shield) {
         this.shield = shield;
         this.defence += shield.defence;
+    }
+
+    dropShield() {
+        this.defence -= this.shield.defence;
+        this.shield = {
+            name: 'none'
+        };
     }
 
     changeCoordinates(x, y) {

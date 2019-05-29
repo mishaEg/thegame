@@ -14,14 +14,32 @@ export default function pickUp(map, hero) {
             message = 'you raised money and take 10 gold! ^_^';
             break;
         case 'shield':
-            hero.takeShield(gex);
-            map[hero.positionY][hero.positionX].pop(); // удаляем на карте предмет, который подняли
+            if (hero.shield.name !== 'none') {
+                const currentShield = hero.shield;
+
+                hero.dropShield();
+                hero.takeShield(gex);
+                map[hero.positionY][hero.positionX].pop(); // удаляем на карте предмет, который подняли
+                map[hero.positionY][hero.positionX].push(currentShield);
+            } else {
+                hero.takeShield(gex);
+                map[hero.positionY][hero.positionX].pop(); // удаляем на карте предмет, который подняли
+            }
             message = 'you raised ' + gex.name + '!';
             break;
         case 'weapon':
-            hero.takeWeapon(gex);
-            map[hero.positionY][hero.positionX].pop(); // удаляем на карте предмет, который подняли
-            message = 'you raised ' + gex.name + ' and increace your power!';
+            if (hero.weapon.name !== 'none') {
+                const currentWeapon = hero.weapon;
+
+                hero.dropWeapon();
+                hero.takeWeapon(gex);
+                map[hero.positionY][hero.positionX].pop(); // удаляем на карте предмет, который подняли
+                map[hero.positionY][hero.positionX].push(currentWeapon);
+            } else {
+                hero.takeWeapon(gex);
+                map[hero.positionY][hero.positionX].pop(); // удаляем на карте предмет, который подняли
+            }
+            message = 'you raised ' + gex.name + '!';
             break;
         case 'food':
             hero.eat();

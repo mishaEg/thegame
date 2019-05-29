@@ -35,7 +35,10 @@ function onceEnemyAction(creature, map, hero, allCreatures) {
             YpositionForCheckHero = creature.positionY + currentDy;
 
         if (isContact({ positionX: XpositionForCheckHero, positionY: YpositionForCheckHero }, hero)) {
-            hero.health -= creature.damage;
+            const reducedDamage = creature.damage - hero.defence;
+            if (reducedDamage > 0) {
+                hero.health -= reducedDamage;
+            }
         }
     });
 

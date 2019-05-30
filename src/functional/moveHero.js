@@ -96,7 +96,7 @@ function moveHero(map, hero, key, creatures) {
                 message = 'Its whitespace? how did you do this?? (bug!)';
                 break;
             case 'grass':
-                message = 'you stay at grass and feels fresh green leaves by your foots :з.';
+                message = 'you stay at grass and feels fresh green leaves by your feet :з.';
                 hero.changeCoordinates(xTravelCoordinates, yTravelCoordinates);
                 break;
             default: {

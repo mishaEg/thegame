@@ -13,7 +13,7 @@ export default class GamesMap extends Component {
         super();
         this.state = {
             onHelp: false,
-            message: '',
+            message: 'press h for help menu',
             hero: new Hero(2, 2),
             creatures: []
         };

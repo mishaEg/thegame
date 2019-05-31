@@ -28,6 +28,7 @@
         "no-loop-func": "error",
         "operator-assignment": ["off"],
         "prefer-destructuring": ["error", { "array": false, "object": true}],
-        "linebreak-style": ["off"]
+        "linebreak-style": ["off"],
+        "consistent-return": ["off"]
     }
 }

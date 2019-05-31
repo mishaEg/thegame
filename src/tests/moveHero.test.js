@@ -98,7 +98,7 @@ describe('Проверка функции moveHero', () => {
             outputCreatures = [],
             message = moveHero(inputMap, inputHero, "up", inputCreatures);
 
-        expect(message).toEqual("you stay at grass and feels fresh green leaves by your foots :з.");
+        expect(message).toEqual("you stay at grass and feels fresh green leaves by your feet :з.");
         expect(inputMap).toEqual(outputMap);
         expect(inputHero).toEqual(outputHero);
         expect(inputCreatures).toEqual(outputCreatures);

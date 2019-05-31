@@ -24,7 +24,7 @@ it('Передвижение героя на карте вправо на тра
         message = movingAndDigging(inputMap, inputHero, "right", creatures);
 
     expect(inputMap).toEqual(outputMap);
-    expect(message).toEqual("you stay at grass and feels fresh green leaves by your foots :з.");
+    expect(message).toEqual("you stay at grass and feels fresh green leaves by your feet :з.");
     expect(inputHero).toEqual(outputHero);
     expect(creatures).toEqual([]);
 });

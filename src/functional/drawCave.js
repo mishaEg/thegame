@@ -2,23 +2,72 @@ import elements from '../data/elements';
 import expansionMap from './expansionMap';
 import Enemy from '../Units/Enemy';
 import drawTunnel from './drawTunnel';
+import getRandomInt from './utils/getRandomInt';
+
+/**
+ * Проверка на возможность отрисовки тела пещеры
+ */
+function isClear(diggingCoordinate, map) {
+    const dx = [-1, -1, -1, 0, 0, +0, 1, 1, +1], // смещения, для обхвата площади
+        dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1]; // размером 3х3 с центром в указанной точке
+
+    for (let index = 0; index <= dy.length - 1; index++) {
+        const checkCoordinateY = diggingCoordinate.y + dy[index],
+            checkCoordinateX = diggingCoordinate.x + dx[index];
+
+        if (map[checkCoordinateY] !== undefined) {
+            if (map[checkCoordinateY][checkCoordinateX] !== undefined) {
+                if (map[checkCoordinateY][checkCoordinateX][0].icon !== " ") {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return true;
+}
 
 /**
  * Реализация генерации пещеры с сокровищем на карте
  */
-function drawBodyCave(diggingCoordinate, treasure, map, hero, creatures) {
+function drawBodyCave(diggingCoordinate, map, hero, creatures) {
     const { floor, emptySpace, wall, grass, iron_sword, iron_shield } = elements,
         dx = [-1, -1, -1, 0, 0, +0, 1, 1, +1], // смещения, для обхвата площади
         dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1], // размером 3х3 с центром в указанной точке
         wall_dx = [-1, 0, 1, -2, 2, -2, 2, -2, 2, -2, +2, -2, -1, +0, +1, +2], // смещения для отрисовки
-        wall_dy = [+2, 2, 2, +2, 2, +1, 1, +0, 0, -1, -1, -2, -2, -2, -2, -2]; // стен во всех пещерах
+        wall_dy = [+2, 2, 2, +2, 2, +1, 1, +0, 0, -1, -1, -2, -2, -2, -2, -2], // стен во всех пещерах
+        RANDOM_GENERATE_ITEM = getRandomInt(0, 7);
+
+    let treasure,
+        message;
+
+    switch (true) {
+        case (RANDOM_GENERATE_ITEM === 2 || RANDOM_GENERATE_ITEM === 3):
+            message = 'you found cave with enemy!';
+            treasure = 'enemy';
+            break;
+        case (RANDOM_GENERATE_ITEM === 4 || RANDOM_GENERATE_ITEM === 5):
+            message = 'you found cave with grass!';
+            treasure = 'grass';
+            break;
+        case (RANDOM_GENERATE_ITEM === 6):
+            message = 'you found cave with iron shield!';
+            treasure = 'iron shield';
+            break;
+        case (RANDOM_GENERATE_ITEM === 7):
+            message = 'you found cave with iron sword!';
+            treasure = 'iron sword';
+            break;
+        default:
+            message = 'you found empty cave';
+            treasure = 'none';
+    }
 
     // Генерация пола пещеры размером 3х3 с центром в указанной точке
     expansionMap(diggingCoordinate, dx, dy, map, hero, floor, [emptySpace, wall], creatures);
 
     // Генерация стен вокруг пещеры с центром в указанной точке
     expansionMap(diggingCoordinate, wall_dx, wall_dy, map, hero, wall, [emptySpace], creatures);
-
 
     switch (treasure) {
         case 'enemy':
@@ -38,32 +87,143 @@ function drawBodyCave(diggingCoordinate, treasure, map, hero, creatures) {
         default:
             throw new Error(`Treasure is not correct: ${treasure}`);
     }
+
+    return message;
 }
 
 /**
- * @description реализация генерации пещеры на карте
- * @return generateEnemy false - если пещера сгенерирована без врага, object - враг
+ * Перемещение координат в точку в центре пещеры
  */
-function drawCave(diggingCoordinate, direction, treasure, map, hero, creatures) {
-    drawTunnel(diggingCoordinate, false, map, hero, creatures);
-
+function switchCoordToMidCave(diggingCoordinate, direction, shift) {
     switch (direction) {
         case 'left':
             diggingCoordinate.x -= 2;
+            diggingCoordinate.y += shift;
             break;
         case 'right':
             diggingCoordinate.x += 2;
+            diggingCoordinate.y += shift;
             break;
         case 'up':
             diggingCoordinate.y -= 2;
+            diggingCoordinate.x += shift;
             break;
         case 'down':
             diggingCoordinate.y += 2;
+            diggingCoordinate.x += shift;
             break;
         default:
             throw new Error("direction is not a correct:" + direction);
     }
-    drawBodyCave(diggingCoordinate, treasure, map, hero, creatures);
+}
+
+/**
+ * Перемещение координат на вход в пещеру
+ */
+function switchCoordToInputCave(diggingCoordinate, direction, shift) {
+    switch (direction) {
+        case 'left':
+            diggingCoordinate.x += 2;
+            diggingCoordinate.y -= shift;
+            break;
+        case 'right':
+            diggingCoordinate.x -= 2;
+            diggingCoordinate.y -= shift;
+            break;
+        case 'up':
+            diggingCoordinate.y += 2;
+            diggingCoordinate.x -= shift;
+            break;
+        case 'down':
+            diggingCoordinate.y -= 2;
+            diggingCoordinate.x -= shift;
+            break;
+        default:
+            throw new Error("direction is not a correct:" + direction);
+    }
+}
+
+function findCoordForCave(diggingCoordinate, direction, map) {
+    const checkCoordinate = { ...diggingCoordinate };
+
+    let verticalShift = [0, -1, 1],
+        horizontalShift = [0, -1, 1];
+
+    switch (direction) {
+        case 'left':
+            checkCoordinate.x -= 2;
+            horizontalShift = [];
+            break;
+        case 'right':
+            checkCoordinate.x += 2;
+            horizontalShift = [];
+            break;
+        case 'up':
+            checkCoordinate.y -= 2;
+            verticalShift = [];
+            break;
+        case 'down':
+            checkCoordinate.y += 2;
+            verticalShift = [];
+            break;
+        default:
+            throw new Error("direction is not a correct:" + direction);
+    }
+
+    if (verticalShift.length === 0) {
+        for (let index = 0; index <= horizontalShift.length - 1; index++) {
+            const shiftCoordinate = {
+                x: checkCoordinate.x + horizontalShift[index],
+                y: checkCoordinate.y
+            };
+
+            if (isClear(shiftCoordinate, map)) {
+                return {
+                    clear: true,
+                    shift: horizontalShift[index]
+                };
+            }
+        }
+    } else {
+        for (let index = 0; index <= verticalShift.length - 1; index++) {
+            const shiftCoordinate = {
+                x: checkCoordinate.x,
+                y: checkCoordinate.y + verticalShift[index]
+            };
+
+            if (isClear(shiftCoordinate, map)) {
+                return {
+                    clear: true,
+                    shift: verticalShift[index]
+                };
+            }
+        }
+    }
+
+    return {
+        clear: false
+    };
+}
+
+/**
+ * Реализация генерации пещеры на карте
+ * @return generateEnemy false - если пещера сгенерирована без врага, object - враг
+ */
+function drawCave(diggingCoordinate, direction, map, hero, creatures) {
+    let message = false;
+
+    const resultFinding = findCoordForCave(diggingCoordinate, direction, map);
+
+    // Если на отрисовку пещеры нет места - не отрисовываем
+    if (resultFinding.clear === true) {
+        switchCoordToMidCave(diggingCoordinate, direction, resultFinding.shift);
+        message = drawBodyCave(diggingCoordinate, map, hero, creatures);
+        switchCoordToInputCave(diggingCoordinate, direction, resultFinding.shift);
+    }
+
+    drawTunnel(diggingCoordinate, false, map, hero, creatures);
+
+    return message;
 }
 
 export default drawCave;

@@ -7,14 +7,17 @@ import getRandomInt from './utils/getRandomInt';
 /**
  * Проверка на возможность отрисовки тела пещеры
  */
-function isClear(diggingCoordinate, dx, dy, map) {
-    for (let index = 0; index < dy.length - 1; index++) {
+function isClear(diggingCoordinate, map) {
+    const dx = [-1, -1, -1, 0, 0, +0, 1, 1, +1], // смещения, для обхвата площади
+        dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1]; // размером 3х3 с центром в указанной точке
+
+    for (let index = 0; index <= dy.length - 1; index++) {
         const checkCoordinateY = diggingCoordinate.y + dy[index],
             checkCoordinateX = diggingCoordinate.x + dx[index];
 
         if (map[checkCoordinateY] !== undefined) {
             if (map[checkCoordinateY][checkCoordinateX] !== undefined) {
-                if (map[checkCoordinateY][checkCoordinateX].icon !== ' ') {
+                if (map[checkCoordinateY][checkCoordinateX][0].icon !== " ") {
                     return false;
                 }
             }
@@ -91,19 +94,23 @@ function drawBodyCave(diggingCoordinate, map, hero, creatures) {
 /**
  * Перемещение координат в точку в центре пещеры
  */
-function switchCoordToMidCave(diggingCoordinate, direction) {
+function switchCoordToMidCave(diggingCoordinate, direction, shift) {
     switch (direction) {
         case 'left':
             diggingCoordinate.x -= 2;
+            diggingCoordinate.y += shift;
             break;
         case 'right':
             diggingCoordinate.x += 2;
+            diggingCoordinate.y += shift;
             break;
         case 'up':
             diggingCoordinate.y -= 2;
+            diggingCoordinate.x += shift;
             break;
         case 'down':
             diggingCoordinate.y += 2;
+            diggingCoordinate.x += shift;
             break;
         default:
             throw new Error("direction is not a correct:" + direction);
@@ -113,23 +120,89 @@ function switchCoordToMidCave(diggingCoordinate, direction) {
 /**
  * Перемещение координат на вход в пещеру
  */
-function switchCoordToInputCave(diggingCoordinate, direction) {
+function switchCoordToInputCave(diggingCoordinate, direction, shift) {
     switch (direction) {
         case 'left':
             diggingCoordinate.x += 2;
+            diggingCoordinate.y -= shift;
             break;
         case 'right':
             diggingCoordinate.x -= 2;
+            diggingCoordinate.y -= shift;
             break;
         case 'up':
             diggingCoordinate.y += 2;
+            diggingCoordinate.x -= shift;
             break;
         case 'down':
             diggingCoordinate.y -= 2;
+            diggingCoordinate.x -= shift;
             break;
         default:
             throw new Error("direction is not a correct:" + direction);
     }
+}
+
+function findCoordForCave(diggingCoordinate, direction, map) {
+    const checkCoordinate = { ...diggingCoordinate };
+
+    let verticalShift = [0, -1, 1],
+        horizontalShift = [0, -1, 1];
+
+    switch (direction) {
+        case 'left':
+            checkCoordinate.x -= 2;
+            horizontalShift = [];
+            break;
+        case 'right':
+            checkCoordinate.x += 2;
+            horizontalShift = [];
+            break;
+        case 'up':
+            checkCoordinate.y -= 2;
+            verticalShift = [];
+            break;
+        case 'down':
+            checkCoordinate.y += 2;
+            verticalShift = [];
+            break;
+        default:
+            throw new Error("direction is not a correct:" + direction);
+    }
+
+    if (verticalShift.length === 0) {
+        for (let index = 0; index <= horizontalShift.length - 1; index++) {
+            const shiftCoordinate = {
+                x: checkCoordinate.x + horizontalShift[index],
+                y: checkCoordinate.y
+            };
+
+            if (isClear(shiftCoordinate, map)) {
+                return {
+                    clear: true,
+                    shift: horizontalShift[index]
+                };
+            }
+        }
+    } else {
+        for (let index = 0; index <= verticalShift.length - 1; index++) {
+            const shiftCoordinate = {
+                x: checkCoordinate.x,
+                y: checkCoordinate.y + verticalShift[index]
+            };
+
+            if (isClear(shiftCoordinate, map)) {
+                return {
+                    clear: true,
+                    shift: verticalShift[index]
+                };
+            }
+        }
+    }
+
+    return {
+        clear: false
+    };
 }
 
 /**
@@ -137,18 +210,17 @@ function switchCoordToInputCave(diggingCoordinate, direction) {
  * @return generateEnemy false - если пещера сгенерирована без врага, object - враг
  */
 function drawCave(diggingCoordinate, direction, map, hero, creatures) {
-    const dx = [-1, -1, -1, 0, 0, +0, 1, 1, +1], // смещения, для обхвата площади
-        dy = [+0, +1, -1, 0, 1, -1, 0, 1, -1]; // размером 3х3 с центром в указанной точке
     let message = false;
 
-    switchCoordToMidCave(diggingCoordinate, direction);
+    const resultFinding = findCoordForCave(diggingCoordinate, direction, map);
 
     // Если на отрисовку пещеры нет места - не отрисовываем
-    if (isClear(diggingCoordinate, dx, dy, map)) {
+    if (resultFinding.clear === true) {
+        switchCoordToMidCave(diggingCoordinate, direction, resultFinding.shift);
         message = drawBodyCave(diggingCoordinate, map, hero, creatures);
+        switchCoordToInputCave(diggingCoordinate, direction, resultFinding.shift);
     }
 
-    switchCoordToInputCave(diggingCoordinate, direction);
     drawTunnel(diggingCoordinate, false, map, hero, creatures);
 
     return message;

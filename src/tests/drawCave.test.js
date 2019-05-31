@@ -226,13 +226,13 @@ describe('Тесты функции drawCave', () => {
         expect(message).toEqual("you found cave with grass!");
     });
 });
-/* 
+
 describe('Проверки на умную генерацию пещер', () => {
     beforeEach(() => {
         jest.resetModules();
     });
 
-    it('Проверка умной генерации пещеры со сдвигом влево при копании вверх', () => {
+    it('Проверка умной генерации пещеры со сдвигом вправо при копании вверх', () => {
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn().mockReturnValueOnce(0);
         });
@@ -245,14 +245,16 @@ describe('Проверки на умную генерацию пещер', () =>
                 [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
                 [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
                 [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
-                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]]
+                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
+                [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]]
             ],
             outputMap = [
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]]
+                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
+                [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]]
             ],
             inputHero = { positionX: 0, positionY: 0 },
             outputHero = { positionX: 0, positionY: 0 },
@@ -266,7 +268,7 @@ describe('Проверки на умную генерацию пещер', () =>
         expect(message).toEqual("you found empty cave");
     });
 
-    it('Проверка умной генерации пещеры со сдвигом вправо при копании вверх', () => {
+    it('Проверка умной генерации пещеры со сдвигом влево при копании вверх', () => {
         jest.mock('../functional/utils/getRandomInt', () => {
             return jest.fn().mockReturnValueOnce(0);
         });
@@ -279,14 +281,16 @@ describe('Проверки на умную генерацию пещер', () =>
                 [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }]],
                 [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }]],
                 [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]]
+                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
+                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }]]
             ],
             outputMap = [
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "wall" }]]
+                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
+                [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }]]
             ],
             inputHero = { positionX: 1, positionY: 4 },
             outputHero = { positionX: 3, positionY: 4 },
@@ -307,8 +311,9 @@ describe('Проверки на умную генерацию пещер', () =>
 
         const drawCaveWithMock = require('../functional/drawCave').default;
 
-        const targetCoordinates = { x: 1, y: 0 },
+        const targetCoordinates = { x: 1, y: 1 },
             inputMap = [
+                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
                 [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }]],
                 [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }]],
@@ -316,6 +321,7 @@ describe('Проверки на умную генерацию пещер', () =>
                 [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }]]
             ],
             outputMap = [
+                [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }]],
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
@@ -341,8 +347,9 @@ describe('Проверки на умную генерацию пещер', () =>
 
         const drawCaveWithMock = require('../functional/drawCave').default;
 
-        const targetCoordinates = { x: 1, y: 0 },
+        const targetCoordinates = { x: 1, y: 1 },
             inputMap = [
+                [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
                 [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
@@ -350,6 +357,7 @@ describe('Проверки на умную генерацию пещер', () =>
                 [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]]
             ],
             outputMap = [
+                [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
                 [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
@@ -375,20 +383,20 @@ describe('Проверки на умную генерацию пещер', () =>
 
         const drawCaveWithMock = require('../functional/drawCave').default;
 
-        const targetCoordinates = { x: 0, y: 3 },
+        const targetCoordinates = { x: 1, y: 3 },
             inputMap = [
-                [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
-                [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
-                [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
-                [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
-                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]]
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]]
             ],
             outputMap = [
-                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
-                [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]]
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
+                [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]]
             ],
             inputHero = { positionX: 0, positionY: 0 },
             outputHero = { positionX: 0, positionY: 0 },
@@ -409,20 +417,20 @@ describe('Проверки на умную генерацию пещер', () =>
 
         const drawCaveWithMock = require('../functional/drawCave').default;
 
-        const targetCoordinates = { x: 0, y: 1 },
+        const targetCoordinates = { x: 1, y: 1 },
             inputMap = [
-                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
-                [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
-                [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
-                [[{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]]
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": " " }], [{ "icon": " " }]]
             ],
             outputMap = [
-                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
-                [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]]
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
+                [[{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
+                [[{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]]
             ],
             inputHero = { positionX: 0, positionY: 0 },
             outputHero = { positionX: 0, positionY: 0 },
@@ -445,18 +453,18 @@ describe('Проверки на умную генерацию пещер', () =>
 
         const targetCoordinates = { x: 2, y: 1 },
             inputMap = [
-                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
-                [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }]],
-                [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }]],
-                [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }]],
-                [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }]]
+                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
+                [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
+                [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
+                [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
+                [[{ "icon": " " }], [{ "icon": " " }], [{ "icon": "wall" }], [{ "icon": "floor" }]]
             ],
             outputMap = [
-                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }]],
-                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }]],
-                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }]]
+                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
+                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }]],
+                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
+                [[{ "icon": "wall" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "floor" }], [{ "icon": "wall" }], [{ "icon": "floor" }]],
+                [[{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "wall" }], [{ "icon": "floor" }]]
             ],
             inputHero = { positionX: 0, positionY: 0 },
             outputHero = { positionX: 2, positionY: 0 },
@@ -469,7 +477,7 @@ describe('Проверки на умную генерацию пещер', () =>
         expect(inputCreatures).toEqual(outputCreatures);
         expect(message).toEqual("you found empty cave");
     });
-}) */
+})
 
 describe('Проверки на отсутствие генераций пещеры', () => {
     beforeEach(() => {

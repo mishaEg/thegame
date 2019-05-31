@@ -1,14 +1,14 @@
 {
-  "main.css": "/thegame/static/css/main.cff9a8f7.chunk.css",
-  "main.js": "/thegame/static/js/main.5b94b5a4.chunk.js",
-  "main.js.map": "/thegame/static/js/main.5b94b5a4.chunk.js.map",
+  "main.css": "/thegame/static/css/main.0df69925.chunk.css",
+  "main.js": "/thegame/static/js/main.909bb9c2.chunk.js",
+  "main.js.map": "/thegame/static/js/main.909bb9c2.chunk.js.map",
   "runtime~main.js": "/thegame/static/js/runtime~main.1da57d25.js",
   "runtime~main.js.map": "/thegame/static/js/runtime~main.1da57d25.js.map",
-  "static/js/2.465533a0.chunk.js": "/thegame/static/js/2.465533a0.chunk.js",
-  "static/js/2.465533a0.chunk.js.map": "/thegame/static/js/2.465533a0.chunk.js.map",
+  "static/js/2.1babb3f4.chunk.js": "/thegame/static/js/2.1babb3f4.chunk.js",
+  "static/js/2.1babb3f4.chunk.js.map": "/thegame/static/js/2.1babb3f4.chunk.js.map",
   "index.html": "/thegame/index.html",
-  "precache-manifest.31e7fce6a74fe064c6ed82b6fdf5542a.js": "/thegame/precache-manifest.31e7fce6a74fe064c6ed82b6fdf5542a.js",
+  "precache-manifest.80af80e730065c6441bf44641ec9e289.js": "/thegame/precache-manifest.80af80e730065c6441bf44641ec9e289.js",
   "service-worker.js": "/thegame/service-worker.js",
-  "static/css/main.cff9a8f7.chunk.css.map": "/thegame/static/css/main.cff9a8f7.chunk.css.map",
+  "static/css/main.0df69925.chunk.css.map": "/thegame/static/css/main.0df69925.chunk.css.map",
   "static/media/styles.css": "/thegame/static/media/world.bd7ddc0b.png"
 }

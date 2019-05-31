@@ -8,19 +8,19 @@ self.__precacheManifest = [
     "url": "/thegame/static/js/runtime~main.1da57d25.js"
   },
   {
-    "revision": "0258bedb929a10c27e67",
-    "url": "/thegame/static/js/main.f3146769.chunk.js"
+    "revision": "1e0e64f1a641c338ed6c",
+    "url": "/thegame/static/js/main.909bb9c2.chunk.js"
   },
   {
-    "revision": "1af0fc34798e0e32b4cd",
-    "url": "/thegame/static/js/2.465533a0.chunk.js"
+    "revision": "51f7eaccaf34c88ea31f",
+    "url": "/thegame/static/js/2.1babb3f4.chunk.js"
   },
   {
-    "revision": "0258bedb929a10c27e67",
+    "revision": "1e0e64f1a641c338ed6c",
     "url": "/thegame/static/css/main.0df69925.chunk.css"
   },
   {
-    "revision": "e0ad7edeb03db9c645af4c18a7067cf4",
+    "revision": "0628c5ff86b09aa75de3c285038f35a8",
     "url": "/thegame/index.html"
   }
 ];
